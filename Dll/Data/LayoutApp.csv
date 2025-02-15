@@ -1,0 +1,2 @@
+Id,BackgroudImage,Color,Height,LayoutImage,Quantity,Width,IsSelected,QRLink,SVGMappingName,ImageFolderPath,IsBackgroundColor,FrameType,PaymentId,PrintName
+1,"pack://application:,,,/Layouts/background_01.jpg",,400,Layout1.png,4,290,1,,2x2h.svg,D:\MVC\PhotoBoothProject\DemoPhotoBooth\DemoPhotoBooth\bin\Debug\net6.0-windows7.0\20.01.2025,0, ,1,DS-RX1

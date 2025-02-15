@@ -1,0 +1,75 @@
+﻿<Page x:Class="DemoPhotoBooth.Pages.Preview.PreviewPartial"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:DemoPhotoBooth.Pages.Preview"
+      mc:Ignorable="d" 
+      xmlns:svg="http://sharpvectors.codeplex.com/svgc/"
+  xmlns:common="clr-namespace:DemoPhotoBooth.Common"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="PreviewPartial"
+      Loaded="PreviewPartial_Loaded">
+
+    <Grid>
+        <!-- Hiển thị hình ảnh -->
+        <DockPanel LastChildFill="True">
+            <!-- TextBlock luôn nằm dưới -->
+            <TextBlock 
+                DockPanel.Dock="Bottom"
+                Text="{Binding CurrentBackground.Name}" 
+                FontSize="26" 
+                FontWeight="Bold" 
+                Foreground="#000000"
+                HorizontalAlignment="Center"
+                Margin="0,20,0,20"
+            />
+
+            <!-- Phần chứa hình ảnh và các nút điều hướng -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border Background="Transparent" CornerRadius="10" Padding="10" Margin="10,0,10,0">
+                    <!--<Grid Width="{Binding ActualWidth}" Height="{Binding ActualHeight}">-->
+                    <Grid Width="290" Height="400" Name="previewScope">
+                        <Grid.Resources>
+                            <common:ImageFileTypeConverter x:Key="ImageFileTypeConverter"/>
+                            <common:SvgFileTypeConverter x:Key="SvgFileTypeConverter"/>
+                        </Grid.Resources>
+
+                        <!-- Hiển thị hình ảnh nếu là PNG/JPG -->
+                        <Image
+                            Visibility="{Binding IsImageBackground, Converter={StaticResource BoolToVisibilityConverter}}"
+                            Source="{Binding CurrentBackground.Image}" 
+                            Stretch="Uniform" 
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"
+                            Panel.ZIndex="0"
+                            Name="ctlImage"
+                            Width="350"
+                        />
+
+                        <Border 
+                            Visibility="{Binding IsColorBackground, Converter={StaticResource BoolToVisibilityConverter}}"
+                            Background="{Binding CurrentColor}" 
+                            Width="280" 
+                            Height="420" 
+                            HorizontalAlignment="Center" 
+                            Margin="10,0,10,0"
+                            Grid.Column="1"
+                            Panel.ZIndex="0"
+                        />
+
+                        <!-- Hiển thị SVG trên cùng -->
+                        <svg:SvgCanvas 
+                            Name="svgCtl"
+                            Source="{Binding Layout.ImageUrl}" 
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" 
+                            Background="{Binding CurrentBackground.Image}"
+                            Panel.ZIndex="1"
+                        />
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Page>

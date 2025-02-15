@@ -1,0 +1,79 @@
+﻿<Window x:Class="DemoPhotoBooth.Pages.TimeoutPopup"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Thông báo"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Width="400" Height="220"
+        Background="#ffffff"
+        WindowStyle="None">
+    <Border Background="#ffffff" CornerRadius="10" BorderThickness="2" BorderBrush="#f4c76e" Padding="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Nội dung -->
+            <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                <TextBlock Text="Thời gian chờ đã hết!" FontSize="20" FontWeight="Bold" Foreground="#333333" 
+                           TextAlignment="Center" Margin="0,10"/>
+                <TextBlock Text="Bạn có muốn gia hạn thêm 30s" FontSize="16" Foreground="#555555" 
+                           TextAlignment="Center" Margin="0,5"/>
+            </StackPanel>
+
+            <!-- Thời gian đếm ngược -->
+            <TextBlock Name="txtTimer" Grid.Row="1" FontSize="18" FontStyle="Italic" Foreground="#999999" 
+                       HorizontalAlignment="Center" Margin="0,5"/>
+
+            <!-- Nút lựa chọn -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <Button Content="Có" Width="100" Height="40"  Background="#f4c76e"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    FontSize="15"
+                    BorderThickness="0"
+                    Margin="0"
+                    Click="YesButton_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="15" 
+                                BorderThickness="0">
+                                <TextBlock Text="{TemplateBinding Content}" 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center"
+                                    Foreground="White"
+                                    FontWeight="{TemplateBinding FontWeight}" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Content="Không" 
+                        Width="100"
+                        Height="40" 
+                        Margin="5" 
+                        Background="#f4c76e"
+                        Foreground="White" 
+                        FontWeight="Bold" 
+                        FontSize="15"
+                        Click="NoButton_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="15" 
+                                BorderThickness="0">
+                                <TextBlock Text="{TemplateBinding Content}" 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center"
+                                    Foreground="White"
+                                    FontWeight="{TemplateBinding FontWeight}" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

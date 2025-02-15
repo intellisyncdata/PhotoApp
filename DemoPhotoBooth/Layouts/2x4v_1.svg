@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="102mm" height="152mm" viewBox="0 0 289.13 430.87">
+  <g>
+    <path d="M0,0v430.87h289.13V0H0ZM141.6,351.36H22.54v-79.37h119.06v79.37ZM141.6,266.32H22.54v-79.37h119.06v79.37ZM141.6,181.28H22.54v-79.37h119.06v79.37ZM141.6,96.24H22.54V16.87h119.06v79.37ZM266.32,351.36h-119.06v-79.37h119.06v79.37ZM266.32,266.32h-119.06v-79.37h119.06v79.37ZM266.32,181.28h-119.06v-79.37h119.06v79.37ZM266.32,96.24h-119.06V16.87h119.06v79.37Z" style="fill: none; stroke-width: 0px;"/>
+    <rect x="22.54" y="16.87" width="119.06" height="79.37" style="fill: #fff; stroke-width: 0px;"/>
+    <rect x="22.54" y="101.91" width="119.06" height="79.37" style="fill: #fff; stroke-width: 0px;"/>
+    <rect x="22.54" y="186.95" width="119.06" height="79.37" style="fill: #fff; stroke-width: 0px;"/>
+    <rect x="22.54" y="271.99" width="119.06" height="79.37" style="fill: #fff; stroke-width: 0px;"/>
+    <rect x="147.27" y="16.87" width="119.06" height="79.37" style="fill: #fff; stroke-width: 0px;"/>
+    <rect x="147.27" y="101.91" width="119.06" height="79.37" style="fill: #fff; stroke-width: 0px;"/>
+    <rect x="147.27" y="186.95" width="119.06" height="79.37" style="fill: #fff; stroke-width: 0px;"/>
+    <rect x="147.27" y="271.99" width="119.06" height="79.37" style="fill: #fff; stroke-width: 0px;"/>
+  </g>
+  <rect x="226.64" y="376.87" width="39.69" height="39.69" style="fill: #fff; stroke: #231f20; stroke-miterlimit: 10;"/>
+</svg>

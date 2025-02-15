@@ -1,0 +1,129 @@
+﻿<Page x:Class="DemoPhotoBooth.Pages.CameraMode"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      Title="CameraMode" Height="Auto" Width="Auto">
+
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="pack://application:,,,/Layouts/background-camera-mode.png"/>
+        </Grid.Background>
+
+        <!-- Cấu trúc cột -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Hàng tiêu đề -->
+        <TextBlock Text="CHỌN CHẾ ĐỘ CHỤP"
+                   FontSize="52"
+                   FontWeight="Bold"
+                   Foreground="Black"
+                   HorizontalAlignment="Center"
+                   Grid.ColumnSpan="2"
+                   Margin="0,40,0,20"/>
+        <!-- Hiển thị đếm ngược chỉ có số giây trên góc phải -->
+        <TextBlock x:Name="txtCountdown"
+                   FontSize="40"
+                   FontWeight="Bold"
+                   Foreground="#000000"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Grid.ColumnSpan="2"
+                   Margin="0,20,20,0"/>
+
+        <!-- Hẹn giờ -->
+        <Border x:Name="TimerBorder" BorderThickness="3" CornerRadius="15" BorderBrush="Transparent" Grid.Column="0" VerticalAlignment="Center" Width="400">
+            <StackPanel Name="TimerStackPanel" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,20" 
+                        MouseDown="StackPanel_Click" Width="400">
+                <Image Source="pack://application:,,,/Layouts/clock.png"
+                       Width="250" Height="250"/>
+                <Button Content="Hẹn giờ"
+                        Width="250" Height="80"
+                        Background="#E89E5E"
+                        Foreground="White"
+                        FontSize="28"
+                        FontWeight="Bold"
+                        Margin="0,10,0,0"
+                        Click="TimerMode_Click" BorderThickness="1" IsEnabled="False">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" 
+                                    CornerRadius="35" 
+                                    BorderThickness="0">
+                                <TextBlock Text="{TemplateBinding Content}" 
+                                           HorizontalAlignment="Center" 
+                                           VerticalAlignment="Center"
+                                           Foreground="White"
+                                           FontWeight="{TemplateBinding FontWeight}" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- Điều khiển -->
+        <Border x:Name="ManualBorder" BorderThickness="3" CornerRadius="15" BorderBrush="Transparent" Grid.Column="1" VerticalAlignment="Center"  Width="400">
+            <StackPanel Name="ManualStackPanel" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,20"
+                        MouseDown="StackPanel_Click" Width="400">
+                <Image Source="pack://application:,,,/Layouts/remote-control-hand.png"
+                       Width="250" Height="250"/>
+                <Button Content="Điều khiển"
+                        Width="250" Height="80"
+                        Background="#E89E5E"
+                        Foreground="White"
+                        FontSize="28"
+                        FontWeight="Bold"
+                        Margin="0,10,0,0"
+                        Click="ManualMode_Click" IsEnabled="False">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}" 
+                                    CornerRadius="35" 
+                                    BorderThickness="0">
+                                <TextBlock Text="{TemplateBinding Content}" 
+                                           HorizontalAlignment="Center" 
+                                           VerticalAlignment="Center"
+                                           Foreground="White"
+                                           FontWeight="{TemplateBinding FontWeight}" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- Nút tiếp tục -->
+        <Button Content="Tiếp tục"
+                Grid.ColumnSpan="2"
+                Width="280"
+                Height="70"
+                Background="#F4C76E"
+                Foreground="White"
+                FontSize="20"
+                FontWeight="Bold"
+                BorderThickness="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Margin="0,0,0,120"
+                Click="Continue_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" 
+                            CornerRadius="35" 
+                            BorderThickness="0">
+                        <TextBlock Text="{TemplateBinding Content}" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"
+                                   Foreground="White"
+                                   FontWeight="{TemplateBinding FontWeight}" />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</Page>

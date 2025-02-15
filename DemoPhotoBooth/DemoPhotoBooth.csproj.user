@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_LastSelectedProfileId>D:\My Projects\Freelance Project\PhotoBoothProject\DemoPhotoBooth\DemoPhotoBooth\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
+  </PropertyGroup>
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Pages\BackgroundPages\BackgroundPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\CameraMode.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\CameraPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\CodeCheckPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\HomePage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\LayoutPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\PaymentPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Popup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\PreviewPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Preview\ListImagesPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Preview\NewPreviewPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Preview\PreviewLayoutPartial.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Preview\PreviewPartial.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\PrintAndDownloadPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\TimeoutPopup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\BackgroundPages\BackgroundPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\CameraMode.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\CameraPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\CodeCheckPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\HomePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\LayoutPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\PaymentPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Popup.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\PreviewPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Preview\ListImagesPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Preview\NewPreviewPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Preview\PreviewLayoutPartial.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Preview\PreviewPartial.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\PrintAndDownloadPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\TimeoutPopup.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

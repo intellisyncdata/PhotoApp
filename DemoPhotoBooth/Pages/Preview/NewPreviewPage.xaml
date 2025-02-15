@@ -1,0 +1,53 @@
+﻿<Page x:Class="DemoPhotoBooth.Pages.Preview.NewPreviewPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:DemoPhotoBooth.Pages.Preview"
+      mc:Ignorable="d" 
+      d:DesignHeight="979" d:DesignWidth="1746"
+      Title="NewPreviewPage" Loaded="Page_Loaded"  Width="1746" Height="979">
+
+    <Grid Width="1746" Height="979">
+        <Grid.Background>
+            <ImageBrush ImageSource="pack://application:,,,/Layouts/main-background.png"/>
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="970" MaxHeight="970"/>
+        </Grid.RowDefinitions>
+        <DockPanel 
+            Grid.Row="0" 
+            Grid.Column="0" 
+            Width="Auto" 
+            Height="Auto" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center"
+            Margin="50,50">
+            <Frame 
+                Height="Auto"
+                Name="imagesSelected" 
+                VerticalAlignment="Center" 
+                HorizontalAlignment="Center" 
+                HorizontalContentAlignment="Center"
+            />
+        </DockPanel>
+        <DockPanel 
+            Grid.Row="0" 
+            Grid.Column="1"
+            Height="Auto" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center"
+            Margin="50,50">
+            <Frame Name="layoutPreview"
+                    Height="Auto"
+                   VerticalAlignment="Center" 
+                    HorizontalAlignment="Center" 
+                    HorizontalContentAlignment="Center"
+            />
+        </DockPanel>
+    </Grid>
+</Page>

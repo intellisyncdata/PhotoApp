@@ -1,0 +1,221 @@
+﻿<Page x:Class="DemoPhotoBooth.Pages.BackgroundPages.BackgroundPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:svg="http://sharpvectors.codeplex.com/svgc/"
+        xmlns:common="clr-namespace:DemoPhotoBooth.Common"
+      Title="BackgroundPage"
+      Opacity="0">
+
+    <Grid x:Name="MainGrid">
+        <Grid.Background>
+            <ImageBrush ImageSource="pack://application:,,,/Layouts/main-background.png"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <!-- Hàng chứa tiêu đề -->
+            <RowDefinition Height="2*"/>
+            <!-- Hàng chứa nút chọn -->
+            <RowDefinition Height="8*"/>
+            <!-- Hàng chứa nội dung chính -->
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Tiêu đề chính -->
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,60,0,10">
+            <TextBlock Text="CHỌN CHỦ ĐỀ " 
+                       FontSize="48" 
+                       FontWeight="Bold" 
+                       Foreground="#37474F"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,5"/>
+        </StackPanel>
+
+        <!-- Hàng chứa các nút Màu Nền và Hình Nền -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0" Grid.Row="1">
+            <Button Content="Cơ Bản"
+                    Click="ShowColorGrid_Click"
+                    Width="280"
+                    Height="80"
+                    Background="#f4c76e"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    FontSize="25"
+                    BorderThickness="0"
+                    Margin="0,0,150,0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                        CornerRadius="35" 
+                        BorderThickness="0">
+                            <TextBlock Text="{TemplateBinding Content}" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"
+                        Foreground="White"
+                        FontWeight="{TemplateBinding FontWeight}" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Content="Đặc Biệt"
+                    Click="ShowImageGrid_Click"
+                    Width="280"
+                    Height="80"
+                    Background="#f4c76e"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    FontSize="25"
+                    BorderThickness="0"
+                    Margin="0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                            CornerRadius="35" 
+                            BorderThickness="0">
+                            <TextBlock Text="{TemplateBinding Content}" 
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"
+                            Foreground="White"
+                            FontWeight="{TemplateBinding FontWeight}" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+
+        <!-- Grid chứa nội dung chính -->
+        <Grid Grid.Row="2">
+            <!-- Grid chọn màu nền -->
+            <Grid Visibility="{Binding IsColorGridVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                <DockPanel LastChildFill="True">
+                    <!-- Phần chứa danh sách hình ảnh và các nút điều hướng -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <!-- Nút điều hướng background trước -->
+                        <Button Click="PreviousColorButton_Click" Width="100" Height="100" Content="◀" Background="Transparent" Foreground="#aa5b77" FontSize="80" BorderThickness="0"/>
+
+                        <!-- Hiển thị danh sách các color -->
+                        <ItemsControl ItemsSource="{Binding VisibleBackgrounds}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border MouseDown="OnBackgroundClicked" BorderThickness="{Binding IsSelected, Converter={StaticResource BoolToBorderThicknessConverter}}"
+                                         BorderBrush="Black"
+                                         CornerRadius="10"
+                                         Padding="10"
+                                         Margin="10,0,10,0">
+                                        <Grid Width="250" Height="350">
+                                            <!--<Image Source="{Binding Image}" 
+                            Stretch="Uniform" 
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"/>-->
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Nút điều hướng background tiếp theo -->
+                        <Button Click="NextColorButton_Click" Width="100" Height="100" Content="▶" Background="Transparent" Foreground="#aa5b77" FontSize="80" BorderThickness="0"/>
+                    </StackPanel>
+                </DockPanel>
+            </Grid>
+
+            <!-- Grid chọn hình nền -->
+            <Grid Visibility="{Binding IsImageGridVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                <DockPanel LastChildFill="True">
+                    <!-- Phần chứa danh sách hình ảnh và các nút điều hướng -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <!-- Nút điều hướng background trước -->
+                        <Button Click="PreviousBackground_Click" Width="100" Height="100" Content="◀" Background="Transparent" Foreground="#aa5b77" FontSize="80" BorderThickness="0"/>
+
+                        <!-- Hiển thị danh sách các background -->
+                        <ItemsControl ItemsSource="{Binding VisibleBackgrounds}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border MouseDown="OnBackgroundClicked" BorderThickness="{Binding IsSelected, Converter={StaticResource BoolToBorderThicknessConverter}}"
+                                BorderBrush="Black"
+                                CornerRadius="10"
+                                Padding="10"
+                                Margin="10,0,10,0">
+                                        <Grid Width="250" Height="350">
+                                            <Image Source="{Binding Image}" 
+                                       Stretch="Uniform" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Nút điều hướng background tiếp theo -->
+                        <Button Click="NextBackground_Click" Width="100" Height="100" Content="▶" Background="Transparent" Foreground="#aa5b77" FontSize="80" BorderThickness="0"/>
+                    </StackPanel>
+                </DockPanel>
+            </Grid>
+        </Grid>
+        <!-- Grid chứa nút quay về home -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,50,30" Grid.Row="3">
+            <Button Content="Tiếp tục"
+               Click="NavigatePayment_Click"
+               Width="280"
+               Height="80"
+               Background="#f4c76e"
+               Foreground="White"
+               FontWeight="Bold"
+                     FontSize="25"
+               BorderThickness="0"
+               Margin="10,0"
+               HorizontalAlignment="Right" 
+               VerticalAlignment="Bottom">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                   CornerRadius="35" 
+                   BorderThickness="0">
+                            <TextBlock Text="{TemplateBinding Content}" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center"
+                   Foreground="White"
+                   FontWeight="{TemplateBinding FontWeight}" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button Content="Quay lại"
+               Click="NavigateHome_Click"
+               Width="280"
+               Height="80"
+               Background="#f4c76e"
+               Foreground="White"
+               FontWeight="Bold"
+                     FontSize="25"
+               BorderThickness="0"
+               Margin="10,0" 
+               HorizontalAlignment="Right" 
+               VerticalAlignment="Bottom">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                       CornerRadius="35" 
+                       BorderThickness="0">
+                            <TextBlock Text="{TemplateBinding Content}" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center"
+                       Foreground="White"
+                       FontWeight="{TemplateBinding FontWeight}" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Page>

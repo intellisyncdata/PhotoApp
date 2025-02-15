@@ -1,0 +1,156 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Data\db.db" />
+    <None Remove="Layouts\1x3v13.svg" />
+    <None Remove="Layouts\1x4v.svg" />
+    <None Remove="Layouts\2x2h.svg" />
+    <None Remove="Layouts\2x2v.svg" />
+    <None Remove="Layouts\2x4v.svg" />
+    <None Remove="Layouts\3x1v.svg" />
+    <None Remove="Layouts\50x50.png" />
+    <None Remove="Layouts\background-camera-mode.png" />
+    <None Remove="Layouts\background-layout.png" />
+    <None Remove="Layouts\background.png" />
+    <None Remove="Layouts\background_01.jpg" />
+    <None Remove="Layouts\clock.png" />
+    <None Remove="Layouts\horizontal_screen.svg" />
+    <None Remove="Layouts\image-test %281%29.jpg" />
+    <None Remove="Layouts\image-test %285%29.jpg" />
+    <None Remove="Layouts\Layout1.png" />
+    <None Remove="Layouts\Layout2.png" />
+    <None Remove="Layouts\Layout3.png" />
+    <None Remove="Layouts\Layout4.png" />
+    <None Remove="Layouts\Layout5.png" />
+    <None Remove="Layouts\Layout6.png" />
+    <None Remove="Layouts\main-background.png" />
+    <None Remove="Layouts\output.svg" />
+    <None Remove="Layouts\portrait.webp" />
+    <None Remove="Layouts\remote-control-hand.png" />
+    <None Remove="Layouts\temp\readme.md" />
+    <None Remove="Layouts\vertical_screen.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Data\db.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Layouts\background-camera-mode.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Layouts\background-layout.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Layouts\background.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Layouts\background_01.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Layouts\clock.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Layouts\remote-control-hand.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Layouts\temp\readme.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Layouts\horizontal_screen.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+       <Folder Include="Layouts\Temp\" />
+       <Folder Include="Text\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="OpenCvSharp4" Version="4.10.0.20241108" />
+    <PackageReference Include="OpenCvSharp4.Windows" Version="4.10.0.20241108" />
+    <PackageReference Include="Prism.Core" Version="9.0.537" />
+    <PackageReference Include="SharpVectors.Wpf" Version="1.8.4.2" />
+    <None Include="Common\CommonCameraFunction.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="QRCoder" Version="1.6.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.6" />
+    <PackageReference Include="System.IO.Ports" Version="7.0.0" />
+    <PackageReference Include="System.Management" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EDSDKLib">
+      <HintPath>..\Dll\EDSDKLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Layouts\1x3v13.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\1x4v.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\2x2h.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\2x2v.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\2x4v.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\3x1v.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\50x50.png" />
+    <Resource Include="Layouts\Layout1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\Layout2.png" />
+    <Resource Include="Layouts\Layout3.png" />
+    <Resource Include="Layouts\Layout4.png" />
+    <Resource Include="Layouts\Layout5.png" />
+    <Resource Include="Layouts\Layout6.png" />
+    <Resource Include="Layouts\main-background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\vertical_screen.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Text\CountPrinter.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
