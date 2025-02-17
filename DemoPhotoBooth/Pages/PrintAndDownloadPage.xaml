@@ -17,28 +17,47 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
+
         <!-- Timer Circle & Countdown -->
-       
-        
+
+
         <!-- LEFT SIDE (Printing and QR Section) -->
         <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
             <!-- Printing Status & QR Code -->
             <Grid VerticalAlignment="Center">
                 <TextBlock Text="Đang in ảnh"
-                           FontSize="78"
+                           FontSize="68"
                            FontWeight="Bold"
                            HorizontalAlignment="Center"
-                           Margin="0, 0, 0, 20"/>
+                           VerticalAlignment="Top"
+                           Margin="0, 0, 0, 550"/>
 
-                <StackPanel HorizontalAlignment="Center">
-                    <Image Height="350" Width="350" Name="qrCode" Margin="0,20,0,20"/>
-                    <TextBlock TextWrapping="Wrap"
-                               FontSize="23"
-                               Text="Quét mã QR để tải hình ảnh và video."
-                               FontFamily="Times New Roman"
-                               HorizontalAlignment="Center"
-                               TextAlignment="Center"/>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Border BorderBrush="Black" BorderThickness="3" CornerRadius="25" Margin="0,0,0,30" Height="320" Width="320">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Image Height="300" Width="300" Name="qrCode" Margin="0,0,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Padding="10" BorderBrush="Black" BorderThickness="3" CornerRadius="25">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                            <TextBlock TextWrapping="Wrap"
+                                    FontSize="23"
+                                    FontWeight="Bold"
+                                    Text="Scan QR để download hình ảnh và video của bạn."
+                                    HorizontalAlignment="Center"
+                                    TextAlignment="Center"/>
+
+                            <TextBlock TextWrapping="Wrap"
+                                    Foreground="#EF7573"
+                                    FontSize="23"
+                                    FontWeight="Bold"
+                                    Text="Lưu ý: Hình ảnh và video sẽ hết hạn sau 3 ngày."
+                                    HorizontalAlignment="Center"
+                                    TextAlignment="Center"
+                                    Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Border>
+
                 </StackPanel>
             </Grid>
         </Grid>

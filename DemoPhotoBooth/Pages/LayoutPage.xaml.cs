@@ -82,7 +82,7 @@ namespace DemoPhotoBooth.Pages
 
             if (selectedLayout != null)
             {
-                backgrounds.AddRange(selectedLayout.BgLayouts); 
+                backgrounds.AddRange(selectedLayout.BgLayouts);
             }
 
             return backgrounds;

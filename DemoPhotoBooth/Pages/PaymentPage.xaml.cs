@@ -43,12 +43,12 @@ namespace DemoPhotoBooth.Pages
         public List<Layout> ListLayout { get; set; }
         public string colors { get; set; }
 
-        public PaymentPage(decimal totalPrice, int quantity, Layout layouts, List<Background> backgrounds, string color, List<Layout> listLayouts )
+        public PaymentPage(decimal totalPrice, int quantity, Layout layouts, List<Background> backgrounds, string color, List<Layout> listLayouts)
         {
             _db = new CommonDbDataContext();
             InitializeComponent();
             TotalPrice = totalPrice;
-            Quantity= quantity;
+            Quantity = quantity;
             Layout = layouts;
             Backgrounds = backgrounds;
             ListLayout = listLayouts;
@@ -157,7 +157,7 @@ namespace DemoPhotoBooth.Pages
             });
         }
 
-      
+
 
         private void SendCommand(string command)
         {
@@ -214,9 +214,9 @@ namespace DemoPhotoBooth.Pages
         }
         private void CountdownTimer_Tick(object sender, EventArgs e)
         {
-            if (isNextPage) 
-            { 
-                countdownTimer.Stop(); 
+            if (isNextPage)
+            {
+                countdownTimer.Stop();
             }
 
             if (remainingTime > 0)
@@ -239,18 +239,18 @@ namespace DemoPhotoBooth.Pages
 
         private void NavigateToHomePage(object sender, RoutedEventArgs e)
         {
-            var layout = _db.LayoutApp.AsNoTracking().FirstOrDefault();
-            if (layout != null)
-            {
-                _db.Remove(layout);
-            }
-            NavigationService?.Navigate(new BackgroundPage(Layout,Backgrounds, colors, ListLayout));
+            //var layout = _db.LayoutApp.AsNoTracking().FirstOrDefault();
+            //if (layout != null)
+            //{
+            //    _db.Remove(layout);
+            //}
+            NavigationService?.Navigate(new BackgroundPage(Layout, Backgrounds, colors, ListLayout));
         }
 
         private void NavigateToCameraMode(object sender, RoutedEventArgs e)
         {
             // Điều hướng tới trang CameraMode
-            CompleteTransactionPayment(paymentId,totalAmount);
+            CompleteTransactionPayment(paymentId, totalAmount);
             totalAmount = 0;
             NavigationService?.Navigate(new CameraMode());
 
@@ -278,9 +278,9 @@ namespace DemoPhotoBooth.Pages
 
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(token);
                     HttpResponseMessage response = client.PostAsync(apiUrl, content).GetAwaiter().GetResult(); ;
-                    if( response.IsSuccessStatusCode)
+                    if (response.IsSuccessStatusCode)
                     {
-                        string responseContent =  response.Content.ReadAsStringAsync().GetAwaiter().GetResult(); ;
+                        string responseContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult(); ;
                         var responseDict = JsonSerializer.Deserialize<Dictionary<string, int>>(responseContent);
                         paymentId = responseDict?.GetValueOrDefault("payment_id") ?? 0;
 
@@ -384,15 +384,15 @@ namespace DemoPhotoBooth.Pages
 
         private void IncreaseQuantity(object sender, RoutedEventArgs e)
         {
-            quantity += 2; 
+            quantity += 2;
             UpdateAmount();
         }
 
         private void DecreaseQuantity(object sender, RoutedEventArgs e)
         {
-            if (quantity > 2) 
+            if (quantity > 2)
             {
-                quantity -= 2; 
+                quantity -= 2;
                 UpdateAmount();
             }
         }
@@ -400,7 +400,7 @@ namespace DemoPhotoBooth.Pages
         private void UpdateAmount()
         {
             txtQuantity.Text = quantity.ToString();
-            txtAmountToPay.Text = (quantity/2 * TotalPrice).ToString("N0") + " VND";
+            txtAmountToPay.Text = (quantity / 2 * TotalPrice).ToString("N0") + " VND";
             amountToPay = (quantity / 2 * TotalPrice);
         }
 
@@ -416,7 +416,7 @@ namespace DemoPhotoBooth.Pages
             btnAddQuantity.Visibility = Visibility.Hidden;
             RightPayment.Background = new SolidColorBrush(Colors.White);
             LeftPayment.Background = new SolidColorBrush(Colors.Gray);
-            paymentId = CreateTransactionPayment(Layout.Id,quantity);
+            paymentId = CreateTransactionPayment(Layout.Id, quantity);
             var layout = _db.LayoutApp.FirstOrDefault();
             if (layout != null)
             {

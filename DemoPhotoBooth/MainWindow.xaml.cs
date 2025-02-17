@@ -51,11 +51,26 @@ namespace DemoPhotoBooth
             _db.SaveChanges();
         }
 
+        private void ClearLayoutApp()
+        {
+            var isExisted = _db.LayoutApp.Any();
+
+            if (isExisted)
+            {
+                foreach (var item in _db.LayoutApp)
+                {
+                    _db.LayoutApp.Remove(item);
+                }
+                _db.SaveChanges();
+            }
+        }
+
         private void Window_Closed(object sender, EventArgs e)
         {
             try
             {
-                Task task1 = Task.Factory.StartNew(() => DeactivePhotoApp());
+                //Task task1 = Task.Factory.StartNew(() => DeactivePhotoApp());
+                ClearLayoutApp();
                 //Task task2 = Task.Factory.StartNew(() => ClearCommonData());
                 //Task.WaitAll(task1, task2);
             }

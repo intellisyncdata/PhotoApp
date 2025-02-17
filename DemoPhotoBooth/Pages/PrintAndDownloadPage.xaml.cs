@@ -1,6 +1,7 @@
 ﻿using DemoPhotoBooth.Common;
 using DemoPhotoBooth.DataContext;
 using DemoPhotoBooth.Models.DTOs;
+using DemoPhotoBooth.Models.Entities;
 using DemoPhotoBooth.Pages.Preview;
 using Microsoft.EntityFrameworkCore;
 using QRCoder;
@@ -37,11 +38,11 @@ namespace DemoPhotoBooth.Pages
     public partial class PrintAndDownloadPage : Page
     {
         private DispatcherTimer dispatcherTimer = new DispatcherTimer();
-        private uint timeStep = 180; // 20s
+        private uint timeStep = 300; // 20s
         private static string imageFolder = string.Empty;
-        private static string printName = string.Empty;
-        private static string printFolderPath = $"{imageFolder}/prints";
-        private static string videoFolderPath = $"{imageFolder}/video";
+        private string printName = string.Empty;
+        private string printFolderPath = $"{imageFolder}/prints";
+        private string videoFolderPath = $"{imageFolder}/video";
         private readonly CommonDbDataContext _db;
         private bool isLandscape = false;
         private bool isCutted = false;
@@ -112,18 +113,14 @@ namespace DemoPhotoBooth.Pages
             try
             {
                 PrintDialog dlg = new System.Windows.Controls.PrintDialog();
-                dlg.PrintQueue = new System.Printing.PrintQueue(new System.Printing.PrintServer(), isCutted ? "DS-RX1 Cut Feature" : "DS-RX1");
-                //dlg.PrintQueue = new System.Printing.PrintQueue(new System.Printing.PrintServer(), "Microsoft Print to PDF");
+                //dlg.PrintQueue = new System.Printing.PrintQueue(new System.Printing.PrintServer(), isCutted ? "DS-RX1 Cut Feature" : "DS-RX1");
+                dlg.PrintQueue = new System.Printing.PrintQueue(new System.Printing.PrintServer(), printName != "DS-RX1" ? "Microsoft Print to PDF" : isCutted ? "DS-RX1 Cut Feature" : "DS-RX1");
                 dlg.PrintTicket.CopyCount = 1;
                 dlg.PrintTicket.PageOrientation = isCutted ? PageOrientation.Portrait : isLandscape ? PageOrientation.Landscape : PageOrientation.Portrait;
                 var layout = _db.LayoutApp.AsNoTracking().SingleOrDefault(x => x.IsSelected);
                 DrawingVisual visualImage = new DrawingVisual();
                 using (DrawingContext dc = visualImage.RenderOpen())
                 {
-                    if (layout.SVGMappingName == "3x1v.svg")
-                    {
-                        dlg.PrintTicket.PageOrientation = PageOrientation.Landscape;
-                    }
                     BitmapImage bitmap = new BitmapImage();
                     using (var stream = File.OpenRead($"{layout!.ImageFolderPath}/prints/image.png"))
                     {
@@ -132,10 +129,78 @@ namespace DemoPhotoBooth.Pages
                         bitmap.StreamSource = stream;
                         bitmap.EndInit();
                     }
-                    var width = isLandscape ? dlg.PrintableAreaWidth : layout.SVGMappingName == "1x4.svg" ? dlg.PrintableAreaWidth / 2 : dlg.PrintableAreaWidth;
-                    var height = layout.SVGMappingName == "3x1v.svg" ? dlg.PrintableAreaHeight / 2 : dlg.PrintableAreaHeight;
-                    Rect rect = new Rect(0, 0, width, height);
-                    dc.DrawImage(bitmap, rect);
+
+                    Rect rect = default;
+                    double width = default;
+                    double height = default;
+                    Grid grid = null;
+                    Canvas canvas = null;
+                    SvgInfor svg = null;
+                    double x = 0, y = 0;
+                    switch (layout.SVGMappingName)
+                    {
+                        case "1x4v.svg":
+                            //dlg.PrintTicket.PageMediaSize = new PageMediaSize(6.15 * 2.54 * 96, 8.12 * 2.54 * 96);
+                            dlg.PrintTicket.PageOrientation = PageOrientation.Portrait;
+                            width = dlg.PrintableAreaWidth;
+                            height = dlg.PrintableAreaHeight;
+                            grid = new Grid();
+                            grid.Width = width;
+                            grid.Height = height;
+
+                            canvas = new Canvas();
+                            svg = _db.SvgInfors.FirstOrDefault(x => x.Name == "1x4v.svg")!;
+
+                            for (int i = 0; i < 2; i++)
+                            {
+                                var image = new System.Windows.Controls.Image();
+                                image.Source = bitmap;
+
+                                image.HorizontalAlignment = HorizontalAlignment.Left;
+                                image.VerticalAlignment = VerticalAlignment.Top;
+                                Canvas.SetLeft(image, x);
+                                Canvas.SetTop(image, y);
+                                canvas.Children.Add(image);
+                                x += svg!.ActualWidth;
+                            }
+                            grid.Children.Add(canvas);
+                            dc.DrawRectangle(new VisualBrush(grid), null, new Rect(0, 0, width, height));
+                            break;
+                        case "3x1v.svg":
+                            //dlg.PrintTicket.PageMediaSize = new PageMediaSize(6.15 * 2.54 * 96, 8.12 * 2.54 * 96);
+                            dlg.PrintTicket.PageOrientation = PageOrientation.Landscape;
+                            width = dlg.PrintableAreaWidth;
+                            height = dlg.PrintableAreaHeight;
+
+                            grid = new Grid();
+                            grid.Width = width;
+                            grid.Height = height;
+
+                            canvas = new Canvas();
+                            svg = _db.SvgInfors.FirstOrDefault(x => x.Name == "3x1v.svg")!;
+
+                            for (int i = 0; i < 2; i++)
+                            {
+                                var image = new System.Windows.Controls.Image();
+                                image.Source = bitmap;
+
+                                image.HorizontalAlignment = HorizontalAlignment.Left;
+                                image.VerticalAlignment = VerticalAlignment.Top;
+                                Canvas.SetLeft(image, x);
+                                Canvas.SetTop(image, y);
+                                canvas.Children.Add(image);
+                                y += svg!.ActualHeight;
+                            }
+                            grid.Children.Add(canvas);
+                            dc.DrawRectangle(new VisualBrush(grid), null, new Rect(0, 0, width, height));
+                            break;
+                        default:
+                            width = dlg.PrintableAreaWidth;
+                            height = dlg.PrintableAreaHeight;
+                            rect = new Rect(0, 0, width, height);
+                            dc.DrawImage(bitmap, rect);
+                            break;
+                    }
                 }
 
                 while (layout.PrintQuantity > 0)
@@ -143,7 +208,7 @@ namespace DemoPhotoBooth.Pages
                     dlg.PrintVisual(visualImage, "Docs");
                     layout.PrintQuantity--;
 
-                    await Task.Delay(5000);
+                    await Task.Delay(2000);
                 }
             }
             catch (Exception ex)
@@ -159,33 +224,6 @@ namespace DemoPhotoBooth.Pages
 
             try
             {
-                if (Directory.Exists(itemLayout.ImageFolderPath))
-                {
-                    try
-                    {
-                        System.GC.Collect();
-                        System.GC.WaitForPendingFinalizers();
-                        var files = Directory.GetFiles(itemLayout.ImageFolderPath);
-                        foreach (var file in files)
-                        {
-                            File.Delete(file);
-                        }
-
-                        var folders = Directory.GetDirectories(itemLayout.ImageFolderPath);
-                        foreach (var item in folders)
-                        {
-                            files = Directory.GetFiles(item);
-                            foreach (var file in files)
-                            {
-                                File.Delete(file);
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                    }
-                }
-
                 var info = _db.CommonDatas.AsNoTracking()?.FirstOrDefault();
                 if (info != null)
                 {
@@ -211,6 +249,33 @@ namespace DemoPhotoBooth.Pages
 
                 _db.LayoutApp.Remove(itemLayout);
                 await _db.SaveChangesAsync();
+
+                if (Directory.Exists(imageFolder))
+                {
+                    try
+                    {
+                        System.GC.Collect();
+                        System.GC.WaitForPendingFinalizers();
+                        var files = Directory.GetFiles(imageFolder);
+                        foreach (var file in files)
+                        {
+                            File.Delete(file);
+                        }
+
+                        var folders = Directory.GetDirectories(imageFolder);
+                        foreach (var item in folders)
+                        {
+                            files = Directory.GetFiles(item);
+                            foreach (var file in files)
+                            {
+                                File.Delete(file);
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -335,7 +400,7 @@ namespace DemoPhotoBooth.Pages
                 encoder.Save(file);
             }
         }
-      
+
         private void btnEnd_Click(object sender, RoutedEventArgs e)
         {
             dispatcherTimer.Stop();

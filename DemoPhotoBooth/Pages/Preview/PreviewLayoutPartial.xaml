@@ -13,7 +13,7 @@
             <RowDefinition Height="4*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-     
+
         <Grid Name="gridImages" Grid.Row="1" >
             <Image Name="imageBg" Width="{Binding ImageBgWidth}" Height="{Binding ImageBgHeight}"/>
         </Grid>

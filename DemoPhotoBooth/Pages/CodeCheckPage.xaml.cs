@@ -28,6 +28,17 @@ namespace DemoPhotoBooth.Pages
 #endif
             _httpClient = new HttpClient();
             _db = new CommonDbDataContext();
+            if (_db != null)
+            {
+                CheckCodeDb();
+            }
+        }
+
+        private void CheckCodeDb()
+        {
+            var photoApp = _db.PhotoApps.AsNoTracking().FirstOrDefault();
+
+            CodeInput.Text = photoApp?.Code ?? "PHOTOAPP001";
         }
 
         private async void CheckCode_Click(object sender, RoutedEventArgs e)
@@ -135,6 +146,7 @@ namespace DemoPhotoBooth.Pages
         {
             try
             {
+                CheckPhotoApp();
                 var ePhotoApp = new DemoPhotoBooth.Models.Entities.PhotoApp(result);
                 _db.PhotoApps.Add(ePhotoApp);
 
@@ -146,10 +158,25 @@ namespace DemoPhotoBooth.Pages
             }
         }
 
+        private void CheckPhotoApp()
+        {
+            var isExisted = _db.PhotoApps.Any();
+
+            if (isExisted)
+            {
+                foreach (var item in _db.PhotoApps)
+                {
+                    _db.PhotoApps.Remove(item);
+                }
+
+                _db.SaveChanges(true);
+            }
+        }
+
         private async void ResetPrinter_Click(object sender, RoutedEventArgs e)
         {
             var info = _db.CommonDatas.AsNoTracking()?.FirstOrDefault();
-            if (info == null) 
+            if (info == null)
             {
                 MessageBox.Show("Không tìm thấy Thông tin!", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -194,14 +221,14 @@ namespace DemoPhotoBooth.Pages
                 string json = JsonSerializer.Serialize(requestData);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                string apiUrl = ApiUrl.ApiCheckCode; 
+                string apiUrl = ApiUrl.ApiCheckCode;
                 HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
 
                 if (response.IsSuccessStatusCode)
                 {
                     string responseContent = await response.Content.ReadAsStringAsync();
                     PhotoApp result = JsonSerializer.Deserialize<PhotoApp>(responseContent);
-                    return result ?? null; 
+                    return result ?? null;
                 }
                 else
                 {

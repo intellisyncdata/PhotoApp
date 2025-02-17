@@ -81,8 +81,8 @@ namespace DemoPhotoBooth.Pages.Preview
 
                 if (!files.Any()) return;
 
-                int totalImages = Math.Min(files.Count, 8); 
-                int maxImages = 9; 
+                int totalImages = Math.Min(files.Count, 8);
+                int maxImages = 9;
 
                 int i = 0;
                 int j = 0;
@@ -100,20 +100,20 @@ namespace DemoPhotoBooth.Pages.Preview
                     System.Windows.Shapes.Rectangle rect = null;
                     TextBlock textBlock = null;
 
-                    if (index < totalImages) 
+                    if (index < totalImages)
                     {
                         image = DrawImage(files[index]);
                         rect = DrawRectangle();
                         textBlock = DrawTextBlock();
                     }
-                    else if (index == 8) 
+                    else if (index == 8)
                     {
                         lblCountImages = DrawTextBlock();
                         lblCountImages.Margin = new Thickness(0, 50, 0, 0);
                         panel.Background = new SolidColorBrush(Colors.Gray);
                         textBlock = lblCountImages;
                         lblCountImages.Text = $"0/{quantity}";
-                        lblCountImages.Opacity = 1; 
+                        lblCountImages.Opacity = 1;
                     }
 
                     var subGrid = DrawGrid(i, j, image, rect, textBlock);
@@ -270,7 +270,7 @@ namespace DemoPhotoBooth.Pages.Preview
             textBlb.TextAlignment = TextAlignment.Center;
             textBlb.Opacity = 0;
             textBlb.Text = string.Empty;
-            textBlb.Margin  = new Thickness(0, 35, 0, 0);
+            textBlb.Margin = new Thickness(0, 35, 0, 0);
 
             return textBlb;
         }

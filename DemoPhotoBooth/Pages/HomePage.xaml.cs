@@ -42,7 +42,6 @@ namespace DemoPhotoBooth.Pages
                 PhotoApps = new Models.DTOs.PhotoApp(item);
                 DataContext = this;
             }
-
         }
 
         //public HomePage(Models.DTOs.PhotoApp photoApps)

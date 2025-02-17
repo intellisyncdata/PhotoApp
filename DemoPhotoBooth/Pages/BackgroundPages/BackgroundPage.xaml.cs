@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -58,7 +59,7 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
             IsColorGridVisible = false;
             UpdateVisibleBackgrounds();
             DataContext = this;
-          
+
             // Hiệu ứng mượt mà khi khởi tạo
             Loaded += OnPageLoaded;
 
@@ -107,7 +108,7 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
                 }
             }
         }
-       
+
         private Color _currentColor;
         public Color CurrentColor
         {
@@ -166,7 +167,7 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
             }
         }
 
-       
+
 
         #region Background Logic
         public void OnBackgroundClicked(object sender, MouseButtonEventArgs e)
@@ -408,10 +409,26 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
             }
         }
 
+        private void CheckLayoutApp()
+        {
+            var isExisted = _db.LayoutApp.Any();
+
+            if (isExisted)
+            {
+                foreach (var item in _db.LayoutApp)
+                {
+                    _db.LayoutApp.Remove(item);
+                }
+                _db.SaveChanges();
+            }
+        }
+
         private void SaveLayoutApp(LayoutApp result)
         {
             try
             {
+                CheckLayoutApp();
+                CheckFolderImageApp();
                 var eLayoutApp = new DemoPhotoBooth.Models.Entities.LayoutApp(result);
                 eLayoutApp.IsSelected = true;
                 eLayoutApp.IsBackgroundColor = IsColorGridVisible;
@@ -423,10 +440,42 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
                 _db.LayoutApp.Add(eLayoutApp);
 
                 _db.SaveChanges();
+
             }
             catch (Exception ex)
             {
 
+            }
+        }
+
+        private void CheckFolderImageApp()
+        {
+            string path = $"{Directory.GetCurrentDirectory()}/{DateTime.Now.ToString("dd.MM.yyyy")}";
+            if (Directory.Exists(path))
+            {
+                try
+                {
+                    System.GC.Collect();
+                    System.GC.WaitForPendingFinalizers();
+                    var files = Directory.GetFiles(path);
+                    foreach (var file in files)
+                    {
+                        File.Delete(file);
+                    }
+
+                    var folders = Directory.GetDirectories(path);
+                    foreach (var item in folders)
+                    {
+                        files = Directory.GetFiles(item);
+                        foreach (var file in files)
+                        {
+                            File.Delete(file);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                }
             }
         }
     }

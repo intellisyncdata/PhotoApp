@@ -25,8 +25,8 @@ namespace DemoPhotoBooth
             {
                 IncludeRuntime = false,
                 TextAsGeometry = false,
-                OptimizePath = true,    
-                EnsureViewboxSize = true 
+                OptimizePath = true,
+                EnsureViewboxSize = true
             };
         }
     }

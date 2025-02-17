@@ -48,7 +48,7 @@ namespace DemoPhotoBooth.Pages.Preview
         private double _imageBgHeight;
         private Canvas _canvas;
         private DispatcherTimer dispatcherTimer = new DispatcherTimer();
-        private uint timeStep = 180; // 3 mins
+        private uint timeStep = 350; // 3 mins
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public double ImageBgWidth
@@ -60,7 +60,7 @@ namespace DemoPhotoBooth.Pages.Preview
                 OnPropertyChanged();
             }
         }
-        public double ImageBgHeight 
+        public double ImageBgHeight
         {
             get => _imageBgHeight;
             set
@@ -300,10 +300,10 @@ namespace DemoPhotoBooth.Pages.Preview
         private async void btnPrint_Click(object sender, RoutedEventArgs e)
         {
             var photoApp = await _db.PhotoApps.AsNoTracking().SingleOrDefaultAsync();
-            if (photoApp != null) 
+            if (photoApp != null)
             {
                 var layout = await _db.LayoutApp.AsNoTracking().SingleOrDefaultAsync(x => x.IsSelected);
-                if (layout != null) 
+                if (layout != null)
                 {
                     DrawToImage();
                     int retry = 0;
@@ -361,7 +361,7 @@ namespace DemoPhotoBooth.Pages.Preview
                     byte[] vdfileBytes = File.ReadAllBytes(videofilePath);
                     ByteArrayContent fileVideoContent = new ByteArrayContent(vdfileBytes);
                     fileVideoContent.Headers.ContentType = MediaTypeHeaderValue.Parse("video/mp4");
-                    formData.Add(fileVideoContent, "videos", System.IO.Path.GetFileName(videofilePath));
+                    formData.Add(fileVideoContent, "video", System.IO.Path.GetFileName(videofilePath));
 
                     // Gửi yêu cầu POST
                     HttpResponseMessage response = await client.PostAsync(url, formData);

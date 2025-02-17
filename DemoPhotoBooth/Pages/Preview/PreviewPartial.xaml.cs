@@ -51,10 +51,10 @@ namespace DemoPhotoBooth.Pages.Preview
         private bool IsColorBackground
         {
             get => _isColorBackground;
-            set 
-            { 
+            set
+            {
                 _isColorBackground = value;
-                OnPropertyChanged(); 
+                OnPropertyChanged();
             }
         }
 
@@ -62,10 +62,10 @@ namespace DemoPhotoBooth.Pages.Preview
         private bool IsImageBackground
         {
             get => _isImageBackground;
-            set 
-            { 
+            set
+            {
                 _isImageBackground = value;
-                OnPropertyChanged(); 
+                OnPropertyChanged();
             }
         }
 

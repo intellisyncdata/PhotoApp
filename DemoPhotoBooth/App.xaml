@@ -28,9 +28,9 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-            <!-- Custom ScrollBar Style -->
-            <Style x:Key="CustomScrollBarStyle" TargetType="ScrollBar">
-                <Setter Property="Template">
+        <!-- Custom ScrollBar Style -->
+        <Style x:Key="CustomScrollBarStyle" TargetType="ScrollBar">
+            <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ScrollBar">
                         <Grid>
@@ -83,7 +83,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            </Style>
+        </Style>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <common:BoolToBorderThicknessConverter x:Key="BoolToBorderThicknessConverter"/>
         <common:PlaceholderVisibilityConverter x:Key="PlaceholderVisibilityConverter"/>

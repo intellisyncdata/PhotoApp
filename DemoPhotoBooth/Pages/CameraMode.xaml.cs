@@ -61,7 +61,7 @@ namespace DemoPhotoBooth.Pages
             }
         }
 
-        private void ManualMode_Click (object sender, System.Windows.RoutedEventArgs e)
+        private void ManualMode_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             var item = _db.LayoutApp.FirstOrDefault();
             if (item != null && item.FrameType == "vertical")
