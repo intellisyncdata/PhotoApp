@@ -23,7 +23,7 @@ namespace DemoPhotoBooth
             _db = new CommonDbDataContext();
             _httpClient = new HttpClient();
 
-            MainFrame.Navigate(new CodeCheckPage());
+            MainFrame.Navigate(new CameraPage());
         }
 
         private async Task DeactivePhotoApp()

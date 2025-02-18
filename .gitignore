@@ -1,2 +1,8 @@
 .vs
 DemoPhotoBooth/bin/Debug
+/DemoPhotoBooth/bin/Debug/net8.0-windows
+/DemoPhotoBooth/obj/Debug/net8.0-windows
+/DemoPhotoBooth/obj
+/bin/Debug/net6.0-windows7.0
+/DemoPhotoBooth/bin
+/DemoPhotoBooth/Properties/PublishProfiles
