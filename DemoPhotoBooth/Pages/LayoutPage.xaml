@@ -18,20 +18,21 @@
     <!-- Giao diện người dùng -->
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Layouts/main-background.png"/>
+            <ImageBrush ImageSource="pack://application:,,,/Layouts/bg-layout.png"/>
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="6*"/>
         </Grid.RowDefinitions>
         <!-- Title -->
-        <TextBlock Text="Chọn Khung Ảnh" 
-                   FontSize="48" 
+        <TextBlock Text="CHỌN BỐ CỤC" 
+                   FontSize="85" 
                    FontWeight="Bold" 
+                   FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Top"
                    Margin="0,20,0,0"
-                   Foreground="#000000" Grid.Row="0"/>
+                   Foreground="#5a93cf" Grid.Row="0"/>
 
         <!-- Layout Items -->
         <ItemsControl ItemsSource="{Binding Layouts}" Grid.Row="1">
@@ -53,12 +54,12 @@
                         </Grid.RowDefinitions>
 
                         <Viewbox Grid.Row="0" Stretch="Uniform" 
-         HorizontalAlignment="Center" 
-         VerticalAlignment="Center" 
-         Width="300" Height="300">
+                             HorizontalAlignment="Center" 
+                             VerticalAlignment="Center" 
+                             Width="300" Height="300">
                             <Image Source="{Binding ImageUrl}" 
-           Stretch="Uniform" 
-           Margin="0"/>
+                               Stretch="Uniform" 
+                               Margin="0"/>
                         </Viewbox>
 
                         <!-- Price (Di chuyển xuống dòng dưới cùng) -->
@@ -66,7 +67,7 @@
                            Text="{Binding Price, StringFormat='{}{0:N0} đ'}"
                            FontSize="22" 
                            FontWeight="Bold" 
-                           Foreground="#d18c6a"
+                           Foreground="#5a93cf"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Top">
                             <TextBlock.Style>
@@ -87,22 +88,23 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <Button Content="Quay lại"
-        HorizontalAlignment="Right" 
-        VerticalAlignment="Bottom"
-        Margin="0,0,50,40" 
-        Padding="10,5"
-        Width="300"
-        Height="80"
-        Background="#f4c76e"
-        FontWeight="Bold"
-        FontSize="32" 
-        Foreground="White"
-        Click="NavigateHome_Click" Grid.Row="1">
+        <Button Content="Quay Lại"
+            FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Bottom"
+            Margin="0,0,70,40" 
+            Padding="10,5"
+            Width="270"
+            Height="70"
+            Background="#faa2af"
+            FontWeight="Bold"
+            FontSize="35" 
+            Foreground="White"
+            Click="NavigateHome_Click" Grid.Row="1">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}" 
-                    CornerRadius="35" 
+                    CornerRadius="30" 
                     BorderThickness="0">
                         <TextBlock Text="{TemplateBinding Content}" 
                            HorizontalAlignment="Center" 

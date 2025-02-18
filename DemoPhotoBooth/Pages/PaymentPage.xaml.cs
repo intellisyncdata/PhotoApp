@@ -234,7 +234,7 @@ namespace DemoPhotoBooth.Pages
 
         private void UpdateCountdownUI()
         {
-            txtCountdown.Text = $"{remainingTime} s";
+            txtCountdown.Text = $"{remainingTime}s";
         }
 
         private void NavigateToHomePage(object sender, RoutedEventArgs e)

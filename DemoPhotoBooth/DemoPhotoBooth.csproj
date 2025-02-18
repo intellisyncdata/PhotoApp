@@ -21,8 +21,13 @@
     <None Remove="Layouts\background-layout.png" />
     <None Remove="Layouts\background.png" />
     <None Remove="Layouts\background_01.jpg" />
+    <None Remove="Layouts\bg-layout.png" />
+    <None Remove="Layouts\bg-payment.png" />
+    <None Remove="Layouts\bg-theme.png" />
     <None Remove="Layouts\clock.png" />
+    <None Remove="Layouts\fonts\Coiny.ttf" />
     <None Remove="Layouts\horizontal_screen.svg" />
+    <None Remove="Layouts\icon-flower.png" />
     <None Remove="Layouts\image-test %281%29.jpg" />
     <None Remove="Layouts\image-test %285%29.jpg" />
     <None Remove="Layouts\Layout1.png" />
@@ -32,8 +37,10 @@
     <None Remove="Layouts\Layout5.png" />
     <None Remove="Layouts\Layout6.png" />
     <None Remove="Layouts\main-background.png" />
+    <None Remove="Layouts\next.png" />
     <None Remove="Layouts\output.svg" />
     <None Remove="Layouts\portrait.webp" />
+    <None Remove="Layouts\prev.png" />
     <None Remove="Layouts\remote-control-hand.png" />
     <None Remove="Layouts\temp\readme.md" />
     <None Remove="Layouts\vertical_screen.svg" />
@@ -67,6 +74,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Layouts\bg-layout.png" />
+    <Resource Include="Layouts\bg-payment.png" />
+    <Resource Include="Layouts\bg-theme.png" />
+    <Resource Include="Layouts\fonts\Coiny.ttf" />
     <Resource Include="Layouts\horizontal_screen.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -131,6 +142,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Layouts\50x50.png" />
+    <Resource Include="Layouts\icon-flower.png" />
     <Resource Include="Layouts\Layout1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -142,6 +154,8 @@
     <Resource Include="Layouts\main-background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Layouts\next.png" />
+    <Resource Include="Layouts\prev.png" />
     <Resource Include="Layouts\vertical_screen.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

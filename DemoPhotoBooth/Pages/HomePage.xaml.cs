@@ -229,10 +229,10 @@ namespace DemoPhotoBooth.Pages
         private void UpdateTextBlockMargin()
         {
             // Tính toán vị trí margin Top dựa trên chiều cao của cửa sổ
-            double topMargin = this.ActualHeight * 0.7;
+            // double topMargin = this.ActualHeight * 0.7;
 
             // Cập nhật Margin cho TextBlock
-            StartText.Margin = new Thickness(0, topMargin, 0, 20);
+            // StartText.Margin = new Thickness(0, topMargin, 0, 20);
         }
     }
 }

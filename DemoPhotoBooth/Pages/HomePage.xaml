@@ -12,32 +12,6 @@
         <Grid.Background>
             <ImageBrush ImageSource="pack://application:,,,/Layouts/background.png"/>
         </Grid.Background>
-        <!-- Hiển thị chữ "CHẠM ĐỂ BẮT ĐẦU" với hiệu ứng nhấp nháy -->
-        <TextBlock x:Name="StartText"
-                   Text="CHẠM ĐỂ BẮT ĐẦU"
-                   FontSize="26"
-                   FontWeight="SemiBold"
-                   Foreground="Black"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Margin="0,0,0,20"
-                   TextAlignment="Center">
-            <TextBlock.RenderTransform>
-                <ScaleTransform ScaleX="1" ScaleY="1"/>
-            </TextBlock.RenderTransform>
-            <TextBlock.Triggers>
-                <!-- Hiệu ứng nhấp nháy -->
-                <EventTrigger RoutedEvent="Loaded">
-                    <BeginStoryboard>
-                        <Storyboard RepeatBehavior="Forever">
-                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                             From="1.0" To="0.3"
-                                             Duration="0:0:1"
-                                             AutoReverse="True"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-            </TextBlock.Triggers>
-        </TextBlock>
+        
     </Grid>
 </Page>

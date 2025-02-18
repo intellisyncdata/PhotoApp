@@ -7,38 +7,60 @@
             <ImageBrush ImageSource="pack://application:,,,/Layouts/main-background.png"/>
         </Grid.Background>
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Border Grid.Row="0" 
-                BorderThickness="3" CornerRadius="15" BorderBrush="Black" 
-                Background="White" Padding="20" HorizontalAlignment="Center" Width="600" Height="250" Margin="0,250,0,0">
+                BorderThickness="1" CornerRadius="200" BorderBrush="#5a93cf" 
+                Background="White" Padding="10" HorizontalAlignment="Center" Width="1000" Height="500" Margin="0,0,0,0">
             <StackPanel>
-                <TextBlock Text="Nhập mã thiết bị" FontSize="40" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                <TextBlock Text="Nhập mã thiết bị"
+                   Foreground="#5a93cf"
+                   FontSize="100"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="0,50,0,20"
+                   FontFamily="pack://application:,,,/Layouts/fonts/#Coiny" />
                 <TextBox x:Name="CodeInput" 
                          Text="PHOTOAPP001"
-                         FontSize="26" 
-                         FontFamily="Consolas"
+                         Foreground="#5a93cf"
+                         FontSize="57" 
+                         HorizontalContentAlignment="Center"
+                         FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
                          FontWeight="Bold"
-                         Padding="10"
-                         Background="White" Height="60" Width="450" BorderThickness="2" BorderBrush="Black" />
-                <Button Content="Xác nhận" 
+                         Padding="0"
+                         Margin="0,0,0,60"
+                         Background="White" Height="80" Width="550" BorderThickness="2" BorderBrush="#5a93cf" />
+                <Button Content="XÁC NHẬN" 
                         Name="btnCheckCode"
                         Click="CheckCode_Click" 
-                        Width="450" Height="70"
-                        Background="#FFC857" Foreground="Black"
-                        FontSize="26" FontWeight="Bold" Margin="0,10,0,0"
+                        Width="450" Height="60"
+                        Background="#faa2af" Foreground="White"
+                        FontSize="37" Margin="0,20,0,0"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        HorizontalAlignment="Center"
+                        FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
                         BorderThickness="0">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="35" 
-                                BorderThickness="0">
-                                <TextBlock Text="{TemplateBinding Content}" 
+                    CornerRadius="30" 
+                    BorderThickness="0"
+                    Padding="{TemplateBinding Padding}">
+                                <Grid>
+                                    <TextBlock Text="{TemplateBinding Content}" 
                                 HorizontalAlignment="Center" 
                                 VerticalAlignment="Center"
-                                Foreground="White"
-                                FontWeight="{TemplateBinding FontWeight}" />
+                                TextAlignment="Center"
+                                Foreground="{TemplateBinding Foreground}"
+                                FontWeight="{TemplateBinding FontWeight}"
+                                FontSize="{TemplateBinding FontSize}"
+                                FontFamily="{TemplateBinding FontFamily}"
+                                SnapsToDevicePixels="True"
+                                Padding="0,15,0,0"/>
+                                </Grid>
                             </Border>
                         </ControlTemplate>
                     </Button.Template>
@@ -47,20 +69,27 @@
         </Border>
 
         <!-- Hành động -->
-        <StackPanel Grid.Row="1" Margin="0,10,0,10" HorizontalAlignment="Center">
-            <TextBlock Text="Hành Động" FontSize="40" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+        <StackPanel Grid.Row="1" Margin="0,-30,0,0" HorizontalAlignment="Center">
+            <TextBlock Text="Hành Động" 
+                       FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                       Foreground="#5a93cf"
+                       FontSize="40" 
+                       FontWeight="Bold" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,0,0,10"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0" Grid.Row="1">
                 <Button Content="Đặt lại bộ đếm giấy In"
                     Name="btnResetPrinter"
                     Click="ResetPrinter_Click" 
-                    Width="450" Height="70"
-                    Background="#FFC857" Foreground="Black"
-                    FontSize="26" FontWeight="Bold"
+                    Width="470" Height="70"
+                    Background="#faa2af" Foreground="White"
+                    FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                    FontSize="35" FontWeight="Bold"
                     BorderThickness="0">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border Background="{TemplateBinding Background}" 
-                    CornerRadius="35" 
+                    CornerRadius="30" 
                     BorderThickness="0">
                                 <TextBlock Text="{TemplateBinding Content}" 
                     HorizontalAlignment="Center" 
@@ -71,20 +100,21 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Content="Update"
+                <Button Content="Cập nhật phần mềm"
                     Name="btnUpdate"
                     Click="CheckUpdate_Click" 
-                    Width="450" Height="70"
-                    Background="#FFC857" 
-                    Foreground="Black"
-                    FontSize="26" 
+                    Width="470" Height="70"
+                    FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                    Background="#faa2af" 
+                    Foreground="White"
+                    FontSize="35" 
                     FontWeight="Bold"
                     BorderThickness="0"
-                        Margin="20,0,0,0">
+                    Margin="20,0,0,0">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="35" 
+                                CornerRadius="30" 
                                 BorderThickness="0">
                                 <TextBlock Text="{TemplateBinding Content}" 
                                     HorizontalAlignment="Center" 

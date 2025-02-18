@@ -5,56 +5,108 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:DemoPhotoBooth.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="768" d:DesignWidth="1366"
       Loaded="Page_Loaded"
       Title="PaymentPage">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="3.5*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="4*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
         <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Layouts/main-background.png"/>
+            <ImageBrush ImageSource="pack://application:,,,/Layouts/bg-payment.png"/>
         </Grid.Background>
 
         <!-- Tiêu đề -->
         <TextBlock Grid.Row="0" FontSize="52" FontWeight="Bold" TextAlignment="Center" Text="THANH TOÁN" 
                    Foreground="#333333" Margin="0,100,0,10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+       
 
 
         <!-- Nội dung chính -->
-        <Grid Grid.Row="1" Margin="50,0,50,40">
+        <Grid Grid.Row="1" Margin="150,0,150,20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="3.5*"/>
                 <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="3.5*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Bên trái: Số tiền thanh toán -->
-            <Border x:Name="LeftPayment" Grid.Column="0" Padding="20" CornerRadius="35" BorderBrush="#000" BorderThickness="3" Background="White" VerticalAlignment="Top" Height="450" Margin="42,22,96,0">
+            <Border x:Name="LeftPayment" Grid.Column="0" Padding="20" CornerRadius="35" BorderBrush="#5a93cf" BorderThickness="1" Background="White" VerticalAlignment="Top" Height="450" Width="600" Margin="0">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Height="359">
-                    <TextBlock FontSize="30" FontWeight="Bold" TextAlignment="Center" Foreground="#000000" Text="Số tiền thanh toán" Width="277" Height="41" HorizontalAlignment="Center"/>
-                    <TextBlock Name="txtAmountToPay" FontSize="28" FontWeight="Bold" Foreground="#000000" Text="70.000" Margin="0,10,0,10" HorizontalAlignment="Center" Height="54"/>
-                    <TextBlock FontSize="30" FontWeight="Bold" Foreground="#000000" Text="Số Lượng" HorizontalAlignment="Center" Height="46"/>
-                    <Border BorderThickness="3" CornerRadius="35" BorderBrush="#000000" Width="400" Height="78">
+                    <TextBlock 
+                        FontSize="40" 
+                        FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                        TextAlignment="Center" 
+                        Foreground="#faa2af" 
+                        Text="Số tiền thanh toán" 
+                        Width="400"
+                        HorizontalAlignment="Center"/>
+                    <TextBlock 
+                        Name="txtAmountToPay" 
+                        FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                        FontSize="50" 
+                        Foreground="#000000" 
+                        Text="70.000" 
+                        Margin="0,0,0,20" 
+                        HorizontalAlignment="Center" 
+                        Height="54"/>
+                    <TextBlock 
+                        FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                        FontSize="40" 
+                        Foreground="#faa2af" 
+                        Text="Số Lượng" 
+                        Margin="0,0,0,20" 
+                        HorizontalAlignment="Center" />
+                    <Border BorderThickness="1" CornerRadius="30" BorderBrush="#000000" Width="400" Height="70">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,10">
-                            <Button x:Name="btnQuantity" Content="-" Width="50" Height="50" FontSize="36" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Bold" Background="Transparent" BorderThickness="0" Click="DecreaseQuantity"/>
-                            <TextBlock x:Name="txtQuantity" Text="2" FontSize="36" FontWeight="Bold" Margin="10,0,10,0" VerticalAlignment="Center" Width="178" HorizontalAlignment="Center" TextAlignment="Center"/>
-                            <Button x:Name="btnAddQuantity" Content="+" Width="50" Height="50" FontSize="36" FontWeight="Bold" Background="Transparent" BorderThickness="0" Click="IncreaseQuantity"/>
+                            <Button 
+                                x:Name="btnQuantity" 
+                                FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                                Content="-"
+                                Width="50" 
+                                FontSize="40"
+                                HorizontalAlignment="Center" 
+                                Margin="0,-10,0,0"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Click="DecreaseQuantity"/>
+                            <TextBlock 
+                                x:Name="txtQuantity" 
+                                FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                                Text="2"
+                                FontSize="40" 
+                                Margin="10,0,10,0" 
+                                VerticalAlignment="Center"
+                                Width="178"
+                                HorizontalAlignment="Center"
+                                TextAlignment="Center"/>
+                            <Button
+                                x:Name="btnAddQuantity"
+                                Content="+"
+                                FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                                Width="50" 
+                                FontSize="40" 
+                                VerticalContentAlignment="Center" 
+                                HorizontalContentAlignment="Center" 
+                                HorizontalAlignment="Center" 
+                                Margin="0,-10,0,0"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Click="IncreaseQuantity"/>
                         </StackPanel>
                     </Border>
                     <Button x:Name="btnAccept" Content="Xác nhận"
                             Click="AcceptPayment"
+                            FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
                             Width="400"
-                            Height="80"
-                            Background="#f4c76e"
+                            Height="70"
+                            Background="#faa2af"
                             Foreground="White"
                             FontWeight="Bold"
-                            FontSize="25"
+                            FontSize="35"
                             Opacity="1"
                             BorderThickness="0"
                             Margin="0,20,0,0" 
@@ -62,13 +114,13 @@
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border Background="{TemplateBinding Background}" 
-        CornerRadius="35" 
-        BorderThickness="0">
+                                    CornerRadius="30" 
+                                    BorderThickness="0">
                                     <TextBlock Text="{TemplateBinding Content}" 
-        HorizontalAlignment="Center" 
-        VerticalAlignment="Center"
-        Foreground="White"
-        FontWeight="{TemplateBinding FontWeight}" />
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"
+                                        Foreground="White"
+                                        FontWeight="{TemplateBinding FontWeight}" />
                                 </Border>
                             </ControlTemplate>
                         </Button.Template>
@@ -77,70 +129,70 @@
             </Border>
             <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <!-- Tạo hình tròn -->
-                <Ellipse Width="100" Height="100" Fill="#f4c76e"/>
+                <Ellipse Width="100" Height="100" Fill="#5a93cf"/>
 
                 <!-- Hiển thị số đếm ngược -->
                 <TextBlock Name="txtCountdown"
-                       FontSize="24"
-                       FontWeight="Bold"
-                       Foreground="White"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"/>
+                        FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                        FontSize="40"
+                        Foreground="White"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
             </Grid>
             <!-- Bên phải: Tiền mặt và Online -->
             <Grid Grid.Column="2">
                 <StackPanel>
                     <!-- Navigation Bar -->
-                    <Border x:Name="RightPayment" CornerRadius="35" BorderBrush="#000000" BorderThickness="3" Background="White" Margin="20" Height="450" Width="550" >
-                        <StackPanel x:Name="ContentPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Height="450" Width="550" >
+                    <Border x:Name="RightPayment" CornerRadius="35" BorderBrush="#5a93cf" BorderThickness="1" Background="White" Margin="0" Padding="5, 20" Height="450" Width="600" >
+                        <StackPanel x:Name="ContentPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Height="450" Width="600" >
                             <!-- Navigation Bar -->
-                            <StackPanel Orientation="Horizontal" Background="Transparent" HorizontalAlignment="Center" Width="550" Height="100" >
+                            <StackPanel Orientation="Horizontal" Background="Transparent" HorizontalAlignment="Center" Width="560" >
                                 <Button x:Name="btnCash" 
-                                        Content="Tiền mặt" 
-                                        FontSize="30" 
-                                        FontWeight="Bold" 
+                                        Content=" Tiền mặt " 
+                                        FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                                        FontSize="40" 
+                                        Foreground="#faa2af"
                                         Click="PaymentModeChanged" 
-                                        Width="275" 
-                                        Height="100"
+                                        Height="70"
                                         Background="Transparent"
+                                        Margin="0,50,5,0"
                                         Opacity="1">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <Border Background="{TemplateBinding Background}" 
-                                                CornerRadius="35,0,0,0" 
-                                                BorderThickness="2"
-                                                BorderBrush="#000000">
+                                                CornerRadius="30" 
+                                                BorderThickness="1"
+                                                BorderBrush="#faa2af">
                                                 <TextBlock Text="{TemplateBinding Content}" 
                                                     HorizontalAlignment="Center" 
                                                     VerticalAlignment="Center"
-                                                    Foreground="#000000"
-                                                    FontWeight="{TemplateBinding FontWeight}" />
+                                                    Foreground="#f7cfd4" />
                                             </Border>
                                         </ControlTemplate>
                                     </Button.Template>
                                 </Button>
-                                <Button x:Name="btnOnline" 
-                                        Content="Online" 
-                                        FontSize="30" 
-                                        FontWeight="Bold" 
-                                        Padding="10" 
+                                <Image Source="pack://application:,,,/Layouts/icon-flower.png" Width="30" Height="30" Stretch="Uniform" Margin="0,60,0,0"/>
+                                <Button x:Name="btnOnline"
+                                        Margin="5,50,0,0"
+                                        Content=" Chuyển khoản "
+                                        Foreground="#faa2af"
+                                        FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                                        FontSize="40" 
                                         Click="PaymentModeChanged" 
-                                        Width="275" 
-                                        Height="100"
+                                        Height="70"
                                         Background="Transparent"
                                         Opacity="0.5"
                                         IsEnabled="False">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <Border Background="{TemplateBinding Background}" 
-                                                CornerRadius="0,35,0,0" 
+                                                CornerRadius="30" 
                                                 BorderThickness="2"
-                                                BorderBrush="#000000">
+                                                BorderBrush="#faa2af">
                                                 <TextBlock Text="{TemplateBinding Content}" 
                                                     HorizontalAlignment="Center" 
-                                                         VerticalAlignment="Center"
-                                                     Foreground="#000000"
-                                                             FontWeight="{TemplateBinding FontWeight}" />
+                                                    VerticalAlignment="Center"
+                                                    Foreground="#f7cfd4" />
                                             </Border>
                                         </ControlTemplate>
                                     </Button.Template>
@@ -150,19 +202,54 @@
                             <!-- Grid for Toggling Content -->
                             <Grid x:Name="PaymentContent" Visibility="Visible">
                                 <StackPanel>
-                                    <TextBlock x:Name="txtInstruction" TextWrapping="Wrap" FontSize="22" FontWeight="Bold" Foreground="#000" TextAlignment="Center" Text="Bỏ tiền mặt vào khe đựng tiền bên dưới máy chụp hình." Width="364" Height="76" Margin="10,30"/>
-                                    <TextBlock x:Name="txtWarning" TextWrapping="Wrap" FontSize="16" Foreground="#FF4C4C" FontWeight="Bold" FontStyle="Italic" TextAlignment="Center" Margin="10,0,40,20" Text="(Lưu ý: chỉ dùng các mệnh giá 10.000, 20.000, 50.000 và 100.000. Máy sẽ không trả lại tiền thừa)" Height="57"/>
-                                    <Border BorderThickness="3" CornerRadius="35" BorderBrush="#555555" Height="73" Width="400">
-                                        <TextBlock x:Name="txtAmountDeposited" FontSize="26" FontWeight="Bold" Foreground="#222222" Text="50.000" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock 
+                                        x:Name="txtInstruction" 
+                                        TextWrapping="Wrap" 
+                                        FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                                        FontSize="25" 
+                                        Foreground="#000" 
+                                        TextAlignment="Center" 
+                                        Text="Bỏ tiền mặt vào khe đựng tiền bên dưới máy chụp hình." 
+                                        Width="500" 
+                                        Margin="0,30"/>
+                                    <TextBlock 
+                                        x:Name="txtWarning" 
+                                        TextWrapping="Wrap" 
+                                        FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                                        FontSize="17" 
+                                        Foreground="#ef5033"
+                                        TextAlignment="Center"
+                                        Margin="10,0,40,20" 
+                                        Text="(Lưu ý: chỉ dùng các mệnh giá 10.000, 20.000, 50.000 và 100.000. Máy sẽ không trả lại tiền thừa)" 
+                                        Height="57"/>
+                                    <Border BorderThickness="1" CornerRadius="30" BorderBrush="#faa2af" Height="70" Width="400">
+                                        <TextBlock 
+                                            x:Name="txtAmountDeposited" 
+                                            FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                                            FontSize="40"
+                                            Foreground="#222222" 
+                                            Text="50.000" 
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"/>
                                     </Border>
                                 </StackPanel>
                             </Grid>
 
                             <Grid x:Name="PaymentOnlineContent" Visibility="Collapsed">
                                 <StackPanel>
-                                    <Border BorderThickness="3" CornerRadius="35" BorderBrush="#555555" Height="74">
+                                    <Border 
+                                        BorderThickness="3" 
+                                        CornerRadius="30" 
+                                        BorderBrush="#555555" 
+                                        Height="74">
                                     </Border>
-                                    <TextBlock FontSize="18" FontWeight="Bold" Foreground="#222222" Text="Quét mã để thanh toán" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock 
+                                        FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                                        FontSize="18" 
+                                        Foreground="#000000" 
+                                        Text="Quét mã để thanh toán" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
@@ -171,57 +258,58 @@
             </Grid>
         </Grid>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,80" Grid.Row="2">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,50" Grid.Row="2">
             <Button x:Name="btnContinue" Content="Tiếp tục"
-               Click="NavigateToCameraMode"
-               Width="280"
-               Height="80"
-               Background="#f4c76e"
-               Foreground="White"
-               FontWeight="Bold"
-               FontSize="25"
-               Opacity="0.5"
-               BorderThickness="0"
-               Margin="0,0,150,0" IsEnabled="False">
+                Click="NavigateToCameraMode"
+                FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                Width="270"
+                Height="70"
+                Background="#faa2af"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="35"
+                Opacity="0.5"
+                BorderThickness="0"
+                Margin="0,0,520,0" IsEnabled="False">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" 
-                   CornerRadius="35" 
-                   BorderThickness="0">
+                            CornerRadius="30" 
+                            BorderThickness="0">
                             <TextBlock Text="{TemplateBinding Content}" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center"
-                   Foreground="White"
-                   FontWeight="{TemplateBinding FontWeight}" />
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center"
+                                Foreground="White"
+                                FontWeight="{TemplateBinding FontWeight}" />
                         </Border>
                     </ControlTemplate>
                 </Button.Template>
             </Button>
             <Button Content="Quay lại"
-               Click="NavigateToHomePage"
-               Width="280"
-               Height="80"
-               Background="#f4c76e"
-               Foreground="White"
-               FontWeight="Bold"
-               FontSize="25"
-               BorderThickness="0"
-               Margin="0">
+                Click="NavigateToHomePage"
+                FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                Width="270"
+                Height="70"
+                Background="#faa2af"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="35"
+                BorderThickness="0"
+                Margin="0">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" 
-                       CornerRadius="35" 
-                       BorderThickness="0">
+                            CornerRadius="30" 
+                            BorderThickness="0">
                             <TextBlock Text="{TemplateBinding Content}" 
-                       HorizontalAlignment="Center" 
-                       VerticalAlignment="Center"
-                       Foreground="White"
-                       FontWeight="{TemplateBinding FontWeight}" />
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center"
+                                Foreground="White"
+                                FontWeight="{TemplateBinding FontWeight}" />
                         </Border>
                     </ControlTemplate>
                 </Button.Template>
             </Button>
         </StackPanel>
-
     </Grid>
 </Page>
