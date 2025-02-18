@@ -16,5 +16,5 @@ C:\Users\admin\Documents\Work\PhotoApp\DemoPhotoBooth\App.xaml
 2291988096819
 MainWindow.xaml;Pages\BackgroundPages\BackgroundPage.xaml;Pages\CameraMode.xaml;Pages\CameraPage.xaml;Pages\CodeCheckPage.xaml;Pages\HomePage.xaml;Pages\LayoutPage.xaml;Pages\PaymentPage.xaml;Pages\Popup.xaml;Pages\PreviewPage.xaml;Pages\Preview\ListImagesPage.xaml;Pages\Preview\NewPreviewPage.xaml;Pages\Preview\PreviewLayoutPartial.xaml;Pages\Preview\PreviewPartial.xaml;Pages\PrintAndDownloadPage.xaml;Pages\TimeoutPopup.xaml;
 
-True
+False
 

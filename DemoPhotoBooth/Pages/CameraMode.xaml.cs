@@ -106,8 +106,8 @@ namespace DemoPhotoBooth.Pages
         private void StackPanel_Click(object sender, MouseButtonEventArgs e)
         {
             // Đặt màu viền tất cả về Transparent trước
-            TimerBorder.BorderBrush = Brushes.Transparent;
-            ManualBorder.BorderBrush = Brushes.Transparent;
+            TimerBorder.Opacity = 0.5;
+            ManualBorder.Opacity = 0.5;
 
             // Xác định StackPanel nào được nhấn
             if (sender is StackPanel stackPanel)
@@ -115,12 +115,12 @@ namespace DemoPhotoBooth.Pages
                 if (stackPanel.Name == "TimerStackPanel")
                 {
                     selectedMode = "Timer";
-                    TimerBorder.BorderBrush = Brushes.Black;
+                    TimerBorder.Opacity = 1;
                 }
                 else if (stackPanel.Name == "ManualStackPanel")
                 {
                     selectedMode = "Manual";
-                    ManualBorder.BorderBrush = Brushes.Black;
+                    ManualBorder.Opacity = 1;
                 }
             }
         }

@@ -84,7 +84,7 @@ namespace DemoPhotoBooth.Pages {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/DemoPhotoBooth;V1.0.0.0;component/pages/codecheckpage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/DemoPhotoBooth;component/pages/codecheckpage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Pages\CodeCheckPage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

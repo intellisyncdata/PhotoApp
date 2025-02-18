@@ -84,7 +84,7 @@ namespace DemoPhotoBooth.Pages {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/DemoPhotoBooth;V1.0.0.0;component/pages/printanddownloadpage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/DemoPhotoBooth;component/pages/printanddownloadpage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Pages\PrintAndDownloadPage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

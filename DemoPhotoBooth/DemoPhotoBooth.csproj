@@ -22,6 +22,7 @@
     <None Remove="Layouts\background.png" />
     <None Remove="Layouts\background_01.jpg" />
     <None Remove="Layouts\bg-layout.png" />
+    <None Remove="Layouts\bg-mode-cam.png" />
     <None Remove="Layouts\bg-payment.png" />
     <None Remove="Layouts\bg-theme.png" />
     <None Remove="Layouts\clock.png" />
@@ -75,6 +76,7 @@
 
   <ItemGroup>
     <Resource Include="Layouts\bg-layout.png" />
+    <Resource Include="Layouts\bg-mode-cam.png" />
     <Resource Include="Layouts\bg-payment.png" />
     <Resource Include="Layouts\bg-theme.png" />
     <Resource Include="Layouts\fonts\Coiny.ttf" />
