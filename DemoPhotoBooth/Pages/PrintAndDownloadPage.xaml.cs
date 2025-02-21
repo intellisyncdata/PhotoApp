@@ -206,7 +206,8 @@ namespace DemoPhotoBooth.Pages
                 while (layout.PrintQuantity > 0)
                 {
                     dlg.PrintVisual(visualImage, "Docs");
-                    layout.PrintQuantity--;
+                    int number = isCutted == true ? 2 : 1; 
+                    layout.PrintQuantity -= number;
 
                     await Task.Delay(2000);
                 }
