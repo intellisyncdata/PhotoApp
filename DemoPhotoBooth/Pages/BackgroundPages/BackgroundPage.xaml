@@ -174,19 +174,21 @@
         </Grid>
         <!-- Grid chứa nút quay về home -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,30" Grid.Row="3">
-            <Button Content="Tiếp tục"
-               Click="NavigatePayment_Click"
-               Width="270"
-               Height="70"
-               FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
-               Background="#faa2af"
-               Foreground="White"
-               FontWeight="Bold"
-               FontSize="35"
-               BorderThickness="0"
-               Margin="0,0,100,0"
-               HorizontalAlignment="Right" 
-               VerticalAlignment="Bottom">
+            <Button 
+                Name="btnContinue"
+                Content="Tiếp tục"
+                Click="NavigatePayment_Click"
+                Width="270"
+                Height="70"
+                FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                Background="#faa2af"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="35"
+                BorderThickness="0"
+                Margin="0,0,100,0"
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Bottom">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" 

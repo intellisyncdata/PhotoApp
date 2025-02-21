@@ -173,7 +173,7 @@
                                                 <TextBlock Text="{TemplateBinding Content}" 
                                                     HorizontalAlignment="Center" 
                                                     VerticalAlignment="Center"
-                                                    Foreground="#f7cfd4" />
+                                                    Foreground="#FFFFFF" />
                                             </Border>
                                         </ControlTemplate>
                                     </Button.Template>
@@ -266,7 +266,9 @@
         </Grid>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,50" Grid.Row="2">
-            <Button x:Name="btnContinue" Content="Tiếp tục"
+            <Button 
+                x:Name="btnContinue" 
+                Content="Tiếp tục"
                 Click="NavigateToCameraMode"
                 FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
                 Width="270"
@@ -292,8 +294,10 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Button x:Name="NavigateToBack" Content="Quay lại"
-                Click="NavigateToHomePage"
+            <Button 
+                x:Name="NavigateToBack" 
+                Content="Quay lại"
+                Click="NavigateToPreviousPage"
                 FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
                 Width="270"
                 Height="70"

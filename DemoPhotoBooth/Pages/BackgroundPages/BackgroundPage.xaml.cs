@@ -59,6 +59,8 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
             IsColorGridVisible = false;
             UpdateVisibleBackgrounds();
             DataContext = this;
+            btnContinue.IsEnabled = false;
+            btnContinue.Opacity = 0.5;
 
             // Hiệu ứng mượt mà khi khởi tạo
             Loaded += OnPageLoaded;
@@ -181,6 +183,8 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
                 clickedBackground.IsSelected = true;
                 chooseBackground = clickedBackground;
                 OnPropertyChanged(nameof(VisibleBackgrounds));
+                btnContinue.IsEnabled = true;
+                btnContinue.Opacity = 0.5;
             }
         }
 

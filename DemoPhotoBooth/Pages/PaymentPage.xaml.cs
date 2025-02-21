@@ -27,9 +27,9 @@ namespace DemoPhotoBooth.Pages
         private decimal amountToPay = 70000; // Số tiền cần thanh toán
         private DispatcherTimer countdownTimer;
 #if DEBUG
-        private int remainingTime = 30; // Thời gian ban đầu (giây)
-#else
         private int remainingTime = 10; // Thời gian ban đầu (giây)
+#else
+        private int remainingTime = 30; // Thời gian ban đầu (giây)
 #endif
         private bool isPopupShown = false;
         private bool isNextPage = false;
@@ -186,12 +186,12 @@ namespace DemoPhotoBooth.Pages
             Dispatcher.Invoke(() => Console.WriteLine(message));
         }
 
-        private void ShowTimeoutPopup()
+        private void ShowPaymentPopup()
         {
             countdownTimer.Stop();
 
             // Hiển thị popup tùy chỉnh
-            TimeoutPopup popup = new TimeoutPopup
+            PaymentPopup popup = new PaymentPopup
             {
                 Owner = Window.GetWindow(this), // Gắn popup với cửa sổ hiện tại
             };
@@ -232,17 +232,27 @@ namespace DemoPhotoBooth.Pages
             else if (!isPopupShown)
             {
                 // Hiển thị popup khi hết thời gian
-                ShowTimeoutPopup();
+                ShowPaymentPopup();
                 isPopupShown = true;
             }
         }
 
         private void UpdateCountdownUI()
         {
-            txtCountdown.Text = $"{remainingTime} s";
+            txtCountdown.Text = $"{remainingTime}s";
         }
 
         private void NavigateToHomePage(object sender, RoutedEventArgs e)
+        {
+            totalAmount = 0;
+            if (serialPort != null && serialPort.IsOpen)
+            {
+                serialPort.Close();
+            }
+            NavigationService?.Navigate(new HomePage());
+        }
+
+        private void NavigateToPreviousPage(object sender, RoutedEventArgs e)
         {
             totalAmount = 0;
             if (serialPort != null && serialPort.IsOpen)

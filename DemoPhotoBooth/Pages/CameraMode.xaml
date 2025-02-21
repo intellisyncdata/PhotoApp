@@ -50,7 +50,7 @@
             <!-- Hẹn giờ -->
             <Border 
                 x:Name="TimerBorder" 
-                Opacity="0.5"
+                Opacity="1"
                 Grid.Column="0"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Right"

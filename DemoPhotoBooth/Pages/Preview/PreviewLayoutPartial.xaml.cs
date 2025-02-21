@@ -34,6 +34,7 @@ using Rect = System.Windows.Rect;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using DemoPhotoBooth.Models.DTOs;
+using System.IO.Ports;
 
 namespace DemoPhotoBooth.Pages.Preview
 {
@@ -49,6 +50,7 @@ namespace DemoPhotoBooth.Pages.Preview
         private Canvas _canvas;
         private DispatcherTimer dispatcherTimer = new DispatcherTimer();
         private uint timeStep = 350; // 3 mins
+        private bool isPopupShown = false;
         bool isPortrait = false;
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -128,14 +130,58 @@ namespace DemoPhotoBooth.Pages.Preview
                 lblTimer.Text = $"{timeStep--}";
                 return;
             }
-            dispatcherTimer.Stop();
-            NextDownloadPage();
+            else if (!isPopupShown)
+            {
+                // Hiển thị popup khi hết thời gian
+                ShowPreviewPopup();
+                isPopupShown = true;
+            }
         }
 
         private void NextDownloadPage()
         {
             dispatcherTimer.Stop();
             App.EventAggregator.GetEvent<PreviewPageNextPage>().Publish(string.Empty);
+        }
+
+        private void ShowPreviewPopup()
+        {
+            dispatcherTimer.Stop();
+
+            // Hiển thị popup tùy chỉnh
+            PreviewPopup popup = new PreviewPopup
+            {
+                Owner = System.Windows.Window.GetWindow(this), // Gắn popup với cửa sổ hiện tại
+            };
+
+            bool? result = popup.ShowDialog(); // Hiển thị popup và chờ kết quả
+
+            if (result == true && popup.UserWantsMoreTime)
+            {
+                // Thêm 30 giây
+                timeStep = 30;
+                isPopupShown = false;
+                dispatcherTimer.Start();
+                lblTimer.Text = $"{timeStep--}";
+            }
+            else
+            {
+                if (popup.userAvailable)
+                {
+                    btnPrint_Click(btnPrint, new RoutedEventArgs());
+                }
+                else
+                {
+                    // Quay về trang chủ
+                    NavigateToHomePage(this, new RoutedEventArgs());
+                }
+            }
+        }
+
+        private void NavigateToHomePage(object sender, RoutedEventArgs e)
+        {
+            dispatcherTimer.Stop();
+            NavigationService?.Navigate(new HomePage());
         }
 
         private void DrawQR()

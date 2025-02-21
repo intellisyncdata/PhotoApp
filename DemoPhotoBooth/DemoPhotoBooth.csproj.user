@@ -30,10 +30,16 @@
     <Compile Update="Pages\PaymentPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\PaymentPopup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\Popup.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\PreviewPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\PreviewPopup.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\Preview\ListImagesPage.xaml.cs">
@@ -80,10 +86,16 @@
     <Page Update="Pages\PaymentPage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\PaymentPopup.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\Popup.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\PreviewPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\PreviewPopup.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Preview\ListImagesPage.xaml">
