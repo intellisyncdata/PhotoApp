@@ -32,20 +32,22 @@ namespace DemoPhotoBooth.Pages
         private LiveViewRecorder recorder = new LiveViewRecorder();
         // Default Landscape
         private bool isPortrait = false;
+        private bool isManual = false;
 
         public int photoNumber = 0;
-        public int maxPhotosTaken = 2;
-        private int timeLeft = 3;
-        private int timeLeftCopy = 3;
+        public int maxPhotosTaken = 3;
+        private int timeLeft = 10;
+        private int timeLeftCopy = 10;
         private int photosTaken = 0;
         public bool PhotoTaken = false;
         private (string root, string printPath) rootPath = (string.Empty, string.Empty);
         private CommonDbDataContext _db;
-        public CameraPage(bool portraitMode = false)
+        public CameraPage(bool portraitMode = false, bool isManualMode = false)
         {
             InitializeComponent();
             ActivateTimers();
             isPortrait = portraitMode;
+            isManual = isManualMode;
             SetViewMode();
         }
 
@@ -102,10 +104,38 @@ namespace DemoPhotoBooth.Pages
             }
         }
 
+        private async Task WaitForRemoteTrigger()
+        {
+            Debug.WriteLine("Đang chờ tín hiệu từ remote...");
+
+            bool remotePressed = false;
+
+            // Lắng nghe sự kiện từ máy ảnh
+            MainCamera.StateChanged += (sender, eventID, parameter) =>
+            {
+                if (eventID == StateEventID.WillSoonShutDown) // Hoặc một event phù hợp hơn
+                {
+                    Debug.WriteLine("📸 Remote đã bấm! Chuẩn bị chụp...");
+                    remotePressed = true;
+                }
+            };
+
+            while (!remotePressed)
+            {
+                await Task.Delay(100); // Kiểm tra mỗi 100ms
+            }
+        }
+
         private async void MakePhoto(object sender, EventArgs e)
         {
             try
             {
+                if (isManual)
+                {
+                    Debug.WriteLine($"Chờ bấm remote để chụp ảnh {photosTaken + 1}...");
+                    await WaitForRemoteTrigger();
+                }
+
                 photosTaken++;
 
                 #region Take Photo

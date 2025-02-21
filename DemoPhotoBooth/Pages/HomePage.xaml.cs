@@ -218,21 +218,5 @@ namespace DemoPhotoBooth.Pages
 
             return new List<Layout>();
         }
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            UpdateTextBlockMargin();
-        }
-        private void Window_LayoutUpdated(object sender, EventArgs e)
-        {
-            UpdateTextBlockMargin();
-        }
-        private void UpdateTextBlockMargin()
-        {
-            // Tính toán vị trí margin Top dựa trên chiều cao của cửa sổ
-            // double topMargin = this.ActualHeight * 0.7;
-
-            // Cập nhật Margin cho TextBlock
-            // StartText.Margin = new Thickness(0, topMargin, 0, 20);
-        }
     }
 }

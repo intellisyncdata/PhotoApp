@@ -326,8 +326,18 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
         #region Navigation 
         private void NavigateHome_Click(object sender, RoutedEventArgs e)
         {
+            foreach (var bg in Backgrounds)
+            {
+                bg.IsSelected = false;
+            }
+
+            chooseBackground = null;
+
+            OnPropertyChanged(nameof(VisibleBackgrounds));
+
             NavigationService?.Navigate(new LayoutPage(ListLayout));
         }
+
 
         private void NavigatePayment_Click(object sender, RoutedEventArgs e)
         {

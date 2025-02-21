@@ -30,7 +30,7 @@
         </Grid>
 
         <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <!-- Cấu trúc cột -->
+            <!-- Cấu trúc cột -->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="550"/>
                 <ColumnDefinition Width="100"/>
@@ -82,7 +82,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center" />
             </Grid>
-            
+
             <!-- Điều khiển -->
             <Border 
                 x:Name="ManualBorder"

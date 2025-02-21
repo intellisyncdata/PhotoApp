@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using OpenCvSharp;
 using System.Windows.Media.Imaging;
 using System.Diagnostics;
@@ -10,14 +11,16 @@ namespace DemoPhotoBooth.Common
         private bool isRecording = false;
         private VideoWriter videoWriter;
         private string videoOutputPath;
-        private int frameWidth = 426; // Set resolution based on your needs
+        private int frameWidth = 426;
         private int frameHeight = 240;
-        private int fps = 30;
+        private int fps = 10; // Giảm FPS để tạo hiệu ứng timelapse
+        private DateTime lastFrameTime;
+        private int captureInterval = 1000; // Mili-giây (1000ms = 1 giây)
 
         public LiveViewRecorder()
         {
             string currentPath = Environment.CurrentDirectory;
-            string dateTimePath = Actual.DateNow();
+            string dateTimePath = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             string pathString = Path.Combine(currentPath, dateTimePath);
             Directory.CreateDirectory(pathString);
             string videoPath = "video";
@@ -31,8 +34,9 @@ namespace DemoPhotoBooth.Common
             if (isRecording) return;
 
             isRecording = true;
+            lastFrameTime = DateTime.Now;
 
-            // Initialize OpenCV VideoWriter
+            // Khởi tạo VideoWriter với FPS thấp để tạo hiệu ứng timelapse
             videoWriter = new VideoWriter(videoOutputPath, FourCC.H264, fps, new OpenCvSharp.Size(frameWidth, frameHeight));
 
             if (!videoWriter.IsOpened())
@@ -41,7 +45,7 @@ namespace DemoPhotoBooth.Common
                 isRecording = false;
             }
 
-            Debug.WriteLine("Recording started...");
+            Debug.WriteLine("Timelapse recording started...");
         }
 
         public void StopRecording()
@@ -50,24 +54,29 @@ namespace DemoPhotoBooth.Common
 
             isRecording = false;
             videoWriter?.Release();
-            Debug.WriteLine($"Recording stopped. Video saved at: {videoOutputPath}");
+            Debug.WriteLine($"Timelapse recording stopped. Video saved at: {videoOutputPath}");
         }
 
         public void CaptureFrame(BitmapImage image)
         {
             if (!isRecording || videoWriter == null) return;
 
+            DateTime now = DateTime.Now;
+            if ((now - lastFrameTime).TotalMilliseconds < captureInterval)
+            {
+                return;
+            }
+
+            lastFrameTime = now;
+
             try
             {
-                // Convert BitmapImage to OpenCV Mat
                 Mat frame = BitmapImageToMat(image);
-
-                // Resize to ensure dimensions match video settings
                 Cv2.Resize(frame, frame, new OpenCvSharp.Size(frameWidth, frameHeight));
 
-                // Write frame to video
                 videoWriter.Write(frame);
                 frame.Dispose();
+                Debug.WriteLine("Frame captured for timelapse.");
             }
             catch (Exception ex)
             {
@@ -77,7 +86,6 @@ namespace DemoPhotoBooth.Common
 
         private Mat BitmapImageToMat(BitmapImage bitmap)
         {
-            // Convert WPF BitmapImage to OpenCV Mat
             using (MemoryStream ms = new MemoryStream())
             {
                 BitmapEncoder encoder = new BmpBitmapEncoder();

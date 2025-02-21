@@ -208,6 +208,11 @@ namespace DemoPhotoBooth.Pages
             }
             else
             {
+                totalAmount = 0;
+                if (serialPort != null && serialPort.IsOpen)
+                {
+                    serialPort.Close();
+                }
                 // Quay về trang chủ
                 NavigateToHomePage(this, new RoutedEventArgs());
             }
@@ -234,16 +239,16 @@ namespace DemoPhotoBooth.Pages
 
         private void UpdateCountdownUI()
         {
-            txtCountdown.Text = $"{remainingTime}s";
+            txtCountdown.Text = $"{remainingTime} s";
         }
 
         private void NavigateToHomePage(object sender, RoutedEventArgs e)
         {
-            //var layout = _db.LayoutApp.AsNoTracking().FirstOrDefault();
-            //if (layout != null)
-            //{
-            //    _db.Remove(layout);
-            //}
+            totalAmount = 0;
+            if (serialPort != null && serialPort.IsOpen)
+            {
+                serialPort.Close();
+            }
             NavigationService?.Navigate(new BackgroundPage(Layout, Backgrounds, colors, ListLayout));
         }
 
@@ -252,6 +257,10 @@ namespace DemoPhotoBooth.Pages
             // Điều hướng tới trang CameraMode
             CompleteTransactionPayment(paymentId, totalAmount);
             totalAmount = 0;
+            if (serialPort != null && serialPort.IsOpen)
+            {
+                serialPort.Close();
+            }
             NavigationService?.Navigate(new CameraMode());
 
         }
@@ -371,15 +380,12 @@ namespace DemoPhotoBooth.Pages
         {
             RightPayment.Background = new SolidColorBrush(Colors.Gray);
             amountToPay = TotalPrice;
+            txtCountdown.Visibility = Visibility.Collapsed;
+            bgCountDown.Visibility = Visibility.Collapsed;
             //paymentId = CreateTransactionPayment(Layout.Id, Quantity);
             UpdateUI(paymentId);
             // Khởi tạo bộ đếm thời gian
-            countdownTimer = new DispatcherTimer();
-            countdownTimer.Interval = TimeSpan.FromSeconds(1);
-            countdownTimer.Tick += CountdownTimer_Tick;
-            countdownTimer.Start();
 
-            UpdateCountdownUI();
         }
 
         private void IncreaseQuantity(object sender, RoutedEventArgs e)
@@ -409,6 +415,15 @@ namespace DemoPhotoBooth.Pages
         {
             UpdateAmount();
             InitializeSerialPort();
+            txtCountdown.Visibility = Visibility.Visible;
+            bgCountDown.Visibility = Visibility.Visible;
+            NavigateToBack.IsEnabled = false;
+            NavigateToBack.Opacity = 0.5;
+            countdownTimer = new DispatcherTimer();
+            countdownTimer.Interval = TimeSpan.FromSeconds(1);
+            countdownTimer.Tick += CountdownTimer_Tick;
+            countdownTimer.Start();
+            UpdateCountdownUI();
             LeftPayment.IsEnabled = false;
             btnAccept.IsEnabled = false;
             btnAccept.Opacity = 0.5;

@@ -22,7 +22,7 @@
         <!-- Tiêu đề -->
         <TextBlock Grid.Row="0" FontSize="52" FontWeight="Bold" TextAlignment="Center" Text="THANH TOÁN" 
                    Foreground="#333333" Margin="0,100,0,10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-       
+
 
 
         <!-- Nội dung chính -->
@@ -35,7 +35,7 @@
 
             <!-- Bên trái: Số tiền thanh toán -->
             <Border x:Name="LeftPayment" Grid.Column="0" Padding="20" CornerRadius="35" BorderBrush="#5a93cf" BorderThickness="1" Background="White" VerticalAlignment="Top" Height="450" Width="600" Margin="0">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Height="359">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Height="400">
                     <TextBlock 
                         FontSize="40" 
                         FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
@@ -129,7 +129,7 @@
             </Border>
             <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <!-- Tạo hình tròn -->
-                <Ellipse Width="100" Height="100" Fill="#5a93cf"/>
+                <Ellipse x:Name="bgCountDown" Width="100" Height="100" Fill="#5a93cf"/>
 
                 <!-- Hiển thị số đếm ngược -->
                 <TextBlock Name="txtCountdown"
@@ -285,7 +285,7 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Button Content="Quay lại"
+            <Button x:Name="NavigateToBack" Content="Quay lại"
                 Click="NavigateToHomePage"
                 FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
                 Width="270"

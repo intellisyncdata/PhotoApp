@@ -26,6 +26,7 @@
     <None Remove="Layouts\bg-payment.png" />
     <None Remove="Layouts\bg-theme.png" />
     <None Remove="Layouts\clock.png" />
+    <None Remove="Layouts\fonts\._Coiny.ttf" />
     <None Remove="Layouts\fonts\Coiny.ttf" />
     <None Remove="Layouts\horizontal_screen.svg" />
     <None Remove="Layouts\icon-flower.png" />
@@ -57,9 +58,9 @@
     <Content Include="Layouts\background-layout.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Layouts\background.png">
+    <Resource Include="Layouts\background.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </Resource>
     <Content Include="Layouts\background_01.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -75,13 +76,26 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Layouts\bg-layout.png" />
-    <Resource Include="Layouts\bg-mode-cam.png" />
-    <Resource Include="Layouts\bg-payment.png" />
-    <Resource Include="Layouts\bg-theme.png" />
-    <Resource Include="Layouts\fonts\Coiny.ttf" />
+    <Resource Include="Layouts\bg-layout.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\bg-mode-cam.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\bg-payment.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\bg-theme.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\fonts\._Coiny.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\fonts\Coiny.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Layouts\horizontal_screen.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
 
@@ -144,7 +158,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Layouts\50x50.png" />
-    <Resource Include="Layouts\icon-flower.png" />
+    <Resource Include="Layouts\icon-flower.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Layouts\Layout1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -154,12 +170,16 @@
     <Resource Include="Layouts\Layout5.png" />
     <Resource Include="Layouts\Layout6.png" />
     <Resource Include="Layouts\main-background.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Layouts\next.png" />
-    <Resource Include="Layouts\prev.png" />
+    <Resource Include="Layouts\next.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\prev.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Layouts\vertical_screen.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
 
