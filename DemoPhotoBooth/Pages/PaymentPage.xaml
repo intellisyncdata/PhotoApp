@@ -158,10 +158,10 @@
                                         Content=" Tiền mặt " 
                                         FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
                                         FontSize="40" 
-                                        Foreground="#faa2af"
+                                        Foreground="#FFFFFF"
+                                        Background="#faa2af"
                                         Click="PaymentModeChanged" 
                                         Height="70"
-                                        Background="Transparent"
                                         Margin="0,50,5,0"
                                         Opacity="1">
                                     <Button.Template>

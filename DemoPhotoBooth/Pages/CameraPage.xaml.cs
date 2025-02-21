@@ -36,7 +36,7 @@ namespace DemoPhotoBooth.Pages
         private bool isManual = false;
 
         public int photoNumber = 0;
-        public int maxPhotosTaken = 3;
+        public int maxPhotosTaken = 4;
         private int timeLeft = 10;
         private int timeLeftCopy = 10;
         private int photosTaken = 0;
@@ -166,7 +166,7 @@ namespace DemoPhotoBooth.Pages
                 await Task.Delay(2000);
 
                 CountdownTimer.Visibility = Visibility.Visible;
-                CountdownTimer.Text = "Chuẩn bị cho hình tiếp theo!";
+                CountdownTimer.Text = "📸";
 
                 // Wait asynchronously for photo saving confirmation
                 await WaitForPhotoToBeSaved();

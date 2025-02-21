@@ -17,6 +17,7 @@ using static DemoPhotoBooth.Communicate.MessageTypes;
 using System.Drawing;
 using Image = System.Windows.Controls.Image;
 using SixLabors.ImageSharp;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DemoPhotoBooth.Pages.Preview
 {
@@ -307,9 +308,7 @@ namespace DemoPhotoBooth.Pages.Preview
         private System.Windows.Shapes.Rectangle DrawRectangle()
         {
             var rect = new System.Windows.Shapes.Rectangle();
-
-            rect.HorizontalAlignment = HorizontalAlignment.Stretch;
-            rect.VerticalAlignment = VerticalAlignment.Stretch;
+            rect.Height = 240;
             rect.Opacity = 0;
             rect.Fill = new SolidColorBrush(Colors.Black);
 
@@ -336,16 +335,15 @@ namespace DemoPhotoBooth.Pages.Preview
 
                 imageControl.Source = image;
                 imageControl.Uid = filePath;
-                //imageControl.Width = 240;
-                //imageControl.Height = 160;
+                imageControl.Stretch = Stretch.UniformToFill;
                 imageControl.VerticalAlignment = VerticalAlignment.Center;
                 imageControl.HorizontalAlignment = HorizontalAlignment.Center;
             }
         }
 
-        private StackPanel DrawPanel(int i, int j)
+        private Grid DrawPanel(int i, int j)
         {
-            var panel = new StackPanel();
+            var panel = new Grid();
             panel.Background = new SolidColorBrush(Colors.WhiteSmoke);
             panel.Margin = new Thickness(5, 5, 5, 5);
             Grid.SetRow(panel, i);

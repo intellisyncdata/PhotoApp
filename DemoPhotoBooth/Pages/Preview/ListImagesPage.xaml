@@ -24,12 +24,12 @@
                     <ItemsControl ItemsSource="{Binding ImageList}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <UniformGrid HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <UniformGrid />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel HorizontalAlignment="Center"  VerticalAlignment="Center">
+                                <StackPanel >
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

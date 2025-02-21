@@ -227,6 +227,7 @@ namespace DemoPhotoBooth.Pages.Preview
                 };
                 image.Width = item.Width.ToDouble();
                 image.Height = item.Height.ToDouble();
+                image.Stretch = Stretch.UniformToFill;
                 Canvas.SetLeft(image, item.X.ToDouble());
                 Canvas.SetTop(image, item.Y.ToDouble());
                 image.MouseDown += Image_MouseDown;

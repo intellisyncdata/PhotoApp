@@ -20,7 +20,7 @@ namespace DemoPhotoBooth.Common
         public LiveViewRecorder()
         {
             string currentPath = Environment.CurrentDirectory;
-            string dateTimePath = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            string dateTimePath = Actual.DateNow();
             string pathString = Path.Combine(currentPath, dateTimePath);
             Directory.CreateDirectory(pathString);
             string videoPath = "video";
