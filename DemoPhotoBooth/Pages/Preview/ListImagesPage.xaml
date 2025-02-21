@@ -5,35 +5,31 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:DemoPhotoBooth.Pages.Preview"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
       Title="ListImagesPage" Loaded="Page_Loaded">
 
-    <Grid Background="White">
-        <Border BorderBrush="Black" BorderThickness="3" Margin="0" CornerRadius="25" Padding="20" MaxHeight="650">
-            <ScrollViewer Grid.Column="0" Margin="0,0,0,0" VerticalScrollBarVisibility="Auto">
-                <ScrollViewer.Resources>
-                    <Style TargetType="ScrollBar" BasedOn="{StaticResource CustomScrollBarStyle}" />
-                </ScrollViewer.Resources>
-                <Grid Name="gridImages">
+    <Grid Background="#ffe9f0">
+        <Border Name="BorderGridImage" Padding="10" Width="770" Height="530">
+            <ScrollViewer Grid.Column="0" Margin="0,0,0,0" VerticalScrollBarVisibility="Hidden">
+                <Grid Name="gridImages" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="170"/>
+                        <RowDefinition Height="170"/>
+                        <RowDefinition Height="170"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="250"/>
                     </Grid.ColumnDefinitions>
                     <ItemsControl ItemsSource="{Binding ImageList}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <UniformGrid Columns="3" Rows="3"/>
+                                <UniformGrid HorizontalAlignment="Center" VerticalAlignment="Center" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                <StackPanel HorizontalAlignment="Center"  VerticalAlignment="Center">
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

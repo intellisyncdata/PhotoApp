@@ -15,11 +15,21 @@ namespace DemoPhotoBooth.Pages.Preview
     /// </summary>
     public partial class NewPreviewPage : Page
     {
+        bool isPotrait = false;
 
-        public NewPreviewPage()
+        public NewPreviewPage(bool portraitMode = false)
         {
             InitializeComponent();
             DataContext = this;
+            isPotrait = portraitMode;
+            var path = "pack://application:,,,/Layouts/bg-preview-horizontal.png";
+            DockPanelListImage.Margin = new Thickness(0, 0, 0, 0);
+            if (portraitMode)
+            {
+                path = "pack://application:,,,/Layouts/bg-preview-vertical.png";
+                DockPanelListImage.Margin = new Thickness(100, 0, 0, 0);
+            }
+            this.BackgroundPreview.ImageSource = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -29,8 +39,8 @@ namespace DemoPhotoBooth.Pages.Preview
                 NavigationService.Navigate(new PrintAndDownloadPage());
             });
 
-            imagesSelected.Navigate(new ListImagesPage());
-            layoutPreview.Navigate(new PreviewLayoutPartial());
+            imagesSelected.Navigate(new ListImagesPage(isPotrait));
+            layoutPreview.Navigate(new PreviewLayoutPartial(isPotrait));
         }
     }
 }

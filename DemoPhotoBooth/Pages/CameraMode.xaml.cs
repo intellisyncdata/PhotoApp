@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using DemoPhotoBooth.DataContext;
 using DemoPhotoBooth.Models;
+using DemoPhotoBooth.Pages.Preview;
 
 namespace DemoPhotoBooth.Pages
 {

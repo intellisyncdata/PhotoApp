@@ -49,6 +49,7 @@ namespace DemoPhotoBooth.Pages.Preview
         private Canvas _canvas;
         private DispatcherTimer dispatcherTimer = new DispatcherTimer();
         private uint timeStep = 350; // 3 mins
+        bool isPortrait = false;
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public double ImageBgWidth
@@ -69,11 +70,26 @@ namespace DemoPhotoBooth.Pages.Preview
                 OnPropertyChanged();
             }
         }
-        public PreviewLayoutPartial()
+        public PreviewLayoutPartial(bool portraitMode = false)
         {
             InitializeComponent();
             _db = new CommonDbDataContext();
             DataContext = this;
+            isPortrait = portraitMode;
+            //if (isPortrait)
+            //{
+            //    Grid.SetRow(gridImages, 1);
+            //    Grid.SetColumn(gridImages, 0);
+            //    Grid.SetRowSpan(gridImages, 3);
+            //    Grid.SetColumnSpan(gridImages, 6);
+            //}
+            //else
+            //{
+            //    Grid.SetRow(gridImages, 1);
+            //    Grid.SetColumn(gridImages, 0);
+            //    Grid.SetRowSpan(gridImages, 4);
+            //    Grid.SetColumnSpan(gridImages, 5);
+            //}
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -82,8 +98,8 @@ namespace DemoPhotoBooth.Pages.Preview
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
 
-            btnPrint.Visibility = Visibility.Hidden;
-            btnReset.Visibility = Visibility.Hidden;
+            btnReset.IsEnabled = false;
+            btnPrint.IsEnabled = false;
             var layoutSelected = _db.LayoutApp
                     .AsNoTracking()
                     .SingleOrDefault(x => x.IsSelected);
@@ -188,7 +204,7 @@ namespace DemoPhotoBooth.Pages.Preview
 
                     if (fullAssigned)
                     {
-                        btnPrint.Visibility = Visibility.Visible;
+                        btnPrint.IsEnabled = true;
                     }
                 }
             });
@@ -265,12 +281,12 @@ namespace DemoPhotoBooth.Pages.Preview
 
             if (allEmpty)
             {
-                btnReset.Visibility = Visibility.Hidden;
-                btnPrint.Visibility = Visibility.Hidden;
+                btnReset.IsEnabled = false;
+                btnPrint.IsEnabled = false;
             }
             else
             {
-                btnPrint.Visibility = Visibility.Hidden;
+                btnPrint.IsEnabled = false;
             }
         }
 
@@ -278,8 +294,8 @@ namespace DemoPhotoBooth.Pages.Preview
         {
             if (dicImages.Values.Any())
             {
-                btnReset.Visibility = Visibility.Hidden;
-                btnPrint.Visibility = Visibility.Hidden;
+                btnReset.IsEnabled = false;
+                btnPrint.IsEnabled = false;
             }
             dicImages.Values.ToList().ForEach(x =>
             {

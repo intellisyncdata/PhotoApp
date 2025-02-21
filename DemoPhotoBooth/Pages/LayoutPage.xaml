@@ -21,8 +21,9 @@
             <ImageBrush ImageSource="pack://application:,,,/Layouts/bg-layout.png"/>
         </Grid.Background>
         <Grid.RowDefinitions>
+            <RowDefinition Height="150"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="6*"/>
+            <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
         <!-- Title -->
         <TextBlock Text="CHỌN BỐ CỤC" 
@@ -32,75 +33,80 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Top"
                    Margin="0,20,0,0"
-                   Foreground="#5a93cf" Grid.Row="0"/>
+                   Padding="0,10,0,0"
+                   Foreground="#5a93cf"
+                   Grid.Row="0"/>
 
         <!-- Layout Items -->
-        <ItemsControl ItemsSource="{Binding Layouts}" Grid.Row="1">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <!-- Sử dụng UniformGrid để bố cục 3 cột -->
-                    <UniformGrid Rows="2" Columns="3" HorizontalAlignment="Center" VerticalAlignment="Top" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+        <Grid Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <ItemsControl ItemsSource="{Binding Layouts}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <!-- Sử dụng UniformGrid để bố cục 3 cột -->
+                        <UniformGrid Rows="2" Columns="3" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
 
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid Margin="50,0,0,50" MouseLeftButtonDown="OnLayoutClick">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="5*"/>
-                            <!-- Hàng chứa SVG -->
-                            <RowDefinition Height="1*"/>
-                            <!-- Hàng chứa giá -->
-                        </Grid.RowDefinitions>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="25,0,25,50" MouseLeftButtonDown="OnLayoutClick">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="5*"/>
+                                <!-- Hàng chứa SVG -->
+                                <RowDefinition Height="1*"/>
+                                <!-- Hàng chứa giá -->
+                            </Grid.RowDefinitions>
 
-                        <Viewbox Grid.Row="0" Stretch="Uniform" 
-                             HorizontalAlignment="Center" 
-                             VerticalAlignment="Center" 
-                             Width="300" Height="300">
-                            <Image Source="{Binding ImageUrl}" 
-                               Stretch="Uniform" 
-                               Margin="0"/>
-                        </Viewbox>
+                            <Viewbox Grid.Row="0" Stretch="Uniform" 
+                                 HorizontalAlignment="Center" 
+                                 VerticalAlignment="Center"
+                                 Width="300" Height="320">
+                                <Image
+                                    Source="{Binding ImageUrl}" 
+                                    Stretch="Uniform" 
+                                    Margin="20"/>
+                            </Viewbox>
 
-                        <!-- Price (Di chuyển xuống dòng dưới cùng) -->
-                        <TextBlock Grid.Row="1"
-                           Text="{Binding Price, StringFormat='{}{0:N0} đ'}"
-                           FontSize="22" 
-                           FontWeight="Bold" 
-                           Foreground="#5a93cf"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Top">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Margin" Value="0,5,0,0"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding FrameType}" Value="vertical">
-                                            <Setter Property="Margin" Value="0,10,0,0"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                            <!-- Price (Di chuyển xuống dòng dưới cùng) -->
+                            <TextBlock Grid.Row="1"
+                               Text="{Binding Price, StringFormat='{}{0:N0} đ'}"
+                               FontSize="22" 
+                               FontWeight="Bold" 
+                               Foreground="#5a93cf"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Top">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Margin" Value="0,5,0,0"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding FrameType}" Value="vertical">
+                                                <Setter Property="Margin" Value="0,10,0,0"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
 
-                    </Grid>
-                </DataTemplate>
+                        </Grid>
+                    </DataTemplate>
 
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-
-        <Button Content="Quay Lại"
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+        <Button 
+            Grid.Row="2"
+            Content="Quay Lại"
             FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
             HorizontalAlignment="Right" 
             VerticalAlignment="Bottom"
-            Margin="0,0,70,40" 
-            Padding="10,5"
+            Margin="0,0,70,10"
             Width="270"
             Height="70"
             Background="#faa2af"
             FontWeight="Bold"
             FontSize="35" 
             Foreground="White"
-            Click="NavigateHome_Click" Grid.Row="1">
+            Click="NavigateHome_Click">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}" 
@@ -115,8 +121,5 @@
                 </ControlTemplate>
             </Button.Template>
         </Button>
-
-
     </Grid>
-
 </Page>

@@ -29,7 +29,7 @@ namespace DemoPhotoBooth.Pages
 #if DEBUG
         private int remainingTime = 30; // Thời gian ban đầu (giây)
 #else
-        private int remainingTime = 30; // Thời gian ban đầu (giây)
+        private int remainingTime = 10; // Thời gian ban đầu (giây)
 #endif
         private bool isPopupShown = false;
         private bool isNextPage = false;

@@ -16,6 +16,7 @@ using DemoPhotoBooth.Communicate;
 using static DemoPhotoBooth.Communicate.MessageTypes;
 using System.Drawing;
 using Image = System.Windows.Controls.Image;
+using SixLabors.ImageSharp;
 
 namespace DemoPhotoBooth.Pages.Preview
 {
@@ -33,6 +34,7 @@ namespace DemoPhotoBooth.Pages.Preview
         private TextBlock lblCountImages;
         private string pathLayoutTemp = string.Empty;
         private Dictionary<string, PreviewGrid> dicGridView;
+        bool isPotrait = false;
         private static readonly List<string> extensions = new List<string>
         {
             ".jpg",
@@ -48,10 +50,32 @@ namespace DemoPhotoBooth.Pages.Preview
             public string Name { get; set; }
         }
 
-        public ListImagesPage()
+        public ListImagesPage(bool portraitMode = false)
         {
             InitializeComponent();
             _db = new CommonDbDataContext();
+            gridImages.RowDefinitions.Clear();
+            gridImages.ColumnDefinitions.Clear();
+            isPotrait = portraitMode;
+            int Width = 250;
+            int Height = 170;
+            BorderGridImage.Width = 770;
+            BorderGridImage.Height = 530;
+            if (isPotrait)
+            {
+                Width = 170;
+                Height = 250;
+                BorderGridImage.Width = 530;
+                BorderGridImage.Height = 770;
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                gridImages.RowDefinitions.Add(new RowDefinition { Height = new GridLength(Height) });
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                gridImages.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(Width) });
+            }
             LeftSide();
         }
 
@@ -109,8 +133,6 @@ namespace DemoPhotoBooth.Pages.Preview
                     else if (index == 8)
                     {
                         lblCountImages = DrawTextBlock();
-                        lblCountImages.Margin = new Thickness(0, 50, 0, 0);
-                        panel.Background = new SolidColorBrush(Colors.Gray);
                         textBlock = lblCountImages;
                         lblCountImages.Text = $"0/{quantity}";
                         lblCountImages.Opacity = 1;
@@ -146,10 +168,18 @@ namespace DemoPhotoBooth.Pages.Preview
             }
             else if (imageControl == null && rect == null && textBlock != null)
             {
+                int MarginTop = 40;
+                if (isPotrait)
+                {
+                    MarginTop = 80;
+                }
                 var textContainer = new Grid
                 {
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalAlignment = VerticalAlignment.Stretch
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    //Height = 160,
+                    //Width = 240,
+                    Margin = new Thickness(0, MarginTop, 0, 0)
                 };
 
                 textContainer.Children.Add(textBlock);
@@ -161,12 +191,10 @@ namespace DemoPhotoBooth.Pages.Preview
                 textContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
 
                 textContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                textContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                textContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
 
                 Grid.SetRow(textBlock, 1);
-                Grid.SetColumn(textBlock, 1);
+                Grid.SetColumn(textBlock, 0);
                 groupGrid.Children.Add(textContainer);
             }
             return groupGrid;
@@ -262,15 +290,16 @@ namespace DemoPhotoBooth.Pages.Preview
         private TextBlock DrawTextBlock()
         {
             var textBlb = new TextBlock();
-            textBlb.FontSize = 48;
-            textBlb.FontWeight = FontWeights.Bold;
-            textBlb.Foreground = new SolidColorBrush(Colors.White);
+            textBlb.FontSize = 60;
+            textBlb.FontFamily = new System.Windows.Media.FontFamily(new Uri("pack://application:,,,/"), "./Layouts/fonts/#Coiny");
+            textBlb.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(90, 147, 207));
             textBlb.HorizontalAlignment = HorizontalAlignment.Center;
             textBlb.VerticalAlignment = VerticalAlignment.Center;
             textBlb.TextAlignment = TextAlignment.Center;
+            //textBlb.Width = 240;
+            //textBlb.Height = 160;
             textBlb.Opacity = 0;
             textBlb.Text = string.Empty;
-            textBlb.Margin = new Thickness(0, 35, 0, 0);
 
             return textBlb;
         }
@@ -307,7 +336,8 @@ namespace DemoPhotoBooth.Pages.Preview
 
                 imageControl.Source = image;
                 imageControl.Uid = filePath;
-                imageControl.Stretch = Stretch.Uniform;
+                //imageControl.Width = 240;
+                //imageControl.Height = 160;
                 imageControl.VerticalAlignment = VerticalAlignment.Center;
                 imageControl.HorizontalAlignment = HorizontalAlignment.Center;
             }
@@ -317,7 +347,7 @@ namespace DemoPhotoBooth.Pages.Preview
         {
             var panel = new StackPanel();
             panel.Background = new SolidColorBrush(Colors.WhiteSmoke);
-            panel.Margin = new Thickness(10, 0, 0, 10);
+            panel.Margin = new Thickness(5, 5, 5, 5);
             Grid.SetRow(panel, i);
             Grid.SetColumn(panel, j);
 

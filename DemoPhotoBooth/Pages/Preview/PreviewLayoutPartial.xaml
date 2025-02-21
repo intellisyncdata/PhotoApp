@@ -9,70 +9,111 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="4*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Name="gridImages" Grid.Row="1" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock 
+            Text="CHỌN HÌNH ẢNH"
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="6" 
+            Height="70"
+            FontSize="48"
+            FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+            Foreground="#5a93cf"
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center" 
+            Padding="0,0,50,0"/>
+
+        <Grid 
+            Name="gridImages" 
+            Grid.Row="1" 
+            Grid.Column="0" 
+            Grid.RowSpan="4" 
+            Grid.ColumnSpan="5" 
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right">
             <Image Name="imageBg" Width="{Binding ImageBgWidth}" Height="{Binding ImageBgHeight}"/>
         </Grid>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0" Grid.Row="2">
-            <Button Name="btnReset" 
-                Content="Chọn lại" 
-                Width="200"
-                Height="70"
-                Background="#F4C76E"
-                Foreground="White"
-                FontSize="20"
-                FontWeight="Bold"
-                BorderThickness="0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Bottom"
-                Margin="0,0,120,0"
-                Click="btnReset_Click">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                            CornerRadius="35" 
-                            BorderThickness="0">
-                            <TextBlock Text="{TemplateBinding Content}" 
-                                   HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center"
-                                   Foreground="White"
-                                   FontWeight="{TemplateBinding FontWeight}" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-            <Button Name="btnPrint" 
-                    Content="In ảnh" 
-                    Width="200"
-                    Height="70"
-                    Background="#F4C76E"
-                    Foreground="White"
-                    FontSize="20"
-                    FontWeight="Bold"
-                    BorderThickness="0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    Margin="0,0,0,0"
-                    Click="btnPrint_Click">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                CornerRadius="35" 
-                BorderThickness="0">
-                            <TextBlock Text="{TemplateBinding Content}" 
-                       HorizontalAlignment="Center" 
-                       VerticalAlignment="Center"
-                       Foreground="White"
-                       FontWeight="{TemplateBinding FontWeight}" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-        </StackPanel>
+        <Button
+            Grid.Row="5"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Name="btnReset" 
+            Content="Chọn lại"
+            FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+            Width="200"
+            Height="70"
+            Background="#faa2af"
+            Foreground="White"
+            FontSize="35"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="0,20,10,0"
+            Click="btnReset_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border 
+                        Background="{TemplateBinding Background}" 
+                        CornerRadius="30" 
+                        BorderThickness="0">
+                        <TextBlock
+                            Text="{TemplateBinding Content}" 
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"
+                            Foreground="White"
+                            FontWeight="{TemplateBinding FontWeight}" />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button 
+            Grid.Row="5"
+            Grid.Column="3"
+            Grid.ColumnSpan="3"
+            Name="btnPrint" 
+            Content="In hình" 
+            FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+            Width="200"
+            Height="70"
+            Background="#faa2af"
+            Foreground="White"
+            FontSize="35"
+            FontWeight="Bold"
+            BorderThickness="0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Margin="10,20,0,0"
+            Click="btnPrint_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border 
+                        Background="{TemplateBinding Background}" 
+                        CornerRadius="30" 
+                        BorderThickness="0">
+                        <TextBlock Text="{TemplateBinding Content}" 
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"
+                            Foreground="White"
+                            FontWeight="{TemplateBinding FontWeight}" />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
         <!--<TextBlock Name="lblTimer"
                    HorizontalAlignment="Left"
                    TextWrapping="Wrap" 
@@ -82,17 +123,17 @@
                 FontSize="48"
                    VerticalAlignment="Top"
         />-->
-        <Grid Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,10">
+        <Grid Grid.Row="4" Grid.Column="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20,0,0,0">
             <!-- Tạo hình tròn -->
-            <Ellipse Width="100" Height="100" Fill="#f4c76e"/>
+            <Ellipse Width="100" Height="100" Fill="#5a93cf"/>
 
             <!-- Hiển thị số đếm ngược -->
             <TextBlock Name="lblTimer"
-            FontSize="28"
-            FontWeight="Bold"
-            Foreground="White"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"/>
+                FontSize="30"
+                FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                Foreground="White"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
         </Grid>
     </Grid>
 </Page>

@@ -91,10 +91,10 @@ namespace DemoPhotoBooth.Pages
                         bitmap.StreamSource = stream;
                         bitmap.EndInit();
                     }
-                    finalImage.Source = bitmap;
-                    finalImage.Stretch = Stretch.Uniform;
-                    finalImage.HorizontalAlignment = HorizontalAlignment.Center;
-                    finalImage.VerticalAlignment = VerticalAlignment.Center;
+                    //finalImage.Source = bitmap;
+                    //finalImage.Stretch = Stretch.Uniform;
+                    //finalImage.HorizontalAlignment = HorizontalAlignment.Center;
+                    //finalImage.VerticalAlignment = VerticalAlignment.Center;
                 }
             }
         }
@@ -404,7 +404,7 @@ namespace DemoPhotoBooth.Pages
         private void btnEnd_Click(object sender, RoutedEventArgs e)
         {
             dispatcherTimer.Stop();
-            finalImage.Source = null;
+            //finalImage.Source = null;
             NextHomePage();
         }
     }

@@ -20,12 +20,19 @@
         </Grid.Background>
 
         <!-- Tiêu đề -->
-        <TextBlock Grid.Row="0" FontSize="52" FontWeight="Bold" TextAlignment="Center" Text="THANH TOÁN" 
-                   Foreground="#333333" Margin="0,100,0,10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock 
+            Grid.Row="0" 
+            FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+            FontSize="100"
+            TextAlignment="Center"
+            Text="THANH TOÁN" 
+            Foreground="#5a93cf"
+            Margin="0,100,0,10" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center"/>
 
 
-
-        <!-- Nội dung chính -->
+            <!-- Nội dung chính -->
         <Grid Grid.Row="1" Margin="150,0,150,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3.5*"/>

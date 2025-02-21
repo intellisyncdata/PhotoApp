@@ -1,79 +1,101 @@
 ﻿<Window x:Class="DemoPhotoBooth.Pages.TimeoutPopup"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression.blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
         Title="Thông báo"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        Width="400" Height="220"
-        Background="#ffffff"
+        Background="#00000000"
+        Height="979" Width="1746"
         WindowStyle="None">
-    <Border Background="#ffffff" CornerRadius="10" BorderThickness="2" BorderBrush="#f4c76e" Padding="10">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="pack://application:,,,/Layouts/bg-popup.png"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="550"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-            <!-- Nội dung -->
-            <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
-                <TextBlock Text="Thời gian chờ đã hết!" FontSize="20" FontWeight="Bold" Foreground="#333333" 
-                           TextAlignment="Center" Margin="0,10"/>
-                <TextBlock Text="Bạn có muốn gia hạn thêm 30s" FontSize="16" Foreground="#555555" 
-                           TextAlignment="Center" Margin="0,5"/>
-            </StackPanel>
+        <!-- Nội dung -->
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0">
+            <TextBlock 
+                Width="900"
+                TextWrapping="Wrap"
+                Text="Thời gian chờ đã hết bạn có muốn gia hạn thêm 30s?" 
+                FontSize="75" 
+                Foreground="#5a93cf"
+                FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                TextAlignment="Center"
+                Margin="0,150,0,0"/>
+        </StackPanel>
 
-            <!-- Thời gian đếm ngược -->
-            <TextBlock Name="txtTimer" Grid.Row="1" FontSize="18" FontStyle="Italic" Foreground="#999999" 
-                       HorizontalAlignment="Center" Margin="0,5"/>
+        <!-- Thời gian đếm ngược -->
+        <TextBlock 
+            Name="txtTimer"
+            FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+            Grid.Row="1"
+            FontSize="35"
+            Foreground="#ef5033" 
+            HorizontalAlignment="Center"
+            Margin="0,5"/>
 
-            <!-- Nút lựa chọn -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                <Button Content="Có" Width="100" Height="40"  Background="#f4c76e"
-                    Foreground="White"
-                    FontWeight="Bold"
-                    FontSize="15"
-                    BorderThickness="0"
-                    Margin="0"
-                    Click="YesButton_Click">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="15" 
-                                BorderThickness="0">
-                                <TextBlock Text="{TemplateBinding Content}" 
-                                    HorizontalAlignment="Center" 
-                                    VerticalAlignment="Center"
-                                    Foreground="White"
-                                    FontWeight="{TemplateBinding FontWeight}" />
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-                <Button Content="Không" 
-                        Width="100"
-                        Height="40" 
-                        Margin="5" 
-                        Background="#f4c76e"
-                        Foreground="White" 
-                        FontWeight="Bold" 
-                        FontSize="15"
-                        Click="NoButton_Click">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="15" 
-                                BorderThickness="0">
-                                <TextBlock Text="{TemplateBinding Content}" 
-                                    HorizontalAlignment="Center" 
-                                    VerticalAlignment="Center"
-                                    Foreground="White"
-                                    FontWeight="{TemplateBinding FontWeight}" />
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-            </StackPanel>
-        </Grid>
-    </Border>
+        <!-- Nút lựa chọn -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+            <Button 
+                Content="Có"
+                Width="200"
+                Height="70"
+                Background="#faa2af"
+                Foreground="White"
+                FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                FontSize="35"
+                Margin="0,0,300,0"
+                Click="YesButton_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border 
+                            Background="{TemplateBinding Background}" 
+                            CornerRadius="30" 
+                            BorderThickness="0">
+                            <TextBlock 
+                                Text="{TemplateBinding Content}" 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center"
+                                Foreground="White"
+                                FontWeight="{TemplateBinding FontWeight}" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button 
+                Content="Không" 
+                Width="200"
+                Height="70" 
+                FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                Background="#faa2af"
+                Foreground="White" 
+                FontSize="35"
+                Click="NoButton_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border 
+                            Background="{TemplateBinding Background}" 
+                            CornerRadius="30" 
+                            BorderThickness="0">
+                            <TextBlock
+                                Text="{TemplateBinding Content}" 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center"
+                                Foreground="White"
+                                FontWeight="{TemplateBinding FontWeight}" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+    </Grid>
 </Window>

@@ -22,43 +22,91 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*" />
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="0.5*" />
         </Grid.ColumnDefinitions>
         <ListBox x:Name="CameraListBox" Visibility="Hidden"/>
         <!-- Live View Area -->
-        <Canvas  x:Name="Slider" Grid.Row="0"  Grid.Column="1" Grid.ColumnSpan="2"  Grid.RowSpan="4" >
+        <Canvas  x:Name="Slider" Grid.Row="0"  Grid.Column="1" Grid.ColumnSpan="4"  Grid.RowSpan="4" >
             <Canvas.Background>
                 <ImageBrush x:Name="LiveViewBrush" Stretch="Uniform"/>
             </Canvas.Background>
         </Canvas>
-        <Viewbox Stretch="UniformToFill" Grid.RowSpan="4" Grid.ColumnSpan="4">
-            <svg:SvgCanvas x:Name="MySvgCanvasLiveView"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Stretch"/>
+        <Viewbox Stretch="UniformToFill" Grid.RowSpan="4" Grid.ColumnSpan="6">
+            <Image 
+                x:Name="MyBackgroundLiveView"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch" />
         </Viewbox>
-        <!-- Countdown Timer (Top-Right) -->
-        <TextBlock Name="CountdownTimer"
-                   FontSize="48"
-                   FontWeight="Bold"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Margin="20,20,20,0"
-                   Foreground="Red"
-                   TextAlignment="Center" 
-                   Visibility="Hidden"
-                   Grid.ColumnSpan="2"/>
-
-        <!-- Remaining Photos Counter -->
-        <TextBlock Name="PhotosLeftCounter"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Bottom"
-                   Margin="20"
-                   Foreground="Red"
-                   Grid.Row="3" 
-                   Grid.ColumnSpan="1"/>
+        <Grid 
+            x:Name="TimeBoxLive"
+            Grid.Row="1" 
+            Grid.ColumnSpan="2" 
+            Grid.RowSpan="2"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="140" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="140" />
+                <RowDefinition Height="140" />
+            </Grid.RowDefinitions>
+            <Image
+                Grid.Row="0"
+                Source="pack://application:,,,/Layouts/label_time.png"
+                Height="50"
+                VerticalAlignment="Top"
+                />
+            <Border
+                Grid.Row="1"
+                BorderThickness="1"
+                CornerRadius="50"
+                BorderBrush="#5a93cf"
+                Background="White"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Width="90"
+                Height="90"
+                Margin="0,10,0,40">
+                <TextBlock
+                    Name="CountdownTimer"
+                    FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                    FontSize="42"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Foreground="#5a93cf"
+                    TextAlignment="Center"/>
+            </Border>
+            <Image
+                Grid.Row="2"
+                Source="pack://application:,,,/Layouts/label_quantity.png"
+                Height="50"
+                VerticalAlignment="Top"
+                />
+            <Border
+                Grid.Row="3"
+                BorderThickness="1"
+                CornerRadius="50"
+                BorderBrush="#5a93cf"
+                Background="White"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Width="90"
+                Height="90"
+                Margin="0,10,0,40">
+                <TextBlock
+                    Name="PhotosLeftCounter"
+                    FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                    FontSize="42"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Foreground="#5a93cf"
+                    TextAlignment="Center"/>
+            </Border>
+        </Grid>
     </Grid>
 </Page>

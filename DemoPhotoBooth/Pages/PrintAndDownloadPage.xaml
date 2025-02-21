@@ -9,103 +9,126 @@
     <Grid>
         <!-- Background Image -->
         <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Layouts/main-background.png"/>
+            <ImageBrush ImageSource="pack://application:,,,/Layouts/bg-print.png"/>
         </Grid.Background>
 
-        <!-- Define Columns -->
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="140"/>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="350"/>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="90"/>
+        </Grid.RowDefinitions>
 
         <!-- Timer Circle & Countdown -->
 
 
         <!-- LEFT SIDE (Printing and QR Section) -->
-        <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <!-- Printing Status & QR Code -->
-            <Grid VerticalAlignment="Center">
-                <TextBlock Text="Đang in ảnh"
-                           FontSize="68"
-                           FontWeight="Bold"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Top"
-                           Margin="0, 0, 0, 550"/>
-
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Border BorderBrush="Black" BorderThickness="3" CornerRadius="25" Margin="0,0,0,30" Height="320" Width="320">
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Image Height="300" Width="300" Name="qrCode" Margin="0,0,0,0"/>
-                        </StackPanel>
-                    </Border>
-                    <Border Padding="10" BorderBrush="Black" BorderThickness="3" CornerRadius="25">
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                            <TextBlock TextWrapping="Wrap"
-                                    FontSize="23"
-                                    FontWeight="Bold"
-                                    Text="Scan QR để download hình ảnh và video của bạn."
-                                    HorizontalAlignment="Center"
-                                    TextAlignment="Center"/>
-
-                            <TextBlock TextWrapping="Wrap"
-                                    Foreground="#EF7573"
-                                    FontSize="23"
-                                    FontWeight="Bold"
-                                    Text="Lưu ý: Hình ảnh và video sẽ hết hạn sau 3 ngày."
-                                    HorizontalAlignment="Center"
-                                    TextAlignment="Center"
-                                    Margin="0,5,0,0"/>
-                        </StackPanel>
-                    </Border>
-
-                </StackPanel>
-            </Grid>
+        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock 
+                Text="IN HÌNH ẢNH"
+                FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                FontSize="85"
+                Foreground="#5a93cf"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Margin="0, 0, 0, 0"/>
         </Grid>
-
+        <Grid Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border BorderBrush="Black" BorderThickness="3" CornerRadius="25" Margin="0,0,0,30" Height="320" Width="320">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Height="300" Width="300" Name="qrCode" Margin="0,0,0,0"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border Padding="30,15" BorderBrush="#5a93cf" BorderThickness="1" CornerRadius="50">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                    <TextBlock 
+                        TextWrapping="Wrap"
+                        FontSize="23"
+                        Text="Scan QR để download hình ảnh và video của bạn."
+                        FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                        HorizontalAlignment="Center"
+                        TextAlignment="Center"/>
+                    <TextBlock 
+                        TextWrapping="Wrap"
+                        Foreground="#ef5033"
+                        FontSize="23"
+                        Text="Lưu ý: Hình ảnh và video sẽ hết hạn sau 3 ngày."
+                        FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                        HorizontalAlignment="Center"
+                        TextAlignment="Center"
+                        Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
         <!-- RIGHT SIDE (Final Image and End Button) -->
-        <Grid Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
+        <Grid Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center">
             <!-- Final Image -->
-            <Image Name="finalImage" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500" Height="500"/>
+            <!--<Image Name="finalImage" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500" Height="500"/>-->
 
             <!-- End Button -->
-            <Button Name="btnEnd"
-                    Content="Kết thúc"
-                    Width="200"
-                    Height="70"
-                    Background="#F4C76E"
-                    Foreground="White"
-                    FontSize="20"
-                    FontWeight="Bold"
-                    BorderThickness="0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    Margin="0,20,0,100"
-                    Click="btnEnd_Click">
+            
+            <Button 
+                Width="200"
+                Height="70"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Click="btnEnd_Click">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="0"
-                                CornerRadius="35">
+                        <Image 
+                        Source="pack://application:,,,/Layouts/btn-home.png"
+                        Height="70"
+                        Width="Auto" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <!--<Button 
+                Name="btnEnd"
+                Grid.ColumnSpan="3"
+                Content="Kết thúc"
+                Width="200"
+                Height="70"
+                Background="#faa2af"
+                Foreground="White"
+                FontSize="35"
+                FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                BorderThickness="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Margin="0,0,0,0"
+                Click="btnEnd_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border 
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="0"
+                            CornerRadius="35">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Button.Template>
-            </Button>
-            <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,30,0,0">
-                <Ellipse Width="100" Height="100" Fill="#f4c76e"/>
-                <TextBlock Name="lblTimer"
-                  FontSize="32"
-                  FontWeight="Bold"
-                  Foreground="White"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center"/>
-            </Grid>
+            </Button>-->
+        </Grid>
+        <Grid Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse 
+                Width="90"
+                Height="90"
+                Fill="#5a93cf"/>
+            <TextBlock
+                Name="lblTimer"
+                FontSize="35"
+                FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                Foreground="White"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
+            
         </Grid>
     </Grid>
 </Page>

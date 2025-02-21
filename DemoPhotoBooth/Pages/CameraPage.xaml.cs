@@ -13,6 +13,7 @@ using Camera = EOSDigital.API.Camera;
 using DemoPhotoBooth.DataContext;
 using Microsoft.EntityFrameworkCore;
 using DemoPhotoBooth.Pages.Preview;
+using System.Net.Sockets;
 
 namespace DemoPhotoBooth.Pages
 {
@@ -55,13 +56,15 @@ namespace DemoPhotoBooth.Pages
         {
             if (isPortrait)
             {
-                var path = $"{Directory.GetCurrentDirectory()}/layouts/vertical_screen.svg";
-                this.MySvgCanvasLiveView.Source = new Uri(path);
+                var path = "pack://application:,,,/Layouts/bg-vertical.png";
+                this.MyBackgroundLiveView.Source = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
+                this.TimeBoxLive.VerticalAlignment = VerticalAlignment.Center;
             }
             else
             {
-                var path = $"{Directory.GetCurrentDirectory()}/layouts/horizontal_screen.svg";
-                this.MySvgCanvasLiveView.Source = new Uri(path);
+                var path = "pack://application:,,,/Layouts/bg-horizontal.png";
+                this.MyBackgroundLiveView.Source = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
+                this.TimeBoxLive.VerticalAlignment = VerticalAlignment.Top;
             }
         }
 
@@ -178,13 +181,13 @@ namespace DemoPhotoBooth.Pages
                     Debug.WriteLine("Photo session completed.");
                     CountdownTimer.Text = "Đã chụp xong!";
                     // Stop recording when all photos are taken
-                    NavigationService?.Navigate(new NewPreviewPage());
+                    NavigationService?.Navigate(new NewPreviewPage(isPortrait));
                     recorder.StopRecording();
                 }
             }
             catch (Exception ex)
             {
-                //Report.Error(ex.Message, false);
+                Report.Error(ex.Message, false);
             }
         }
 
@@ -209,6 +212,11 @@ namespace DemoPhotoBooth.Pages
             {
                 secondCounter.Stop();
             }
+        }
+
+        private void Continue_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new NewPreviewPage(isPortrait));
         }
 
         #endregion
@@ -289,24 +297,24 @@ namespace DemoPhotoBooth.Pages
             }
         }
         // Convert TransformedBitmap to BitmapImage
-        //private BitmapImage ConvertToBitmapImage(BitmapSource bitmapSource)
-        //{
-        //    using (MemoryStream memoryStream = new MemoryStream())
-        //    {
-        //        BitmapEncoder encoder = new PngBitmapEncoder();
-        //        encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
-        //        encoder.Save(memoryStream);
+        private BitmapImage ConvertToBitmapImage(BitmapSource bitmapSource)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                BitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+                encoder.Save(memoryStream);
 
-        //        BitmapImage bitmapImage = new BitmapImage();
-        //        bitmapImage.BeginInit();
-        //        bitmapImage.StreamSource = new MemoryStream(memoryStream.ToArray());
-        //        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-        //        bitmapImage.EndInit();
-        //        bitmapImage.Freeze();
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = new MemoryStream(memoryStream.ToArray());
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze();
 
-        //        return bitmapImage;
-        //    }
-        //}
+                return bitmapImage;
+            }
+        }
         private void MainCamera_DownloadReady(Camera sender, DownloadInfo Info)
         {
 
@@ -350,7 +358,7 @@ namespace DemoPhotoBooth.Pages
 
         private void ErrorHandler_SevereErrorHappened(object sender, Exception ex)
         {
-            //Report.Error(ex.Message, true);
+            Report.Error(ex.Message, true);
         }
 
         #endregion
@@ -405,7 +413,7 @@ namespace DemoPhotoBooth.Pages
 
         private void StartLiveView()
         {
-            //Slider.Visibility = Visibility.Visible;
+            Slider.Visibility = Visibility.Visible;
             CountdownTimer.Visibility = Visibility.Visible;
             try
             {
