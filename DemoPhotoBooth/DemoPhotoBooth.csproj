@@ -73,29 +73,51 @@
     <Content Include="Layouts\background_01.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Layouts\clock.png">
+    <Resource Include="Layouts\clock.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Layouts\remote-control-hand.png">
+    </Resource>
+    <Resource Include="Layouts\remote-control-hand.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </Resource>
     <Content Include="Layouts\temp\readme.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Layouts\bg-horizontal.png" />
-    <Resource Include="Layouts\bg-layout.png" />
-    <Resource Include="Layouts\bg-mode-cam.png" />
-    <Resource Include="Layouts\bg-payment.png" />
-    <Resource Include="Layouts\bg-popup.png" />
-    <Resource Include="Layouts\bg-preview-horizontal.png" />
-    <Resource Include="Layouts\bg-preview-vertical.png" />
-    <Resource Include="Layouts\bg-print.png" />
-    <Resource Include="Layouts\bg-theme.png" />
-    <Resource Include="Layouts\bg-vertical.png" />
-    <Resource Include="Layouts\btn-home.png" />
+    <Resource Include="Layouts\bg-horizontal.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\bg-layout.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\bg-mode-cam.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\bg-payment.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\bg-popup.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\bg-preview-horizontal.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\bg-preview-vertical.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\bg-print.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\bg-theme.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\bg-vertical.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\btn-home.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Layouts\fonts\Coiny.ttf" />
     <Resource Include="Layouts\horizontal_screen.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -161,9 +183,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Layouts\50x50.png" />
-    <Resource Include="Layouts\icon-flower.png" />
-    <Resource Include="Layouts\label_quantity.png" />
-    <Resource Include="Layouts\label_time.png" />
+    <Resource Include="Layouts\icon-flower.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\label_quantity.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Layouts\label_time.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Layouts\Layout1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

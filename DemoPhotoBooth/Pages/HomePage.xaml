@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DemoPhotoBooth.Pages"
         mc:Ignorable="d"
-        Title="HomePage" Height="Auto" Width="Auto" Loaded="Window_Loaded" LayoutUpdated="Window_LayoutUpdated">
+        Title="HomePage" Height="Auto" Width="Auto">
 
     <!-- Grid chứa toàn bộ nội dung -->
     <Grid MouseDown="StartApi_Click" TouchDown="StartApi_Click">
