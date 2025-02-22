@@ -235,7 +235,7 @@
                                             FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
                                             FontSize="40"
                                             Foreground="#222222" 
-                                            Text="50.000" 
+                                            Text="0" 
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"/>
                                     </Border>

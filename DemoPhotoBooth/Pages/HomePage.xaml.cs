@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
@@ -57,30 +58,17 @@ namespace DemoPhotoBooth.Pages
         {
             try
             {
-                //bool isCameraConnected = CheckCamera();
-                //bool isMoneyCheckerConnected = CheckMoneyChecker();
-                //bool isPrinterConnected = CheckPrinter();
+                bool isCameraConnected =  CheckCamera();
+                bool isMoneyCheckerConnected = CheckMoneyChecker();
+                bool isPrinterConnected = CheckPrinter();
 
-                //if (!isCameraConnected)
-                //{
-                //    await SendNotificationAsync("Lỗi: Không tìm thấy camera!");
-                //    MessageBox.Show("Lỗi: Không tìm thấy camera!", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
-                //    return;
-                //}
+                if (!isCameraConnected || !isMoneyCheckerConnected || !isPrinterConnected)
+                {
+                    await SendNotificationAsync(isCameraConnected, isMoneyCheckerConnected, isPrinterConnected);
+                    MessageBox.Show($"Lỗi: Không tìm thấy camera {isCameraConnected} money {isMoneyCheckerConnected} printer {isPrinterConnected}", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
 
-                //if (!isMoneyCheckerConnected)
-                //{
-                //    await SendNotificationAsync("Lỗi: Không tìm thấy máy kiểm tra tiền!");
-                //    MessageBox.Show("Lỗi: Không tìm thấy máy kiểm tra tiền!", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
-                //    return;
-                //}
-
-                //if (!isPrinterConnected)
-                //{
-                //    await SendNotificationAsync("Lỗi: Không tìm thấy máy in!");
-                //    MessageBox.Show("Lỗi: Không tìm thấy máy in!", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
-                //    return;
-                //}
                 var info = _db.PhotoApps.AsNoTracking()?.FirstOrDefault();
                 var layouts = await GetLayout(PhotoApps, info.Token);
 
@@ -140,24 +128,83 @@ namespace DemoPhotoBooth.Pages
         /// <summary>
         /// Kiểm tra Camera có kết nối không
         /// </summary>
-        private bool CheckCamera()
+        public static bool CheckCamera()
         {
-            using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PnPEntity WHERE Description LIKE '%Camera%' OR Description LIKE '%Webcam%'"))
+            try
             {
-                return searcher.Get().Count > 0;
+                // Chạy PowerShell để lấy danh sách thiết bị kết nối
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "powershell.exe",
+                        Arguments = "Get-PnpDevice | Where-Object { $_.FriendlyName -match 'Camera|Webcam|Canon|EOS|R100' } | Select-Object -ExpandProperty FriendlyName",
+                        RedirectStandardOutput = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    }
+                };
+
+                process.Start();
+                string output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+
+                List<string> foundDevices = new List<string>();
+
+                // Tách các dòng output để lấy tên thiết bị
+                foreach (var line in output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    Console.WriteLine($"Found Device: {line}");
+                    foundDevices.Add(line);
+                }
+
+                // Kiểm tra danh sách thiết bị xem có Canon R100 hay không
+                foreach (var device in foundDevices)
+                {
+                    if (device.Contains("Canon", StringComparison.OrdinalIgnoreCase) ||
+                        device.Contains("EOS", StringComparison.OrdinalIgnoreCase) ||
+                        device.Contains("R100", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return true;
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error checking camera: {ex.Message}");
+            }
+
+            return false;
         }
 
         /// <summary>
         /// Kiểm tra máy kiểm tra tiền (qua cổng Serial)
         /// </summary>
-        private bool CheckMoneyChecker()
+        public static bool CheckMoneyChecker()
         {
-            using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_SerialPort"))
+            string targetPort = "COM2";
+
+            // Chạy lệnh "mode" để lấy danh sách các cổng COM
+            var process = new Process
             {
-                return searcher.Get().Count > 0;
-            }
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = "/c mode",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                }
+            };
+
+            process.Start();
+            string output = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+
+            // Kiểm tra xem output có chứa cổng COM mong muốn không
+            return output.Contains(targetPort, StringComparison.OrdinalIgnoreCase);
         }
+
 
         /// <summary>
         /// Kiểm tra máy in có kết nối không
@@ -165,30 +212,54 @@ namespace DemoPhotoBooth.Pages
         private bool CheckPrinter()
         {
             string printerName = "DS-RX1";
-            using (var searcher = new ManagementObjectSearcher($"SELECT * FROM Win32_Printer WHERE Name = '{printerName}'"))
+            var process = new Process
             {
-                return searcher.Get().Count > 0;
-            }
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "powershell.exe",
+                    Arguments = $"Get-Printer | Where-Object {{$_.Name -eq '{printerName}'}}",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                }
+            };
+
+            process.Start();
+            string output = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+
+            // Nếu output chứa tên máy in => máy in tồn tại
+            return !string.IsNullOrWhiteSpace(output);
         }
 
-        private async Task<bool> SendNotificationAsync(string message)
+        private async Task<bool> SendNotificationAsync(bool isCameraConnected, bool isMoneyCheckerConnected, bool isPrinterConnected)
         {
             try
             {
+                var photoApp = _db.PhotoApps.FirstOrDefault();
+                var token = photoApp.Token;
+                string apiUrl = string.Format(ApiUrl.ApiSendMessage, photoApp.Id);
+
                 using (HttpClient client = new HttpClient())
                 {
-                    string apiUrl = ApiUrl.ApiSendMessage;
-                    var data = new { message = message, MachineCode = PhotoApps.Code };
-                    var json = System.Text.Json.JsonSerializer.Serialize(data);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var data = new
+                    {
+                        camera = isCameraConnected,
+                        bill_acceptor = isMoneyCheckerConnected,
+                        printer = isPrinterConnected,
+                        printer_paper_count = 0
+                    };
 
-                    HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+                    var json = JsonSerializer.Serialize(data);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(token);
+                    HttpResponseMessage response = await client.PostAsync(apiUrl,content);
                     return response.IsSuccessStatusCode;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi gửi API: {ex.Message}", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Lỗi khi gửi API: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
         }

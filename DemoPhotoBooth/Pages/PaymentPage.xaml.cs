@@ -53,6 +53,7 @@ namespace DemoPhotoBooth.Pages
             Backgrounds = backgrounds;
             ListLayout = listLayouts;
             colors = color;
+            CloseSerialPort();
         }
 
         private async void InitializeSerialPort()
@@ -87,54 +88,61 @@ namespace DemoPhotoBooth.Pages
 
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            try
+            if(serialPort == null || !serialPort.IsOpen)
             {
-                int bytesToRead = serialPort.BytesToRead;
-                byte[] receivedBytes = new byte[bytesToRead];
-                serialPort.Read(receivedBytes, 0, bytesToRead);
-
-                // Hiển thị dữ liệu dạng HEX để kiểm tra chính xác
-                string hexString = BitConverter.ToString(receivedBytes);
-                Dispatcher.Invoke(() => LogMessage("Dữ liệu nhận từ TP70 (HEX): " + hexString));
-
-                // Xử lý từng byte
-                foreach (byte b in receivedBytes)
-                {
-                    Dispatcher.Invoke(() => LogMessage($"Byte nhận được: {b:X2} (Dec: {b})"));
-
-                    // Kiểm tra các mã và cộng tiền
-                    switch (b)
-                    {
-                        case 0x40:
-                            totalAmount += 10000; // 10 ngàn đồng
-                            SendCommand("02");
-                            break;
-                        case 0x41:
-                            totalAmount += 20000; // 20 ngàn đồng
-                            SendCommand("02");
-                            break;
-                        case 0x42:
-                            totalAmount += 50000; // 50 ngàn đồng
-                            SendCommand("02");
-                            break;
-                        case 0x43:
-                            totalAmount += 100000; // 100 ngàn đồng
-                            SendCommand("02");
-                            break;
-                    }
-
-                    // Nếu cần gửi lệnh phản hồi, ví dụ gửi lệnh "02"
-                    if (b >= 0x80 && b <= 0x8F)
-                    {
-                        SendCommand("02");
-                    }
-
-                    UpdateUI(paymentId);
-                }
+                return;
             }
-            catch (Exception ex)
+            else
             {
-                Dispatcher.Invoke(() => LogMessage("Lỗi đọc dữ liệu: " + ex.Message));
+                try
+                {
+                    int bytesToRead = serialPort.BytesToRead;
+                    byte[] receivedBytes = new byte[bytesToRead];
+                    serialPort.Read(receivedBytes, 0, bytesToRead);
+
+                    // Hiển thị dữ liệu dạng HEX để kiểm tra chính xác
+                    string hexString = BitConverter.ToString(receivedBytes);
+                    Dispatcher.Invoke(() => LogMessage("Dữ liệu nhận từ TP70 (HEX): " + hexString));
+
+                    // Xử lý từng byte
+                    foreach (byte b in receivedBytes)
+                    {
+                        Dispatcher.Invoke(() => LogMessage($"Byte nhận được: {b:X2} (Dec: {b})"));
+
+                        // Kiểm tra các mã và cộng tiền
+                        switch (b)
+                        {
+                            case 0x40:
+                                totalAmount += 10000; // 10 ngàn đồng
+                                SendCommand("02");
+                                break;
+                            case 0x41:
+                                totalAmount += 20000; // 20 ngàn đồng
+                                SendCommand("02");
+                                break;
+                            case 0x42:
+                                totalAmount += 50000; // 50 ngàn đồng
+                                SendCommand("02");
+                                break;
+                            case 0x43:
+                                totalAmount += 100000; // 100 ngàn đồng
+                                SendCommand("02");
+                                break;
+                        }
+
+                        // Nếu cần gửi lệnh phản hồi, ví dụ gửi lệnh "02"
+                        if (b >= 0x80 && b <= 0x8F)
+                        {
+                            SendCommand("02");
+                        }
+
+                        UpdateUI(paymentId);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Dispatcher.Invoke(() => LogMessage("Lỗi đọc dữ liệu: " + ex.Message));
+                }
             }
         }
 
@@ -149,15 +157,12 @@ namespace DemoPhotoBooth.Pages
                 // Hiển thị nút "Tiếp tục" nếu số tiền đã nạp đủ hoặc lớn hơn
                 if (totalAmount >= amountToPay)
                 {
-                    //CompleteTransactionPayment(paymentId, totalAmount);
                     isNextPage = true;
                     btnContinue.IsEnabled = true;
                     btnContinue.Opacity = 1.0;
                 }
             });
         }
-
-
 
         private void SendCommand(string command)
         {
@@ -209,10 +214,7 @@ namespace DemoPhotoBooth.Pages
             else
             {
                 totalAmount = 0;
-                if (serialPort != null && serialPort.IsOpen)
-                {
-                    serialPort.Close();
-                }
+                CloseSerialPort();
                 // Quay về trang chủ
                 NavigateToHomePage(this, new RoutedEventArgs());
             }
@@ -245,20 +247,14 @@ namespace DemoPhotoBooth.Pages
         private void NavigateToHomePage(object sender, RoutedEventArgs e)
         {
             totalAmount = 0;
-            if (serialPort != null && serialPort.IsOpen)
-            {
-                serialPort.Close();
-            }
+            CloseSerialPort();
             NavigationService?.Navigate(new HomePage());
         }
 
         private void NavigateToPreviousPage(object sender, RoutedEventArgs e)
         {
             totalAmount = 0;
-            if (serialPort != null && serialPort.IsOpen)
-            {
-                serialPort.Close();
-            }
+            CloseSerialPort();
             NavigationService?.Navigate(new BackgroundPage(Layout, Backgrounds, colors, ListLayout));
         }
 
@@ -267,10 +263,7 @@ namespace DemoPhotoBooth.Pages
             // Điều hướng tới trang CameraMode
             CompleteTransactionPayment(paymentId, totalAmount);
             totalAmount = 0;
-            if (serialPort != null && serialPort.IsOpen)
-            {
-                serialPort.Close();
-            }
+            CloseSerialPort();
             NavigationService?.Navigate(new CameraMode());
 
         }
@@ -388,14 +381,10 @@ namespace DemoPhotoBooth.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            RightPayment.Background = new SolidColorBrush(Colors.Gray);
             amountToPay = TotalPrice;
             txtCountdown.Visibility = Visibility.Collapsed;
             bgCountDown.Visibility = Visibility.Collapsed;
-            //paymentId = CreateTransactionPayment(Layout.Id, Quantity);
-            UpdateUI(paymentId);
-            // Khởi tạo bộ đếm thời gian
-
+            txtAmountToPay.Text = $"{amountToPay:N0} VNĐ";
         }
 
         private void IncreaseQuantity(object sender, RoutedEventArgs e)
@@ -424,6 +413,8 @@ namespace DemoPhotoBooth.Pages
         private void AcceptPayment(object sender, EventArgs e)
         {
             UpdateAmount();
+            totalAmount = 0;
+            CloseSerialPort();
             InitializeSerialPort();
             txtCountdown.Visibility = Visibility.Visible;
             bgCountDown.Visibility = Visibility.Visible;
@@ -449,6 +440,17 @@ namespace DemoPhotoBooth.Pages
                 layout.PrintQuantity = quantity;
                 _db.Entry(layout).State = EntityState.Modified;
                 _db.SaveChanges();
+            }
+        }
+
+        private void CloseSerialPort()
+        {
+            if (serialPort != null && serialPort.IsOpen)
+            {
+                serialPort.Close();
+                serialPort.Dispose();
+                serialPort = null;
+                LogMessage("Cổng COM đã đóng.");
             }
         }
     }

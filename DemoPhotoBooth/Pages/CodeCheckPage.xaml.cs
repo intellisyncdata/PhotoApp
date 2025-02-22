@@ -8,8 +8,10 @@ using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using System.Windows.Resources;
 using DemoPhotoBooth.Common;
 using DemoPhotoBooth.DataContext;
+using DemoPhotoBooth.Models;
 using DemoPhotoBooth.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +28,7 @@ namespace DemoPhotoBooth.Pages
 #if DEBUG
             CodeInput.Text = "ZR3yT2POsAE";
 #endif
+            CheckVersion();
             _httpClient = new HttpClient();
             _db = new CommonDbDataContext();
             if (_db != null)
@@ -77,11 +80,40 @@ namespace DemoPhotoBooth.Pages
             }
         }
 
+        private async void CheckVersion()
+        {
+            Uri resourceUri = new Uri("pack://application:,,,/Text/Version.txt");
+            string VersionCheckUrl = "https://photo-app-api.intellisyncdata.com/api/v1/apps/check_version?version=";
+            StreamResourceInfo resourceInfo = Application.GetResourceStream(resourceUri);
+
+            if (resourceInfo != null)
+            {
+                using (StreamReader reader = new StreamReader(resourceInfo.Stream))
+                {
+                    string version = await reader.ReadToEndAsync();
+                    using (HttpClient client = new HttpClient())
+                    {
+                        HttpResponseMessage response = await client.GetAsync(VersionCheckUrl + version);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            btnUpdate.IsEnabled = true;
+                            btnUpdate.Opacity = 1;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Không tìm thấy tệp Version.txt", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         private async void CheckUpdate_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                CheckVersion();
+
                 // URL API để tải file
                 string apiUrl = "https://example.com/api/download";
                 string filePath = @"C:\Path\To\Your\Exe\File.exe"; // Đường dẫn file exe hiện tại

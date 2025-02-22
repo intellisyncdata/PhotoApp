@@ -55,6 +55,8 @@
     <None Remove="Layouts\remote-control-hand.png" />
     <None Remove="Layouts\temp\readme.md" />
     <None Remove="Layouts\vertical_screen.svg" />
+    <None Remove="Text\CountPrinter.txt" />
+    <None Remove="Text\Version.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -126,7 +128,6 @@
 
   <ItemGroup>
        <Folder Include="Layouts\Temp\" />
-       <Folder Include="Text\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -212,12 +213,11 @@
     <Resource Include="Layouts\vertical_screen.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Text\CountPrinter.txt">
+    <Resource Include="Text\CountPrinter.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Resource>
+    <Resource Include="Text\Version.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
-
 </Project>

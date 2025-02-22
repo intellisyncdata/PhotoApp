@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
+using System.IO.Ports;
 using System.Linq;
 using System.Net.Http;
 using System.Printing;
@@ -46,6 +47,8 @@ namespace DemoPhotoBooth.Pages
         private readonly CommonDbDataContext _db;
         private bool isLandscape = false;
         private bool isCutted = false;
+        private SerialPort? serialPort;
+
         public PrintAndDownloadPage()
         {
             InitializeComponent();
@@ -369,6 +372,11 @@ namespace DemoPhotoBooth.Pages
         private void NextHomePage()
         {
             ClearResource();
+            if (serialPort != null && serialPort.IsOpen)
+            {
+                serialPort.Close();
+                serialPort.Dispose();
+            }
             NavigationService.Navigate(new HomePage());
         }
 

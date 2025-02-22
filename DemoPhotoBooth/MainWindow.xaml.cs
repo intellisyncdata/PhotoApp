@@ -7,6 +7,8 @@ using DemoPhotoBooth.DataContext;
 using System.Net.Http.Headers;
 using DemoPhotoBooth.Pages.Preview;
 using DemoPhotoBooth.Pages;
+using System.IO.Ports;
+using System.ComponentModel;
 
 namespace DemoPhotoBooth
 {
@@ -17,6 +19,7 @@ namespace DemoPhotoBooth
     {
         private readonly CommonDbDataContext _db;
         private readonly HttpClient _httpClient;
+        private SerialPort? serialPort;
         public MainWindow()
         {
             InitializeComponent();
@@ -65,12 +68,24 @@ namespace DemoPhotoBooth
             }
         }
 
+        private void ClosePort()
+        {
+            if (serialPort != null && serialPort.IsOpen)
+            {
+                serialPort.Close();
+                serialPort.Dispose();
+                serialPort = null;
+            }
+        }
+
         private void Window_Closed(object sender, EventArgs e)
         {
             try
             {
                 //Task task1 = Task.Factory.StartNew(() => DeactivePhotoApp());
                 ClearLayoutApp();
+                ClosePort();
+                Environment.Exit(0);
                 //Task task2 = Task.Factory.StartNew(() => ClearCommonData());
                 //Task.WaitAll(task1, task2);
             }

@@ -117,7 +117,8 @@
                     FontSize="35" 
                     FontWeight="Bold"
                     BorderThickness="0"
-                    Margin="20,0,0,0">
+                    Margin="20,0,0,0"
+                    IsEnabled="False" Opacity="0.5">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border Background="{TemplateBinding Background}" 

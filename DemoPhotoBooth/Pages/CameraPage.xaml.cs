@@ -107,38 +107,10 @@ namespace DemoPhotoBooth.Pages
             }
         }
 
-        private async Task WaitForRemoteTrigger()
-        {
-            Debug.WriteLine("Đang chờ tín hiệu từ remote...");
-
-            bool remotePressed = false;
-
-            // Lắng nghe sự kiện từ máy ảnh
-            MainCamera.StateChanged += (sender, eventID, parameter) =>
-            {
-                if (eventID == StateEventID.WillSoonShutDown) // Hoặc một event phù hợp hơn
-                {
-                    Debug.WriteLine("📸 Remote đã bấm! Chuẩn bị chụp...");
-                    remotePressed = true;
-                }
-            };
-
-            while (!remotePressed)
-            {
-                await Task.Delay(100); // Kiểm tra mỗi 100ms
-            }
-        }
-
         private async void MakePhoto(object sender, EventArgs e)
         {
             try
             {
-                if (isManual)
-                {
-                    Debug.WriteLine($"Chờ bấm remote để chụp ảnh {photosTaken + 1}...");
-                    await WaitForRemoteTrigger();
-                }
-
                 photosTaken++;
 
                 #region Take Photo
@@ -326,9 +298,10 @@ namespace DemoPhotoBooth.Pages
 
                 Info.FileName = savedata.PhotoName;
                 sender.DownloadFile(Info, dir);
-
-                ReSize.CropAndSaveImage(savedata.PhotoDirectory, photoNumber);
-
+                if (isPortrait)
+                {
+                    ReSize.CropAndSaveImage(savedata.PhotoDirectory, photoNumber);
+                }
             }
             catch (Exception ex)
             {
