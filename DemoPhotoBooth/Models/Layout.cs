@@ -1,9 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
 namespace DemoPhotoBooth.Models
 {
+    public class BgLayout
+    {
+        [JsonPropertyName("id")]
+        public int id { get; set; }
+        [JsonPropertyName("width")]
+        public int width { get; set; }
+        [JsonPropertyName("height")]
+        public int height { get; set; }
+        [JsonPropertyName("frame_type")]
+        public string frame_typed { get; set; }
+        [JsonPropertyName("image_url")]
+        public string image_url { get; set; }
+
+        public override string ToString()
+        {
+            return string.Empty;
+        }
+
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    OnPropertyChanged(nameof(IsSelected));
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class ThemeType
+    {
+        [JsonPropertyName("id")]
+        public int id { get; set; }
+        [JsonPropertyName("name")]
+        public string name { get; set; }
+    }
+    public class Theme
+    {
+        [JsonPropertyName("id")]
+        public int id { get; set; }
+        [JsonPropertyName("theme_type")]
+        public ThemeType theme_type { get; set; }
+        [JsonPropertyName("bg_layouts")]
+        public List<BgLayout> bg_layouts { get; set; }
+    }
     public class Layout
     {
         [JsonPropertyName("id")]
@@ -34,6 +92,9 @@ namespace DemoPhotoBooth.Models
         public List<Background> BgLayouts { get; set; } = new List<Background>(); 
 
         [JsonPropertyName("paper_size")]
-        public string PaperSize { get; set; } 
+        public string PaperSize { get; set; }
+
+        [JsonPropertyName("themes")]
+        public List<Theme> themes { get; set; }
     }
 }

@@ -14,6 +14,7 @@
             <RowDefinition Height="1.5*"/>
             <!-- Hàng chứa tiêu đề -->
             <RowDefinition Height="1*"/>
+            <!--<RowDefinition Height="1*"/>-->
             <!-- Hàng chứa nút chọn -->
             <RowDefinition Height="4*"/>
             <!-- Hàng chứa nội dung chính -->
@@ -21,7 +22,7 @@
         </Grid.RowDefinitions>
 
         <!-- Tiêu đề chính -->
-        <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,20,0,10">
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,20,0,10" >
             <TextBlock Text="CHỌN CHỦ ĐỀ"
                        FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
                        FontSize="85" 
@@ -31,24 +32,71 @@
                        Padding="0,10,0,0"
                        Margin="0,0,0,5"/>
         </StackPanel>
-
+        <ListBox 
+            Width="900"
+            Grid.Row="1"
+            Name="topicsListBox"
+            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+            SelectionMode="Single"
+            Background="Transparent"
+            BorderThickness="0"
+            Loaded="ListBox_Loaded"
+            MouseDown="ListBox_MouseDown"
+            MouseMove="ListBox_MouseMove"
+            MouseUp="ListBox_MouseUp">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Button Content="{Binding theme_type.name}"
+                        Width="270"
+                        Height="70"
+                        Background="#faa2af"
+                        Foreground="White"
+                        FontWeight="Bold"
+                        FontSize="30"
+                        FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                        BorderThickness="0"
+                        Margin="10,0,10,0"
+                        Click="ThemeButton_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" 
+                                    CornerRadius="30" 
+                                    BorderThickness="0">
+                                    <TextBlock Text="{TemplateBinding Content}" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center"
+                                        Foreground="White" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <!-- Hàng chứa các nút Màu Nền và Hình Nền -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0" Grid.Row="1">
-            <Button Content="Cơ bản"
-                    FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
-                    Click="ShowColorGrid_Click"
-                    Width="270"
-                    Height="70"
-                    Background="#faa2af"
-                    Foreground="White"
-                    FontWeight="Bold"
-                    FontSize="30"
-                    BorderThickness="0"
-                    Margin="0,0,300,0">
+        <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0" Grid.Row="2">
+            <Button 
+                Content="Cơ bản"
+                FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                Click="ShowColorGrid_Click"
+                Width="270"
+                Height="70"
+                Background="#faa2af"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="30"
+                BorderThickness="0"
+                Margin="0,0,300,0">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" 
-                        CornerRadius="35" 
+                        CornerRadius="30" 
                         BorderThickness="0">
                             <TextBlock Text="{TemplateBinding Content}" 
                         HorizontalAlignment="Center" 
@@ -59,21 +107,22 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Button Content="Đặc biệt"
-                    FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
-                    Click="ShowImageGrid_Click"
-                    Width="270"
-                    Height="70"
-                    Background="#faa2af"
-                    Foreground="White"
-                    FontWeight="Bold"
-                    FontSize="30"
-                    BorderThickness="0"
-                    Margin="0">
+            <Button 
+                Content="Đặc biệt"
+                FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                Click="ShowImageGrid_Click"
+                Width="270"
+                Height="70"
+                Background="#faa2af"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="30"
+                BorderThickness="0"
+                Margin="0">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" 
-                            CornerRadius="35" 
+                            CornerRadius="30" 
                             BorderThickness="0">
                             <TextBlock Text="{TemplateBinding Content}" 
                             HorizontalAlignment="Center" 
@@ -84,52 +133,10 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-        </StackPanel>
+        </StackPanel>-->
 
         <!-- Grid chứa nội dung chính -->
         <Grid Grid.Row="2">
-            <!-- Grid chọn màu nền -->
-            <Grid Visibility="{Binding IsColorGridVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                <DockPanel LastChildFill="True">
-                    <!-- Phần chứa danh sách hình ảnh và các nút điều hướng -->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <!-- Nút điều hướng background trước -->
-                        <Button Click="PreviousColorButton_Click" Width="100" Height="100" Background="Transparent" BorderThickness="0">
-                            <Image Source="pack://application:,,,/Layouts/prev.png" Width="80" Height="80" Stretch="Uniform"/>
-                        </Button>
-                        <!-- Hiển thị danh sách các color -->
-                        <ItemsControl ItemsSource="{Binding VisibleBackgrounds}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border MouseDown="OnBackgroundClicked" BorderThickness="{Binding IsSelected, Converter={StaticResource BoolToBorderThicknessConverter}}"
-                                         BorderBrush="#5a93cf"
-                                         CornerRadius="10"
-                                         Padding="10"
-                                         Margin="10,0,10,0">
-                                        <Grid Width="250" Height="350">
-                                            <!--<Image Source="{Binding Image}" 
-                            Stretch="Uniform" 
-                            HorizontalAlignment="Center" 
-                            VerticalAlignment="Center"/>-->
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-
-                        <!-- Nút điều hướng background tiếp theo -->
-                        <Button Click="NextColorButton_Click" Width="100" Height="100" Background="Transparent" BorderThickness="0">
-                            <Image Source="pack://application:,,,/Layouts/next.png" Width="80" Height="80" Stretch="Uniform"/>
-                        </Button>
-                    </StackPanel>
-                </DockPanel>
-            </Grid>
-
             <!-- Grid chọn hình nền -->
             <Grid Visibility="{Binding IsImageGridVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                 <DockPanel LastChildFill="True">
@@ -148,16 +155,18 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border x:Name="BorderImage" MouseDown="OnBackgroundClicked" BorderThickness="{Binding IsSelected, Converter={StaticResource BoolToBorderThicknessConverter}}"
-                                BorderBrush="#5a93cf"
-                                CornerRadius="10"
-                                Padding="10"
-                                Margin="10,0,10,0">
+                                    <Border 
+                                        x:Name="BorderImage" MouseDown="OnBackgroundClicked" BorderThickness="{Binding IsSelected, Converter={StaticResource BoolToBorderThicknessConverter}}"
+                                        BorderBrush="#5a93cf"
+                                        CornerRadius="10"
+                                        Padding="10"
+                                        Margin="10,0,10,0">
                                         <Grid Width="250" Height="350">
-                                            <Image Source="{Binding Image}" 
-                                       Stretch="Uniform" 
-                                       HorizontalAlignment="Center" 
-                                       VerticalAlignment="Center"/>
+                                            <Image 
+                                                Source="{Binding image_url}" 
+                                                Stretch="Uniform" 
+                                                HorizontalAlignment="Center" 
+                                                VerticalAlignment="Center"/>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>

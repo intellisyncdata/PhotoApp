@@ -19,10 +19,15 @@ using SharpVectors.Renderers.Wpf;
 
 namespace DemoPhotoBooth.Pages.BackgroundPages
 {
+    public class ThemeOption
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
     public partial class BackgroundPage : Page, INotifyPropertyChanged
     {
         public PhotoApp PhotoApp { get; set; }
-        public List<Background> Backgrounds { get; set; }
+        public List<BgLayout> Backgrounds { get; set; }
         public Layout Layout { get; set; }
         public List<Layout> ListLayout { get; set; }
         private int _currentIndex;
@@ -37,13 +42,11 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
         private const int ItemsPerPage = 3;
         private DispatcherTimer countdownTimer;
         private bool isPopupShown = false;
-        public ObservableCollection<Background> VisibleBackgrounds { get; set; } = new ObservableCollection<Background>();
+        public ObservableCollection<BgLayout> VisibleBackgrounds { get; set; } = new ObservableCollection<BgLayout>();
 
-        public BackgroundPage(Layout layouts, List<Background> backgrounds, string colors, List<Layout> listLayout)
+        public BackgroundPage(Layout layouts, List<BgLayout> backgrounds, string colors, List<Layout> listLayout)
         {
             InitializeComponent();
-
-            Backgrounds = backgrounds;
             ListLayout = listLayout;
             color = colors;
             Layout = layouts;
@@ -54,19 +57,84 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
             _currentColorIndex = 0;
             _selectedLayout = layouts;
 
+            // List ra Themes theo Layout chỉ định
+            var themes = layouts.themes
+                .Select(t => new ThemeOption
+                { 
+                    Id = t.id,
+                    Name = t.theme_type.name
+                })
+                .ToList();
+
+            topicsListBox.ItemsSource = layouts.themes;
+
             // Thiết lập trạng thái ban đầu
             IsImageGridVisible = true;
             IsColorGridVisible = false;
-            UpdateVisibleBackgrounds();
             DataContext = this;
             btnContinue.IsEnabled = false;
             btnContinue.Opacity = 0.5;
+            //UpdateVisibleBackgrounds();
+            if (layouts.themes.Count > 0)
+            {
+                Backgrounds = layouts.themes[0].bg_layouts;
+                UpdateVisibleBackgrounds();
+            }
 
             // Hiệu ứng mượt mà khi khởi tạo
             Loaded += OnPageLoaded;
+        }
+        private ScrollViewer _scrollViewer;
+        private bool _isMouseDown = false;
+        private Point _mouseStartPosition;
+        private double _scrollStartOffset;
 
+        private void ListBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            _scrollViewer = GetScrollViewer(topicsListBox);
         }
 
+        private void ListBox_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_scrollViewer != null)
+            {
+                _isMouseDown = true;
+                _mouseStartPosition = e.GetPosition(topicsListBox);
+                _scrollStartOffset = _scrollViewer.HorizontalOffset;
+                topicsListBox.CaptureMouse();
+            }
+        }
+
+        private void ListBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_isMouseDown && _scrollViewer != null)
+            {
+                Point currentPosition = e.GetPosition(topicsListBox);
+                double deltaX = _mouseStartPosition.X - currentPosition.X;
+                _scrollViewer.ScrollToHorizontalOffset(_scrollStartOffset + deltaX);
+            }
+        }
+
+        private void ListBox_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _isMouseDown = false;
+            topicsListBox.ReleaseMouseCapture();
+        }
+
+        private ScrollViewer GetScrollViewer(DependencyObject depObj)
+        {
+            if (depObj is ScrollViewer)
+                return (ScrollViewer)depObj;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+            {
+                var child = VisualTreeHelper.GetChild(depObj, i);
+                var result = GetScrollViewer(child);
+                if (result != null)
+                    return result;
+            }
+            return null;
+        }
         private async void OnPageLoaded(object sender, RoutedEventArgs e)
         {
             // Đặt màu nền ban đầu
@@ -96,9 +164,9 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
             UpdateCurrentImage();
         }
 
-        private Background chooseBackground;
-        private Background _currentBackground;
-        public Background CurrentBackground
+        private BgLayout chooseBackground;
+        private BgLayout _currentBackground;
+        public BgLayout CurrentBackground
         {
             get => _currentBackground;
             set
@@ -174,7 +242,7 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
         #region Background Logic
         public void OnBackgroundClicked(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Border border && border.DataContext is Background clickedBackground)
+            if (sender is Border border && border.DataContext is BgLayout clickedBackground)
             {
                 foreach (var bg in Backgrounds)
                 {
@@ -184,7 +252,7 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
                 chooseBackground = clickedBackground;
                 OnPropertyChanged(nameof(VisibleBackgrounds));
                 btnContinue.IsEnabled = true;
-                btnContinue.Opacity = 0.5;
+                btnContinue.Opacity = 1;
             }
         }
 
@@ -314,6 +382,27 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
             });
         }
 
+        private void ThemeButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Lấy button được click
+            Button clickedButton = sender as Button;
+
+            if (clickedButton != null)
+            {
+                // Lấy DataContext của button (chính là item của ListBox)
+                Theme selectedTheme = clickedButton.DataContext as Theme; // Ép kiểu thành kiểu dữ liệu của bạn
+
+                if (selectedTheme != null)
+                {
+                    // Hiển thị thông tin item được chọn
+                    _currentPage = 0;
+                    Backgrounds = selectedTheme.bg_layouts;
+                    UpdateVisibleBackgrounds();
+                    //MessageBox.Show($"Bạn đã chọn: {selectedTheme.theme_type.name}");
+                }
+            }
+        }
+
         private void ApplyTransitionEffect(Action transitionAction)
         {
             var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(300));
@@ -351,7 +440,7 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
             {
                 if (chooseBackground != null)
                 {
-                    layoutApp.BackgroudImage = chooseBackground.Image;
+                    layoutApp.BackgroudImage = chooseBackground.image_url;
                 }
                 else
                 {

@@ -8,6 +8,7 @@ namespace DemoPhotoBooth.Common
 {
     public class ApiUrl
     {
+
         public const string ApiCheckCode = "https://photo-app-api.intellisyncdata.com/api/v1/apps/setup_photoapp";
         public const string ApiDeactive = "http://photo-app-api.intellisyncdata.com/api/v1/photo_apps/1/";
         public const string ApiGetLayout = "https://photo-app-api.intellisyncdata.com/api/v1/apps/{0}/layouts";

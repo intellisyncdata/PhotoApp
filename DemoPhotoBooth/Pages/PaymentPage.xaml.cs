@@ -39,11 +39,11 @@ namespace DemoPhotoBooth.Pages
         private readonly CommonDbDataContext _db;
         private int paymentId;
         private int quantity = 2;
-        public List<Background> Backgrounds { get; set; }
+        public List<BgLayout> Backgrounds { get; set; }
         public List<Layout> ListLayout { get; set; }
         public string colors { get; set; }
 
-        public PaymentPage(decimal totalPrice, int quantity, Layout layouts, List<Background> backgrounds, string color, List<Layout> listLayouts)
+        public PaymentPage(decimal totalPrice, int quantity, Layout layouts, List<BgLayout> backgrounds, string color, List<Layout> listLayouts)
         {
             _db = new CommonDbDataContext();
             InitializeComponent();
