@@ -88,5 +88,6 @@
         <common:BoolToBorderThicknessConverter x:Key="BoolToBorderThicknessConverter"/>
         <common:PlaceholderVisibilityConverter x:Key="PlaceholderVisibilityConverter"/>
         <common:ImageVisibilityConverter x:Key="ImageVisibilityConverter"/>
+        <common:OpacityConverter x:Key="OpacityConverter"/>
     </Application.Resources>
 </Application>

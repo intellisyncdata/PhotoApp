@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using DemoPhotoBooth.DataContext;
 using DemoPhotoBooth.Models;
+using DemoPhotoBooth.Pages.BackgroundPages;
 using DemoPhotoBooth.Pages.Preview;
 
 namespace DemoPhotoBooth.Pages
@@ -93,7 +94,8 @@ namespace DemoPhotoBooth.Pages
         {
             if (selectedMode == "Timer")
             {
-                TimerMode_Click(sender, e); // Gọi hàm Hẹn Giờ nếu chọn Timer
+                NavigationService?.Navigate(new NewPreviewPage());
+                //TimerMode_Click(sender, e); // Gọi hàm Hẹn Giờ nếu chọn Timer
             }
             else if (selectedMode == "Manual")
             {

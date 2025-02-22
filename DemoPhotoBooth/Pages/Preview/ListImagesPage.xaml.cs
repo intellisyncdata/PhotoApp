@@ -169,18 +169,13 @@ namespace DemoPhotoBooth.Pages.Preview
             }
             else if (imageControl == null && rect == null && textBlock != null)
             {
-                int MarginTop = 40;
-                if (isPotrait)
-                {
-                    MarginTop = 80;
-                }
                 var textContainer = new Grid
                 {
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Center,
                     //Height = 160,
                     //Width = 240,
-                    Margin = new Thickness(0, MarginTop, 0, 0)
+                    Margin = new Thickness(0, 0, 0, 0)
                 };
 
                 textContainer.Children.Add(textBlock);
@@ -188,13 +183,10 @@ namespace DemoPhotoBooth.Pages.Preview
                 Grid.SetColumn(textContainer, j);
 
                 textContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                textContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                textContainer.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-
                 textContainer.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
 
-                Grid.SetRow(textBlock, 1);
+                Grid.SetRow(textBlock, 0);
                 Grid.SetColumn(textBlock, 0);
                 groupGrid.Children.Add(textContainer);
             }

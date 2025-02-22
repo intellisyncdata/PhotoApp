@@ -27,7 +27,7 @@ namespace DemoPhotoBooth.Pages
         private decimal amountToPay = 70000; // Số tiền cần thanh toán
         private DispatcherTimer countdownTimer;
 #if DEBUG
-        private int remainingTime = 10; // Thời gian ban đầu (giây)
+        private int remainingTime = 30; // Thời gian ban đầu (giây)
 #else
         private int remainingTime = 30; // Thời gian ban đầu (giây)
 #endif

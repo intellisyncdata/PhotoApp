@@ -156,7 +156,8 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border 
-                                        x:Name="BorderImage" MouseDown="OnBackgroundClicked" BorderThickness="{Binding IsSelected, Converter={StaticResource BoolToBorderThicknessConverter}}"
+                                        x:Name="BorderImage" 
+                                        MouseDown="OnBackgroundClicked" 
                                         BorderBrush="#5a93cf"
                                         CornerRadius="10"
                                         Padding="10"
@@ -164,6 +165,7 @@
                                         <Grid Width="250" Height="350">
                                             <Image 
                                                 Source="{Binding image_url}" 
+                                                Opacity="{Binding IsSelected, Converter={StaticResource OpacityConverter}}"
                                                 Stretch="Uniform" 
                                                 HorizontalAlignment="Center" 
                                                 VerticalAlignment="Center"/>
@@ -184,6 +186,34 @@
         <!-- Grid chứa nút quay về home -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,30" Grid.Row="3">
             <Button 
+                Content="Quay lại"
+                Click="NavigateHome_Click"
+                Width="280"
+                Height="70"
+                FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                Background="#faa2af"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="35"
+                BorderThickness="0"
+                Margin="0, 0, 100, 0" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Bottom">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                           CornerRadius="30" 
+                           BorderThickness="0">
+                            <TextBlock Text="{TemplateBinding Content}" 
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           FontWeight="{TemplateBinding FontWeight}" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button 
                 Name="btnContinue"
                 Content="Tiếp tục"
                 Click="NavigatePayment_Click"
@@ -195,46 +225,21 @@
                 FontWeight="Bold"
                 FontSize="35"
                 BorderThickness="0"
-                Margin="0,0,100,0"
+                Margin="0,0,0,0"
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Bottom">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                   CornerRadius="30" 
-                   BorderThickness="0">
-                            <TextBlock Text="{TemplateBinding Content}" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center"
-                   Foreground="White"
-                   FontWeight="{TemplateBinding FontWeight}" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-            <Button Content="Quay lại"
-               Click="NavigateHome_Click"
-               Width="280"
-               Height="70"
-               FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
-               Background="#faa2af"
-               Foreground="White"
-               FontWeight="Bold"
-               FontSize="35"
-               BorderThickness="0"
-               Margin="0" 
-               HorizontalAlignment="Right" 
-               VerticalAlignment="Bottom">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
-                           CornerRadius="30" 
-                           BorderThickness="0">
-                            <TextBlock Text="{TemplateBinding Content}" 
-                           HorizontalAlignment="Center" 
-                           VerticalAlignment="Center"
-                           Foreground="White"
-                           FontWeight="{TemplateBinding FontWeight}" />
+                        <Border 
+                            Background="{TemplateBinding Background}" 
+                            CornerRadius="30" 
+                            BorderThickness="0">
+                            <TextBlock 
+                                Text="{TemplateBinding Content}" 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center"
+                                Foreground="White"
+                                FontWeight="{TemplateBinding FontWeight}" />
                         </Border>
                     </ControlTemplate>
                 </Button.Template>

@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace DemoPhotoBooth.Models
 {
-    public class BgLayout
+    public class BgLayout : INotifyPropertyChanged
     {
         [JsonPropertyName("id")]
         public int id { get; set; }
