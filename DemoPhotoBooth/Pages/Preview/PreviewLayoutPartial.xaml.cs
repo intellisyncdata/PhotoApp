@@ -84,6 +84,7 @@ namespace DemoPhotoBooth.Pages.Preview
             isPortrait = portraitMode;
             _layout = layout;
             _listLayouts = listLayouts;
+            btnReset.Visibility = Visibility.Hidden;
             //if (isPortrait)
             //{
             //    Grid.SetRow(gridImages, 1);

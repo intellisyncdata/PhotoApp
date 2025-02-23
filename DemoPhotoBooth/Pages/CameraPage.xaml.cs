@@ -37,7 +37,7 @@ namespace DemoPhotoBooth.Pages
         private bool isManual = false;
 
         public int photoNumber = 0;
-        public int maxPhotosTaken = 4;
+        public int maxPhotosTaken = 8;
         private int timeLeft = 10;
         private int timeLeftCopy = 10;
         private int photosTaken = 0;
