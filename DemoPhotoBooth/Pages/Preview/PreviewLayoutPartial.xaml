@@ -54,9 +54,9 @@
             Grid.Column="0"
             Grid.ColumnSpan="3"
             Name="btnReset" 
-            Content="Chọn lại"
+            Content="Đổi chủ đề"
             FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
-            Width="200"
+            Width="220"
             Height="70"
             Background="#faa2af"
             Foreground="White"
@@ -88,7 +88,7 @@
             Name="btnPrint" 
             Content="In hình" 
             FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
-            Width="200"
+            Width="180"
             Height="70"
             Background="#faa2af"
             Foreground="White"
@@ -114,15 +114,6 @@
                 </ControlTemplate>
             </Button.Template>
         </Button>
-        <!--<TextBlock Name="lblTimer"
-                   HorizontalAlignment="Left"
-                   TextWrapping="Wrap" 
-                   Text="00" 
-                   Width="100" 
-                Height="70"
-                FontSize="48"
-                   VerticalAlignment="Top"
-        />-->
         <Grid Grid.Row="4" Grid.Column="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20,0,0,0">
             <!-- Tạo hình tròn -->
             <Ellipse Width="100" Height="100" Fill="#5a93cf"/>

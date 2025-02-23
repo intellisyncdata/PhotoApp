@@ -187,6 +187,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,30" Grid.Row="3">
             <Button 
                 Content="Quay lại"
+                Name="btnPrevious"
                 Click="NavigateHome_Click"
                 Width="280"
                 Height="70"

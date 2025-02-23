@@ -14,6 +14,7 @@ using System.Windows.Threading;
 using DemoPhotoBooth.DataContext;
 using DemoPhotoBooth.Models;
 using DemoPhotoBooth.Models.DTOs;
+using DemoPhotoBooth.Pages.Preview;
 using SharpVectors.Converters;
 using SharpVectors.Renderers.Wpf;
 
@@ -42,31 +43,40 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
         private const int ItemsPerPage = 3;
         private DispatcherTimer countdownTimer;
         private bool isPopupShown = false;
+        private bool _isPay = false;
         public ObservableCollection<BgLayout> VisibleBackgrounds { get; set; } = new ObservableCollection<BgLayout>();
 
-        public BackgroundPage(Layout layouts, List<BgLayout> backgrounds, string colors, List<Layout> listLayout)
+        public BackgroundPage(Layout layout, string colors, List<Layout> listLayout, bool isPay = false)
         {
             InitializeComponent();
             ListLayout = listLayout;
             color = colors;
-            Layout = layouts;
+            Layout = layout;
             _db = new CommonDbDataContext();
             // Load dữ liệu ban đầu
             _currentIndex = 0;
             _colors = new List<string>(colors.Split(','));
             _currentColorIndex = 0;
-            _selectedLayout = layouts;
+            _selectedLayout = layout;
+            _isPay = isPay;
+            btnPrevious.IsEnabled = true;
+            btnPrevious.Opacity = 1;
+            if (isPay)
+            {
+                btnPrevious.IsEnabled = false;
+                btnPrevious.Opacity = 0.5;
+            }
 
             // List ra Themes theo Layout chỉ định
-            var themes = layouts.themes
+            var themes = layout.themes
                 .Select(t => new ThemeOption
-                { 
+                {
                     Id = t.id,
                     Name = t.theme_type.name
                 })
                 .ToList();
 
-            topicsListBox.ItemsSource = layouts.themes;
+            topicsListBox.ItemsSource = layout.themes;
 
             // Thiết lập trạng thái ban đầu
             IsImageGridVisible = true;
@@ -75,9 +85,9 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
             btnContinue.IsEnabled = false;
             btnContinue.Opacity = 0.5;
             //UpdateVisibleBackgrounds();
-            if (layouts.themes.Count > 0)
+            if (layout.themes.Count > 0)
             {
-                Backgrounds = layouts.themes[0].bg_layouts;
+                Backgrounds = layout.themes[0].bg_layouts;
                 UpdateVisibleBackgrounds();
             }
 
@@ -464,7 +474,14 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
             layoutApp.Height = Layout.Height;
 
             SaveLayoutApp(layoutApp);
-            NavigationService?.Navigate(new PaymentPage(Layout.Price, 1, Layout, Backgrounds, color, ListLayout));
+            if (_isPay)
+            {
+                NavigationService?.Navigate(new NewPreviewPage(Layout, ListLayout));
+            }
+            else
+            {
+                NavigationService?.Navigate(new PaymentPage(Layout.Price, 1, Layout, Backgrounds, color, ListLayout));
+            }
         }
         #endregion
 

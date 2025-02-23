@@ -46,7 +46,7 @@ namespace DemoPhotoBooth.Pages
                 if (backgrounds != null)
                 {
                     string bgColorsString = string.Join(", ", layout.BackgroundColor);
-                    NavigationService.Navigate(new BackgroundPage(layout, layout.themes[0].bg_layouts, bgColorsString, Layouts));
+                    NavigationService.Navigate(new BackgroundPage(layout, bgColorsString, Layouts));
                 }
                 else
                 {

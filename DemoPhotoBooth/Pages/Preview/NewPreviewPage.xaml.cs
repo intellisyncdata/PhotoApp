@@ -1,4 +1,5 @@
 ﻿using DemoPhotoBooth.DataContext;
+using DemoPhotoBooth.Models;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Windows;
@@ -16,10 +17,14 @@ namespace DemoPhotoBooth.Pages.Preview
     public partial class NewPreviewPage : Page
     {
         bool isPotrait = false;
+        private Layout _layout { get; set; }
+        private List<Layout> _listLayouts { get; set; }
 
-        public NewPreviewPage(bool portraitMode = false)
+        public NewPreviewPage(Layout layout, List<Layout> listLayouts, bool portraitMode = false)
         {
             InitializeComponent();
+            _layout = layout;
+            _listLayouts = listLayouts;
             DataContext = this;
             isPotrait = portraitMode;
             var path = "pack://application:,,,/Layouts/bg-preview-horizontal.png";
@@ -40,7 +45,7 @@ namespace DemoPhotoBooth.Pages.Preview
             });
 
             imagesSelected.Navigate(new ListImagesPage(isPotrait));
-            layoutPreview.Navigate(new PreviewLayoutPartial(isPotrait));
+            layoutPreview.Navigate(new PreviewLayoutPartial(_layout, _listLayouts, isPotrait));
         }
     }
 }

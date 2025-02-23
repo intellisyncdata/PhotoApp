@@ -35,6 +35,7 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using DemoPhotoBooth.Models.DTOs;
 using System.IO.Ports;
+using DemoPhotoBooth.Pages.BackgroundPages;
 
 namespace DemoPhotoBooth.Pages.Preview
 {
@@ -52,7 +53,10 @@ namespace DemoPhotoBooth.Pages.Preview
         private uint timeStep = 350; // 3 mins
         private bool isPopupShown = false;
         bool isPortrait = false;
+        private int quantity = 0;
         public event PropertyChangedEventHandler? PropertyChanged;
+        private Layout _layout { get; set; }
+        private List<Layout> _listLayouts { get; set; }
 
         public double ImageBgWidth
         {
@@ -72,12 +76,14 @@ namespace DemoPhotoBooth.Pages.Preview
                 OnPropertyChanged();
             }
         }
-        public PreviewLayoutPartial(bool portraitMode = false)
+        public PreviewLayoutPartial(Layout layout, List<Layout> listLayouts, bool portraitMode = false)
         {
             InitializeComponent();
             _db = new CommonDbDataContext();
             DataContext = this;
             isPortrait = portraitMode;
+            _layout = layout;
+            _listLayouts = listLayouts;
             //if (isPortrait)
             //{
             //    Grid.SetRow(gridImages, 1);
@@ -100,7 +106,6 @@ namespace DemoPhotoBooth.Pages.Preview
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
 
-            btnReset.IsEnabled = false;
             btnPrint.IsEnabled = false;
             var layoutSelected = _db.LayoutApp
                     .AsNoTracking()
@@ -120,6 +125,7 @@ namespace DemoPhotoBooth.Pages.Preview
                 ImageBgHeight = svg!.ActualHeight;
 
                 DrawImageControl(svgDetail, svg!.ActualWidth, svg!.ActualHeight);
+                quantity = layoutSelected.Quantity ?? 0;
             }
         }
 
@@ -210,11 +216,6 @@ namespace DemoPhotoBooth.Pages.Preview
         {
             App.EventAggregator.GetEvent<Page1ToPage2>().Subscribe(context =>
             {
-                if (btnReset.Visibility == Visibility.Hidden)
-                {
-                    btnReset.Visibility = Visibility.Visible;
-                }
-
                 BitmapImage bitmap = new BitmapImage();
                 using (var stream = File.OpenRead(context.rootPath))
                 {
@@ -282,6 +283,16 @@ namespace DemoPhotoBooth.Pages.Preview
                 _canvas.Children.Add(image);
             }
             gridImages.Children.Add(_canvas);
+            if (svgRects.Count < quantity)
+            {
+                btnPrint.Opacity = 0.5;
+                btnPrint.IsEnabled = false;
+            }
+            else
+            {
+                btnPrint.Opacity = 1;
+                btnPrint.IsEnabled = true;
+            }
         }
 
         private void Image_TouchDown(object? sender, TouchEventArgs e)
@@ -328,7 +339,6 @@ namespace DemoPhotoBooth.Pages.Preview
 
             if (allEmpty)
             {
-                btnReset.IsEnabled = false;
                 btnPrint.IsEnabled = false;
             }
             else
@@ -339,20 +349,26 @@ namespace DemoPhotoBooth.Pages.Preview
 
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {
-            if (dicImages.Values.Any())
+            //if (dicImages.Values.Any())
+            //{
+            //    btnReset.IsEnabled = false;
+            //    btnPrint.IsEnabled = false;
+            //}
+            //dicImages.Values.ToList().ForEach(x =>
+            //{
+            //    dynamic obj = x.DataContext;
+            //    if (!obj.isQR)
+            //    {
+            //        x.Source = null;
+            //        App.EventAggregator.GetEvent<Page2ToPage1>().Publish(x.DataContext);
+            //    }
+            //});
+            var window = System.Windows.Application.Current.MainWindow as MainWindow;
+            if (window != null)
             {
-                btnReset.IsEnabled = false;
-                btnPrint.IsEnabled = false;
+                window.MainFrame.Navigate(new BackgroundPage(_layout, "#FFFFFF", _listLayouts, true)); // MainFrame là Frame chính trong MainWindow
             }
-            dicImages.Values.ToList().ForEach(x =>
-            {
-                dynamic obj = x.DataContext;
-                if (!obj.isQR)
-                {
-                    x.Source = null;
-                    App.EventAggregator.GetEvent<Page2ToPage1>().Publish(x.DataContext);
-                }
-            });
+            //NavigationService?.Navigate(new BackgroundPage(_layout, "#FFFFFF", _listLayouts));
         }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -392,7 +408,6 @@ namespace DemoPhotoBooth.Pages.Preview
                         retry++;
                         await Task.Delay(3000);
                     }
-                    btnReset.IsEnabled = btnPrint.IsEnabled = true;
                     NextDownloadPage();
                 }
             }

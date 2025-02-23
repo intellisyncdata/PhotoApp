@@ -42,18 +42,21 @@ namespace DemoPhotoBooth.Pages
         public List<BgLayout> Backgrounds { get; set; }
         public List<Layout> ListLayout { get; set; }
         public string colors { get; set; }
+        public bool isApprove = false;
 
-        public PaymentPage(decimal totalPrice, int quantity, Layout layouts, List<BgLayout> backgrounds, string color, List<Layout> listLayouts)
+        public PaymentPage(decimal totalPrice, int quantity, Layout layout, List<BgLayout> backgrounds, string color, List<Layout> listLayouts)
         {
             _db = new CommonDbDataContext();
             InitializeComponent();
             TotalPrice = totalPrice;
             Quantity = quantity;
-            Layout = layouts;
+            Layout = layout;
             Backgrounds = backgrounds;
             ListLayout = listLayouts;
             colors = color;
             CloseSerialPort();
+            btnContinue.IsEnabled = false;
+            btnContinue.Opacity = 0.5;
         }
 
         private async void InitializeSerialPort()
@@ -155,7 +158,7 @@ namespace DemoPhotoBooth.Pages
                 txtAmountDeposited.Text = $"{totalAmount:N0} VNĐ";
 
                 // Hiển thị nút "Tiếp tục" nếu số tiền đã nạp đủ hoặc lớn hơn
-                if (totalAmount >= amountToPay)
+                if (totalAmount >= amountToPay && isApprove)
                 {
                     isNextPage = true;
                     btnContinue.IsEnabled = true;
@@ -255,7 +258,7 @@ namespace DemoPhotoBooth.Pages
         {
             totalAmount = 0;
             CloseSerialPort();
-            NavigationService?.Navigate(new BackgroundPage(Layout, Backgrounds, colors, ListLayout));
+            NavigationService?.Navigate(new BackgroundPage(Layout, colors, ListLayout));
         }
 
         private void NavigateToCameraMode(object sender, RoutedEventArgs e)
@@ -264,8 +267,7 @@ namespace DemoPhotoBooth.Pages
             CompleteTransactionPayment(paymentId, totalAmount);
             totalAmount = 0;
             CloseSerialPort();
-            NavigationService?.Navigate(new CameraMode());
-
+            NavigationService?.Navigate(new CameraMode(Layout, ListLayout));
         }
 
         private int CreateTransactionPayment(int layoutId, int quantity)
@@ -433,6 +435,8 @@ namespace DemoPhotoBooth.Pages
             RightPayment.Background = new SolidColorBrush(Colors.White);
             LeftPayment.Background = new SolidColorBrush(Colors.Gray);
             paymentId = CreateTransactionPayment(Layout.Id, quantity);
+            isApprove = true;
+            UpdateUI(paymentId);
             var layout = _db.LayoutApp.FirstOrDefault();
             if (layout != null)
             {

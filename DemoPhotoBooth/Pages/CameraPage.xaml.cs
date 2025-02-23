@@ -14,6 +14,7 @@ using DemoPhotoBooth.DataContext;
 using Microsoft.EntityFrameworkCore;
 using DemoPhotoBooth.Pages.Preview;
 using System.Net.Sockets;
+using DemoPhotoBooth.Models;
 
 namespace DemoPhotoBooth.Pages
 {
@@ -43,12 +44,16 @@ namespace DemoPhotoBooth.Pages
         public bool PhotoTaken = false;
         private (string root, string printPath) rootPath = (string.Empty, string.Empty);
         private CommonDbDataContext _db;
-        public CameraPage(bool portraitMode = false, bool isManualMode = false)
+        private Layout _layout { get; set; }
+        private List<Layout> _listLayouts { get; set; }
+        public CameraPage(Layout layout, List<Layout> listLayouts, bool portraitMode = false, bool isManualMode = false)
         {
             InitializeComponent();
             ActivateTimers();
             isPortrait = portraitMode;
             isManual = isManualMode;
+            _layout = layout;
+            _listLayouts = listLayouts;
             SetViewMode();
         }
 
@@ -153,7 +158,7 @@ namespace DemoPhotoBooth.Pages
                     Debug.WriteLine("Photo session completed.");
                     CountdownTimer.Text = "Đã chụp xong!";
                     // Stop recording when all photos are taken
-                    NavigationService?.Navigate(new NewPreviewPage(isPortrait));
+                    NavigationService?.Navigate(new NewPreviewPage(_layout, _listLayouts, isPortrait));
                     recorder.StopRecording();
                 }
             }
@@ -188,7 +193,7 @@ namespace DemoPhotoBooth.Pages
 
         private void Continue_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService?.Navigate(new NewPreviewPage(isPortrait));
+            NavigationService?.Navigate(new NewPreviewPage(_layout, _listLayouts, isPortrait));
         }
 
         #endregion

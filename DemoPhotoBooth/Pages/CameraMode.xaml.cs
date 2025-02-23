@@ -30,10 +30,14 @@ namespace DemoPhotoBooth.Pages
         private bool isTimerModeSelected = false;
         private string selectedMode = "";
         private readonly CommonDbDataContext _db;
+        private Layout _layout { get; set; }
+        private List<Layout> _listLayouts { get; set; }
 
-        public CameraMode()
+        public CameraMode(Layout layout, List<Layout> listLayouts)
         {
             InitializeComponent();
+            _layout = layout;
+            _listLayouts = listLayouts;
             selectedMode = "Timer";
             _db = new CommonDbDataContext();
             _countdownTimer = new DispatcherTimer();
@@ -55,11 +59,11 @@ namespace DemoPhotoBooth.Pages
                 var item = _db.LayoutApp.FirstOrDefault();
                 if (item != null && item.FrameType == "vertical")
                 {
-                    NavigationService?.Navigate(new CameraPage(true));
+                    NavigationService?.Navigate(new CameraPage(_layout, _listLayouts, true));
                 }
                 else if (item != null && item.FrameType == "horizontal")
                 {
-                    NavigationService?.Navigate(new CameraPage(false));
+                    NavigationService?.Navigate(new CameraPage(_layout, _listLayouts, false));
                 }
             }
         }
@@ -69,11 +73,11 @@ namespace DemoPhotoBooth.Pages
             var item = _db.LayoutApp.FirstOrDefault();
             if (item != null && item.FrameType == "vertical")
             {
-                NavigationService?.Navigate(new CameraPage(true, true));
+                NavigationService?.Navigate(new CameraPage(_layout, _listLayouts, true, true));
             }
             else
             {
-                NavigationService?.Navigate(new CameraPage(false, true));
+                NavigationService?.Navigate(new CameraPage(_layout, _listLayouts, false, true));
             }
         }
 
@@ -82,11 +86,11 @@ namespace DemoPhotoBooth.Pages
             var item = _db.LayoutApp.FirstOrDefault();
             if (item != null && item.FrameType == "vertical")
             {
-                NavigationService?.Navigate(new CameraPage(true, false));
+                NavigationService?.Navigate(new CameraPage(_layout, _listLayouts, true, false));
             }
             else
             {
-                NavigationService?.Navigate(new CameraPage(false, false));
+                NavigationService?.Navigate(new CameraPage(_layout, _listLayouts, false, false));
             }
         }
 
@@ -94,8 +98,8 @@ namespace DemoPhotoBooth.Pages
         {
             if (selectedMode == "Timer")
             {
-                //NavigationService?.Navigate(new NewPreviewPage());
-                TimerMode_Click(sender, e); // Gọi hàm Hẹn Giờ nếu chọn Timer
+                NavigationService?.Navigate(new NewPreviewPage(_layout, _listLayouts));
+                //TimerMode_Click(sender, e); // Gọi hàm Hẹn Giờ nếu chọn Timer
             }
             else if (selectedMode == "Manual")
             {
