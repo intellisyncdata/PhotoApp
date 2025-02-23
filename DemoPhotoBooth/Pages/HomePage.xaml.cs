@@ -62,12 +62,12 @@ namespace DemoPhotoBooth.Pages
                 bool isMoneyCheckerConnected = CheckMoneyChecker();
                 bool isPrinterConnected = CheckPrinter();
 
-                if (!isCameraConnected || !isMoneyCheckerConnected || !isPrinterConnected)
-                {
-                    await SendNotificationAsync(isCameraConnected, isMoneyCheckerConnected, isPrinterConnected);
-                    MessageBox.Show($"Lỗi: Không tìm thấy camera {isCameraConnected} money {isMoneyCheckerConnected} printer {isPrinterConnected}", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
+                //if (!isCameraConnected || !isMoneyCheckerConnected || !isPrinterConnected)
+                //{
+                //    await SendNotificationAsync(isCameraConnected, isMoneyCheckerConnected, isPrinterConnected);
+                //    MessageBox.Show($"Lỗi: Không tìm thấy camera {isCameraConnected} money {isMoneyCheckerConnected} printer {isPrinterConnected}", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                //    return;
+                //}
 
                 var info = _db.PhotoApps.AsNoTracking()?.FirstOrDefault();
                 var layouts = await GetLayout(PhotoApps, info.Token);
