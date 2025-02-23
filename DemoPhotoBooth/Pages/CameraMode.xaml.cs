@@ -98,8 +98,8 @@ namespace DemoPhotoBooth.Pages
         {
             if (selectedMode == "Timer")
             {
-                NavigationService?.Navigate(new NewPreviewPage(_layout, _listLayouts));
-                //TimerMode_Click(sender, e); // Gọi hàm Hẹn Giờ nếu chọn Timer
+                //NavigationService?.Navigate(new NewPreviewPage(_layout, _listLayouts));
+                TimerMode_Click(sender, e); // Gọi hàm Hẹn Giờ nếu chọn Timer
             }
             else if (selectedMode == "Manual")
             {
