@@ -98,10 +98,6 @@ namespace DemoPhotoBooth.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Background")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("TEXT");

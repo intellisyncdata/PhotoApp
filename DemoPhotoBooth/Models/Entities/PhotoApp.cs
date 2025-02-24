@@ -22,7 +22,7 @@ namespace DemoPhotoBooth.Models.Entities
             Code = itm.Code;
             Name = itm.Name;
             FontColor = itm.FontColor;
-            Background = itm.Background;
+            //Background = itm.Background;
             PaymentMethods = JsonSerializer.Serialize(itm.PaymentMethods);
             DownloadMediaTypes = JsonSerializer.Serialize(itm.DownloadMediaTypes);
             MaxPrints = itm.MaxPrints;
@@ -33,7 +33,7 @@ namespace DemoPhotoBooth.Models.Entities
         public uint Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public string Background { get; set; }
+        //public string Background { get; set; }
         public string FontColor { get; set; }
         public string PaymentMethods { get; set; }
         public string DownloadMediaTypes { get; set; }

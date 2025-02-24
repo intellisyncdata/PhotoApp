@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Ports;
 using System.Linq;
 using System.Management;
 using System.Net.Http;
@@ -32,11 +33,19 @@ namespace DemoPhotoBooth.Pages
     {
         public Models.DTOs.PhotoApp PhotoApps { get; set; }
         public List<Layout> Layouts { get; set; }
+        private SerialPort? serialPort;
         private readonly CommonDbDataContext _db;
         public HomePage()
         {
             InitializeComponent();
             _db = new CommonDbDataContext();
+            if(serialPort != null && serialPort.IsOpen)
+            {
+                serialPort.Close();
+                serialPort.Dispose();
+                serialPort = null;
+            }
+
             var item = _db.PhotoApps.FirstOrDefault();
             if (item != null)
             {
@@ -132,13 +141,13 @@ namespace DemoPhotoBooth.Pages
         {
             try
             {
-                // Chạy PowerShell để lấy danh sách thiết bị kết nối
+                // Chạy PowerShell để lấy danh sách thiết bị đang kết nối
                 var process = new Process
                 {
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = "powershell.exe",
-                        Arguments = "Get-PnpDevice | Where-Object { $_.FriendlyName -match 'Camera|Webcam|Canon|EOS|R100' } | Select-Object -ExpandProperty FriendlyName",
+                        Arguments = "Get-CimInstance Win32_PnPEntity | Where-Object { $_.Name -match 'Camera|Webcam|Canon|EOS|R100' } | Select-Object -ExpandProperty Name",
                         RedirectStandardOutput = true,
                         UseShellExecute = false,
                         CreateNoWindow = true
@@ -151,14 +160,13 @@ namespace DemoPhotoBooth.Pages
 
                 List<string> foundDevices = new List<string>();
 
-                // Tách các dòng output để lấy tên thiết bị
                 foreach (var line in output.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     Console.WriteLine($"Found Device: {line}");
                     foundDevices.Add(line);
                 }
 
-                // Kiểm tra danh sách thiết bị xem có Canon R100 hay không
+                // Kiểm tra xem có thiết bị mong muốn không
                 foreach (var device in foundDevices)
                 {
                     if (device.Contains("Canon", StringComparison.OrdinalIgnoreCase) ||
@@ -176,6 +184,7 @@ namespace DemoPhotoBooth.Pages
 
             return false;
         }
+
 
         /// <summary>
         /// Kiểm tra máy kiểm tra tiền (qua cổng Serial)

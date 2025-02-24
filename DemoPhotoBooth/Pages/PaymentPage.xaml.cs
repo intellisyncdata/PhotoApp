@@ -57,6 +57,9 @@ namespace DemoPhotoBooth.Pages
             CloseSerialPort();
             btnContinue.IsEnabled = false;
             btnContinue.Opacity = 0.5;
+            totalAmount = 0;
+            InitializeSerialPort();
+            SendCommand("5E");
         }
 
         private async void InitializeSerialPort()
@@ -387,6 +390,7 @@ namespace DemoPhotoBooth.Pages
             txtCountdown.Visibility = Visibility.Collapsed;
             bgCountDown.Visibility = Visibility.Collapsed;
             txtAmountToPay.Text = $"{amountToPay:N0} VNĐ";
+            SendCommand("5c");
         }
 
         private void IncreaseQuantity(object sender, RoutedEventArgs e)
@@ -416,8 +420,8 @@ namespace DemoPhotoBooth.Pages
         {
             UpdateAmount();
             totalAmount = 0;
-            CloseSerialPort();
             InitializeSerialPort();
+            SendCommand("02");
             txtCountdown.Visibility = Visibility.Visible;
             bgCountDown.Visibility = Visibility.Visible;
             NavigateToBack.IsEnabled = false;

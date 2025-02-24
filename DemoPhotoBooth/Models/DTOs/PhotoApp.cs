@@ -21,7 +21,7 @@ namespace DemoPhotoBooth.Models.DTOs
             Id = itm.Id;
             Code = itm.Code;
             Name = itm.Name;
-            Background = itm.Background;
+            //Background = itm.Background;
             FontColor = itm.FontColor;
             PaymentMethods = JsonSerializer.Deserialize<List<string>>(itm.PaymentMethods);
             DownloadMediaTypes = JsonSerializer.Deserialize<List<string>>(itm.DownloadMediaTypes);
@@ -35,8 +35,8 @@ namespace DemoPhotoBooth.Models.DTOs
         public string Code { get; set; }
         [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonPropertyName("background")]
-        public string Background { get; set; }
+        //[JsonPropertyName("background")]
+        //public string Background { get; set; }
         [JsonPropertyName("font_color")]
         public string FontColor { get; set; }
         [JsonPropertyName("payment_method")]
