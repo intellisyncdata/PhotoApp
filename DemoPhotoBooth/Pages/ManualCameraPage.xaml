@@ -1,0 +1,110 @@
+﻿<Page x:Class="DemoPhotoBooth.Pages.ManualCameraPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:DemoPhotoBooth.Pages"
+      xmlns:svg="http://sharpvectors.codeplex.com/svgc/"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ManualCameraPage" Background="White" Loaded="Page_Loaded">
+    <Grid x:Name="MainGrid">
+        <!--<svg:SvgViewbox Stretch="Fill" Grid.ColumnSpan="4" Grid.RowSpan="4">
+          <svg:SvgCanvas Source="pack://application:,,,/Layouts/horizontal_screen.svg"/>
+      </svg:SvgViewbox>-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="3.5*" />
+            <RowDefinition Height="3.5*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="0.5*" />
+        </Grid.ColumnDefinitions>
+        <ListBox x:Name="CameraListBox" Visibility="Hidden"/>
+        <!-- Live View Area -->
+        <Canvas  x:Name="Slider" Grid.Row="0"  Grid.Column="1" Grid.ColumnSpan="4"  Grid.RowSpan="4" >
+            <Canvas.Background>
+                <ImageBrush x:Name="LiveViewBrush" Stretch="Uniform"/>
+            </Canvas.Background>
+        </Canvas>
+        <Viewbox Stretch="UniformToFill" Grid.RowSpan="4" Grid.ColumnSpan="6">
+            <Image 
+              x:Name="MyBackgroundLiveView"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch" />
+        </Viewbox>
+        <Grid 
+          x:Name="TimeBoxLive"
+          Grid.Row="1" 
+          Grid.ColumnSpan="2" 
+          Grid.RowSpan="2"
+          VerticalAlignment="Center"
+          HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="140" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="140" />
+                <RowDefinition Height="140" />
+            </Grid.RowDefinitions>
+            <Image
+              Grid.Row="0"
+              Source="pack://application:,,,/Layouts/label_time.png"
+              Height="50"
+              VerticalAlignment="Top"
+              />
+            <Border
+              Grid.Row="1"
+              BorderThickness="1"
+              CornerRadius="50"
+              BorderBrush="#5a93cf"
+              Background="White"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center"
+              Width="90"
+              Height="90"
+              Margin="0,10,0,40">
+                <TextBlock
+                  Name="CountdownTimer"
+                  FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                  FontSize="42"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Foreground="#5a93cf"
+                  TextAlignment="Center"/>
+            </Border>
+            <Image
+              Grid.Row="2"
+              Source="pack://application:,,,/Layouts/label_quantity.png"
+              Height="50"
+              VerticalAlignment="Top"
+              />
+            <Border
+              Grid.Row="3"
+              BorderThickness="1"
+              CornerRadius="50"
+              BorderBrush="#5a93cf"
+              Background="White"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center"
+              Width="90"
+              Height="90"
+              Margin="0,10,0,40">
+                <TextBlock
+                  Name="PhotosLeftCounter"
+                  FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+                  FontSize="42"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Foreground="#5a93cf"
+                  TextAlignment="Center"/>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

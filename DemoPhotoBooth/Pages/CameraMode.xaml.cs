@@ -73,11 +73,11 @@ namespace DemoPhotoBooth.Pages
             var item = _db.LayoutApp.FirstOrDefault();
             if (item != null && item.FrameType == "vertical")
             {
-                NavigationService?.Navigate(new CameraPage(_layout, _listLayouts, true, true));
+                NavigationService?.Navigate(new ManualCameraPage(_layout, _listLayouts, true));
             }
             else
             {
-                NavigationService?.Navigate(new CameraPage(_layout, _listLayouts, false, true));
+                NavigationService?.Navigate(new ManualCameraPage(_layout, _listLayouts, false));
             }
         }
 
@@ -86,11 +86,11 @@ namespace DemoPhotoBooth.Pages
             var item = _db.LayoutApp.FirstOrDefault();
             if (item != null && item.FrameType == "vertical")
             {
-                NavigationService?.Navigate(new CameraPage(_layout, _listLayouts, true, false));
+                NavigationService?.Navigate(new CameraPage(_layout, _listLayouts, true));
             }
             else
             {
-                NavigationService?.Navigate(new CameraPage(_layout, _listLayouts, false, false));
+                NavigationService?.Navigate(new CameraPage(_layout, _listLayouts, false));
             }
         }
 

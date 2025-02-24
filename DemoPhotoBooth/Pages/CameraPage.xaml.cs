@@ -46,12 +46,11 @@ namespace DemoPhotoBooth.Pages
         private CommonDbDataContext _db;
         private Layout _layout { get; set; }
         private List<Layout> _listLayouts { get; set; }
-        public CameraPage(Layout layout, List<Layout> listLayouts, bool portraitMode = false, bool isManualMode = false)
+        public CameraPage(Layout layout, List<Layout> listLayouts, bool portraitMode = false)
         {
             InitializeComponent();
             ActivateTimers();
             isPortrait = portraitMode;
-            isManual = isManualMode;
             _layout = layout;
             _listLayouts = listLayouts;
             SetViewMode();
