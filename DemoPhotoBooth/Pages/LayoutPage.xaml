@@ -38,7 +38,18 @@ onsiveImageSizeConverter"/>
                    Padding="0,10,0,0"
                    Foreground="#5a93cf"
                    Grid.Row="0"/>
+        <Grid HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0">
+            <!-- Tạo hình tròn -->
+            <Ellipse x:Name="bgCountDown" Width="100" Height="100" Fill="#5a93cf"/>
 
+            <!-- Hiển thị số đếm ngược -->
+            <TextBlock Name="txtCountdown"
+             FontFamily="pack://application:,,,/Layouts/fonts/#Coiny"
+             FontSize="40"
+             Foreground="White"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center"/>
+        </Grid>
         <!-- Layout Items -->
         <Grid Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
             <ItemsControl ItemsSource="{Binding Layouts}">

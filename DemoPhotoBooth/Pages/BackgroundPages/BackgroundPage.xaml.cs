@@ -34,24 +34,26 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
         private int _currentIndex;
         private Layout _selectedLayout;
         public event PropertyChangedEventHandler PropertyChanged;
-
+        private DispatcherTimer countdownTimer;
+        private int remainingTime;
+        private bool isNextPage = false;
         private List<string> _colors;
         private string color;
         private int _currentColorIndex;
         private readonly CommonDbDataContext _db;
         private int _currentPage = 0;
         private const int ItemsPerPage = 3;
-        private DispatcherTimer countdownTimer;
         private bool isPopupShown = false;
         private bool _isPay = false;
         public ObservableCollection<BgLayout> VisibleBackgrounds { get; set; } = new ObservableCollection<BgLayout>();
 
-        public BackgroundPage(Layout layout, string colors, List<Layout> listLayout, bool isPay = false)
+        public BackgroundPage(Layout layout, string colors, List<Layout> listLayout, bool isPay = false, int remainingSeconds = 0)
         {
             InitializeComponent();
             ListLayout = listLayout;
             color = colors;
             Layout = layout;
+            remainingTime = remainingSeconds;
             _db = new CommonDbDataContext();
             // Load dữ liệu ban đầu
             _currentIndex = 0;
@@ -66,6 +68,8 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
                 btnPrevious.IsEnabled = false;
                 btnPrevious.Opacity = 0.5;
             }
+
+            StartCountdown();
 
             // List ra Themes theo Layout chỉ định
             var themes = layout.themes
@@ -480,7 +484,7 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
             }
             else
             {
-                NavigationService?.Navigate(new PaymentPage(Layout.Price, 1, Layout, Backgrounds, color, ListLayout));
+                NavigationService?.Navigate(new PaymentPage(Layout.Price, 1, Layout, Backgrounds, color, ListLayout, remainingTime));
             }
         }
         #endregion
@@ -541,6 +545,39 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
                 }
                 _db.SaveChanges();
             }
+        }
+
+        private void StartCountdown()
+        {
+            countdownTimer = new DispatcherTimer();
+            countdownTimer.Interval = TimeSpan.FromSeconds(1); // Cập nhật mỗi giây
+            countdownTimer.Tick += CountdownTimer_Tick;
+            countdownTimer.Start();
+            txtCountdown.Text = remainingTime.ToString(); // Hiển thị thời gian ban đầu
+        }
+
+        private void CountdownTimer_Tick(object sender, EventArgs e)
+        {
+            if (isNextPage)
+            {
+                countdownTimer.Stop();
+            }
+
+            if (remainingTime > 0)
+            {
+                remainingTime--;
+                UpdateCountdownUI();
+            }
+            else
+            {
+                countdownTimer.Stop();
+                NavigationService?.Navigate(new HomePage());
+            }
+        }
+
+        private void UpdateCountdownUI()
+        {
+            txtCountdown.Text = $"{remainingTime}s";
         }
 
         private void SaveLayoutApp(LayoutApp result)

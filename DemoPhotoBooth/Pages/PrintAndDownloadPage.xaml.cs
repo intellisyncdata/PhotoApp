@@ -39,7 +39,7 @@ namespace DemoPhotoBooth.Pages
     public partial class PrintAndDownloadPage : Page
     {
         private DispatcherTimer dispatcherTimer = new DispatcherTimer();
-        private uint timeStep = 300; // 20s
+        private uint timeStep = 30; // 30s
         private static string imageFolder = string.Empty;
         private string printName = string.Empty;
         private string printFolderPath = $"{imageFolder}/prints";

@@ -26,7 +26,7 @@ namespace DemoPhotoBooth.Pages
     public partial class CameraMode : Page
     {
         private DispatcherTimer _countdownTimer;
-        private int _timeRemaining = 150; // 150 giây
+        private int _timeRemaining = 30; // 30 giây
         private bool isTimerModeSelected = false;
         private string selectedMode = "";
         private readonly CommonDbDataContext _db;

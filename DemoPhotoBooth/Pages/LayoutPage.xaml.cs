@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using DemoPhotoBooth.Common;
 using DemoPhotoBooth.Models;
 using DemoPhotoBooth.Models.DTOs;
@@ -30,10 +31,14 @@ namespace DemoPhotoBooth.Pages
     {
         public List<Layout> Layouts { get; set; }
         public List<Background> Backgrounds { get; set; }
+        private DispatcherTimer countdownTimer;
+        private bool isNextPage = false;
+        private int remainingTime = 90; // Thời gian ban đầu (giây)
 
         public LayoutPage(List<Layout> layouts)
         {
             InitializeComponent();
+            StartCountdown();
             Layouts = layouts;
             DataContext = this;
         }
@@ -46,7 +51,7 @@ namespace DemoPhotoBooth.Pages
                 if (backgrounds != null)
                 {
                     string bgColorsString = string.Join(", ", layout.BackgroundColor);
-                    NavigationService.Navigate(new BackgroundPage(layout, bgColorsString, Layouts));
+                    NavigationService.Navigate(new BackgroundPage(layout, bgColorsString, Layouts,false , remainingTime));
                 }
                 else
                 {
@@ -59,19 +64,6 @@ namespace DemoPhotoBooth.Pages
         {
             // Điều hướng về trang Home
             NavigationService?.Navigate(new HomePage());
-        }
-
-
-        private static string ConvertToPackUri(string relativePath)
-        {
-            // Xóa dấu `/` ở đầu nếu có
-            if (relativePath.StartsWith("/"))
-            {
-                relativePath = relativePath.TrimStart('/');
-            }
-
-            // Trả về Pack URI
-            return $"pack://application:,,,/{relativePath}";
         }
 
         private List<Background> GetBackgroundsByLayoutId(int layoutId)
@@ -88,6 +80,38 @@ namespace DemoPhotoBooth.Pages
             return backgrounds;
         }
 
+        private void CountdownTimer_Tick(object sender, EventArgs e)
+        {
+            if (isNextPage)
+            {
+                countdownTimer.Stop();
+            }
+
+            if (remainingTime > 0)
+            {
+                remainingTime--;
+                UpdateCountdownUI();
+            }
+            else
+            {
+                countdownTimer.Stop();
+                NavigationService?.Navigate(new HomePage());
+            }
+        }
+
+        private void UpdateCountdownUI()
+        {
+            txtCountdown.Text = $"{remainingTime}s";
+        }
+
+        private void StartCountdown()
+        {
+            countdownTimer = new DispatcherTimer();
+            countdownTimer.Interval = TimeSpan.FromSeconds(1); // Cập nhật mỗi giây
+            countdownTimer.Tick += CountdownTimer_Tick;
+            countdownTimer.Start();
+            txtCountdown.Text = remainingTime.ToString(); // Hiển thị thời gian ban đầu
+        }
     }
 }
 

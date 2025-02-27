@@ -50,7 +50,7 @@ namespace DemoPhotoBooth.Pages.Preview
         private double _imageBgHeight;
         private Canvas _canvas;
         private DispatcherTimer dispatcherTimer = new DispatcherTimer();
-        private uint timeStep = 350; // 3 mins
+        private uint timeStep = 90; // 90s
         private bool isPopupShown = false;
         bool isPortrait = false;
         private int quantity = 0;
@@ -134,7 +134,7 @@ namespace DemoPhotoBooth.Pages.Preview
         {
             if (timeStep > 0)
             {
-                lblTimer.Text = $"{timeStep--}";
+                lblTimer.Text = $"{timeStep--}s";
                 return;
             }
             else if (!isPopupShown)
@@ -169,7 +169,7 @@ namespace DemoPhotoBooth.Pages.Preview
                 timeStep = 30;
                 isPopupShown = false;
                 dispatcherTimer.Start();
-                lblTimer.Text = $"{timeStep--}";
+                lblTimer.Text = $"{timeStep--}s";
             }
             else
             {
@@ -367,7 +367,7 @@ namespace DemoPhotoBooth.Pages.Preview
             var window = System.Windows.Application.Current.MainWindow as MainWindow;
             if (window != null)
             {
-                window.MainFrame.Navigate(new BackgroundPage(_layout, "#FFFFFF", _listLayouts, true)); // MainFrame là Frame chính trong MainWindow
+                window.MainFrame.Navigate(new BackgroundPage(_layout, "#FFFFFF", _listLayouts, true, 30)); // MainFrame là Frame chính trong MainWindow
             }
             //NavigationService?.Navigate(new BackgroundPage(_layout, "#FFFFFF", _listLayouts));
         }

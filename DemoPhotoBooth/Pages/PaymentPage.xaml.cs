@@ -27,9 +27,9 @@ namespace DemoPhotoBooth.Pages
         private decimal amountToPay = 70000; // Số tiền cần thanh toán
         private DispatcherTimer countdownTimer;
 #if DEBUG
-        private int remainingTime = 30; // Thời gian ban đầu (giây)
+        private int remainingTime; // Thời gian ban đầu (giây)
 #else
-        private int remainingTime = 30; // Thời gian ban đầu (giây)
+        private int remainingTime; // Thời gian ban đầu (giây)
 #endif
         private bool isPopupShown = false;
         private bool isNextPage = false;
@@ -44,7 +44,7 @@ namespace DemoPhotoBooth.Pages
         public string colors { get; set; }
         public bool isApprove = false;
 
-        public PaymentPage(decimal totalPrice, int quantity, Layout layout, List<BgLayout> backgrounds, string color, List<Layout> listLayouts)
+        public PaymentPage(decimal totalPrice, int quantity, Layout layout, List<BgLayout> backgrounds, string color, List<Layout> listLayouts, int remainingSeconds)
         {
             _db = new CommonDbDataContext();
             InitializeComponent();
@@ -54,6 +54,7 @@ namespace DemoPhotoBooth.Pages
             Backgrounds = backgrounds;
             ListLayout = listLayouts;
             colors = color;
+            remainingTime = remainingSeconds;
             CloseSerialPort();
             btnContinue.IsEnabled = false;
             btnContinue.Opacity = 0.5;
@@ -253,15 +254,15 @@ namespace DemoPhotoBooth.Pages
         private void NavigateToHomePage(object sender, RoutedEventArgs e)
         {
             totalAmount = 0;
-            CloseSerialPort();
+            SendCommand("5C");
             NavigationService?.Navigate(new HomePage());
         }
 
         private void NavigateToPreviousPage(object sender, RoutedEventArgs e)
         {
             totalAmount = 0;
-            CloseSerialPort();
-            NavigationService?.Navigate(new BackgroundPage(Layout, colors, ListLayout));
+            SendCommand("5C");
+            NavigationService?.Navigate(new BackgroundPage(Layout, colors, ListLayout,false, 90));
         }
 
         private void NavigateToCameraMode(object sender, RoutedEventArgs e)
@@ -269,7 +270,7 @@ namespace DemoPhotoBooth.Pages
             // Điều hướng tới trang CameraMode
             CompleteTransactionPayment(paymentId, totalAmount);
             totalAmount = 0;
-            CloseSerialPort();
+            SendCommand("5C");
             NavigationService?.Navigate(new CameraMode(Layout, ListLayout));
         }
 
