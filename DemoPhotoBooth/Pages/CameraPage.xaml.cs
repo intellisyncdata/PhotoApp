@@ -250,15 +250,15 @@ namespace DemoPhotoBooth.Pages
                     EvfImage.Freeze();
 
                     // Apply horizontal flip transformation
-                    TransformedBitmap flippedImage = new TransformedBitmap();
-                    flippedImage.BeginInit();
-                    flippedImage.Source = EvfImage;
-                    flippedImage.Transform = new ScaleTransform(-1, 1, EvfImage.PixelWidth / 2.0, 0);
-                    flippedImage.EndInit();
-                    flippedImage.Freeze();
+                    //TransformedBitmap flippedImage = new TransformedBitmap();
+                    //flippedImage.BeginInit();
+                    //flippedImage.Source = EvfImage;
+                    //flippedImage.Transform = new ScaleTransform(-1, 1, EvfImage.PixelWidth / 2.0, 0);
+                    //flippedImage.EndInit();
+                    //flippedImage.Freeze();
 
                     // Update UI
-                    Application.Current.Dispatcher.BeginInvoke(SetImageAction, flippedImage);
+                    Application.Current.Dispatcher.BeginInvoke(SetImageAction, EvfImage);
 
                     // Capture frame for video
                     Application.Current.Dispatcher.BeginInvoke((Action)(() =>
@@ -270,25 +270,6 @@ namespace DemoPhotoBooth.Pages
             catch (Exception ex)
             {
                 //Report.Error(ex.Message, false);
-            }
-        }
-        // Convert TransformedBitmap to BitmapImage
-        private BitmapImage ConvertToBitmapImage(BitmapSource bitmapSource)
-        {
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                BitmapEncoder encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
-                encoder.Save(memoryStream);
-
-                BitmapImage bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = new MemoryStream(memoryStream.ToArray());
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-                bitmapImage.Freeze();
-
-                return bitmapImage;
             }
         }
         private void MainCamera_DownloadReady(Camera sender, DownloadInfo Info)

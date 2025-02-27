@@ -16,7 +16,7 @@ namespace DemoPhotoBooth
             Debug.WriteLine("Error happend");
         }
     }
-  
+
 
     class Actual
     {
@@ -34,7 +34,7 @@ namespace DemoPhotoBooth
             string dateTimePath = Actual.DateNow();
             string pathString = System.IO.Path.Combine(currentPath, dateTimePath);
             return pathString;
-        }  
+        }
     }
 
     class Control
@@ -66,8 +66,8 @@ namespace DemoPhotoBooth
     {
         static public void CropAndSaveImage(string imagepath, int photoInTemplateNumb)
         {
-            int cropX = 1885;
-            int cropWidth = 2230;
+            int cropX = 1600;
+            int cropWidth = 2850;
 
             using (Image image = Image.Load(imagepath))
             {

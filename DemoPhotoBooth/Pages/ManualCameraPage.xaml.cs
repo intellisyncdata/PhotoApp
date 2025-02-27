@@ -212,7 +212,9 @@ namespace DemoPhotoBooth.Pages
                         MainCamera.LiveViewUpdated += MainCamera_LiveViewUpdated;
                         MainCamera.StateChanged += MainCamera_StateChanged;
                         MainCamera.DownloadReady += MainCamera_DownloadReady;
+                        MainCamera.ObjectChanged += MainCamera_ObjectChanged;
                         MainCamera.SetSetting(PropertyID.SaveTo, (int)SaveTo.Host);
+                        MainCamera?.SetSetting(PropertyID.Evf_OutputDevice, (int)EvfOutputDevice.Camera);
                         MainCamera?.SetCapacity(4096, int.MaxValue);
                         StartLiveView();
 
@@ -222,6 +224,7 @@ namespace DemoPhotoBooth.Pages
             catch (Exception ex) { Report.Error(ex.Message, false); }
 
         }
+
         private void MainCamera_StateChanged(Camera sender, StateEventID eventID, int parameter)
         {
             try
@@ -320,15 +323,15 @@ namespace DemoPhotoBooth.Pages
                     EvfImage.Freeze();
 
                     // Apply horizontal flip transformation
-                    TransformedBitmap flippedImage = new TransformedBitmap();
-                    flippedImage.BeginInit();
-                    flippedImage.Source = EvfImage;
-                    flippedImage.Transform = new ScaleTransform(-1, 1, EvfImage.PixelWidth / 2.0, 0);
-                    flippedImage.EndInit();
-                    flippedImage.Freeze();
+                    //TransformedBitmap flippedImage = new TransformedBitmap();
+                    //flippedImage.BeginInit();
+                    //flippedImage.Source = EvfImage;
+                    //flippedImage.Transform = new ScaleTransform(-1, 1, EvfImage.PixelWidth / 2.0, 0);
+                    //flippedImage.EndInit();
+                    //flippedImage.Freeze();
 
                     // Update UI
-                    Application.Current.Dispatcher.BeginInvoke(SetImageAction, flippedImage);
+                    Application.Current.Dispatcher.BeginInvoke(SetImageAction, EvfImage);
 
                     // Capture frame for video
                     Application.Current.Dispatcher.BeginInvoke((Action)(() =>
@@ -367,5 +370,25 @@ namespace DemoPhotoBooth.Pages
             PhotoTaken = true;
 
         }
+
+        private void MainCamera_ObjectChanged(Camera sender, ObjectEventID eventID, IntPtr reference)
+        {
+            if (eventID == ObjectEventID.DirItemRequestTransfer)
+            {
+                if (photosTaken < maxPhotosTaken)
+                {
+                    Debug.WriteLine($"Capturing photo {photosTaken + 1} from remote trigger");
+                    PhotosLeftCounter.Text = $"{photosTaken + 1}/{maxPhotosTaken}";
+                    photosTaken++;
+                }
+                else
+                {
+                    Debug.WriteLine("Maximum number of photos taken.");
+                    //NavigationService?.Navigate(new NewPreviewPage(_layout, _listLayouts, isPortrait));
+                }
+            }
+        }
+
+
     }
 }

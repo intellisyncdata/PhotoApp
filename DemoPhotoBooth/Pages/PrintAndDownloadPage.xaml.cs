@@ -228,27 +228,22 @@ namespace DemoPhotoBooth.Pages
 
             try
             {
-                var info = _db.CommonDatas.AsNoTracking()?.FirstOrDefault();
+                var info = _db.LayoutApp.AsNoTracking()?.FirstOrDefault();
                 if (info != null)
                 {
-                    info.PrintCount += 1;
-                    if (info.PrintCount >= 650)
+                  
+                    var photoApp = _db.PhotoApps.AsNoTracking().FirstOrDefault();
+                    if (photoApp != null)
                     {
-                        var photoApp = _db.PhotoApps.AsNoTracking().FirstOrDefault();
-                        if (photoApp != null)
+                        int retry = 0;
+                        while (retry < 3)
                         {
-                            int retry = 0;
-                            while (retry < 3)
-                            {
-                                var res = await SendNotificationAsync(photoApp!.Id, info.PrintCount, photoApp!.Token);
-                                if (res) break;
-                                retry++;
-                                await Task.Delay(3000);
-                            }
+                            var res = await SendNotificationAsync(photoApp!.Id, info.PrintQuantity, photoApp!.Token);
+                            if (res) break;
+                            retry++;
+                            await Task.Delay(3000);
                         }
                     }
-
-                    _db.CommonDatas.Update(info);
                 }
 
                 _db.LayoutApp.Remove(itemLayout);
