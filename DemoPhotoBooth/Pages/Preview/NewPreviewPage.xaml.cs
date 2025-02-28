@@ -27,11 +27,12 @@ namespace DemoPhotoBooth.Pages.Preview
             _listLayouts = listLayouts;
             DataContext = this;
             isPotrait = portraitMode;
-            var path = "pack://application:,,,/Layouts/bg-preview-horizontal.png";
+            
+            var path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backgrounds/bgpreviewhorizontal.png");
             DockPanelListImage.Margin = new Thickness(0, 0, 0, 0);
             if (portraitMode)
             {
-                path = "pack://application:,,,/Layouts/bg-preview-vertical.png";
+                path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backgrounds/bgpreviewvertical.png");
                 DockPanelListImage.Margin = new Thickness(100, 0, 0, 0);
             }
             this.BackgroundPreview.ImageSource = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));

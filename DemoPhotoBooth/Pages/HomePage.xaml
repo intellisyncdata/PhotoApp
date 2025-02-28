@@ -10,7 +10,7 @@
     <!-- Grid chứa toàn bộ nội dung -->
     <Grid MouseDown="StartApi_Click" TouchDown="StartApi_Click">
         <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Layouts/background.png"/>
+            <ImageBrush x:Name="BgCustome"/>
         </Grid.Background>
         
     </Grid>

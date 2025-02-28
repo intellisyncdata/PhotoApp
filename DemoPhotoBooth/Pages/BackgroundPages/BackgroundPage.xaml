@@ -8,7 +8,7 @@
 
     <Grid x:Name="MainGrid">
         <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Layouts/bg-theme.png"/>
+            <ImageBrush x:Name="BgCustome"/>
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="1.5*"/>

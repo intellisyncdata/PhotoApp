@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation; // Thêm namespace cho hiệu ứng
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using DemoPhotoBooth.DataContext;
 using DemoPhotoBooth.Models;
@@ -50,6 +51,8 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
         public BackgroundPage(Layout layout, string colors, List<Layout> listLayout, bool isPay = false, int remainingSeconds = 0)
         {
             InitializeComponent();
+            var path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backgrounds/bgtheme.png");
+            this.BgCustome.ImageSource = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
             ListLayout = listLayout;
             color = colors;
             Layout = layout;
@@ -584,19 +587,28 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
         {
             try
             {
-                CheckLayoutApp();
-                CheckFolderImageApp();
-                var eLayoutApp = new DemoPhotoBooth.Models.Entities.LayoutApp(result);
-                eLayoutApp.IsSelected = true;
-                eLayoutApp.IsBackgroundColor = IsColorGridVisible;
-                var svgName = eLayoutApp.LayoutImage.Split("/")?.Last();
+                if (_isPay)
+                {
+                    var currentLayoutApp = _db.LayoutApp.FirstOrDefault();
+                    currentLayoutApp.BackgroudImage = result.BackgroudImage;
 
-                eLayoutApp.SVGMappingName = $"{svgName?.Split("-")[0]}.svg";
-                eLayoutApp.LayoutImage = svgName ?? string.Empty;
-                eLayoutApp.Quantity = GetMaximumSelected(eLayoutApp.SVGMappingName);
-                _db.LayoutApp.Add(eLayoutApp);
+                    _db.SaveChanges();
+                } else
+                {
+                    CheckLayoutApp();
+                    CheckFolderImageApp();
+                    var eLayoutApp = new DemoPhotoBooth.Models.Entities.LayoutApp(result);
+                    eLayoutApp.IsSelected = true;
+                    eLayoutApp.IsBackgroundColor = IsColorGridVisible;
+                    var svgName = eLayoutApp.LayoutImage.Split("/")?.Last();
 
-                _db.SaveChanges();
+                    eLayoutApp.SVGMappingName = $"{svgName?.Split("-")[0]}.svg";
+                    eLayoutApp.LayoutImage = svgName ?? string.Empty;
+                    eLayoutApp.Quantity = GetMaximumSelected(eLayoutApp.SVGMappingName);
+                    _db.LayoutApp.Add(eLayoutApp);
+
+                    _db.SaveChanges();
+                }
 
             }
             catch (Exception ex)

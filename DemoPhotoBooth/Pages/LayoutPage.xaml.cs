@@ -39,6 +39,8 @@ namespace DemoPhotoBooth.Pages
         {
             InitializeComponent();
             StartCountdown();
+            var path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backgrounds/bglayout.png");
+            this.BgCustome.ImageSource = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
             Layouts = layouts;
             DataContext = this;
         }

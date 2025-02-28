@@ -53,6 +53,8 @@ namespace DemoPhotoBooth.Pages
         {
             InitializeComponent();
             _db = new CommonDbDataContext();
+            var path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backgrounds/bgprint.png");
+            this.BgCustome.ImageSource = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)

@@ -36,6 +36,8 @@ namespace DemoPhotoBooth.Pages
         public CameraMode(Layout layout, List<Layout> listLayouts)
         {
             InitializeComponent();
+            var path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backgrounds/bgcameramode.png");
+            this.BgCustome.ImageSource = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
             _layout = layout;
             _listLayouts = listLayouts;
             selectedMode = "Timer";
@@ -98,8 +100,8 @@ namespace DemoPhotoBooth.Pages
         {
             if (selectedMode == "Timer")
             {
-                //NavigationService?.Navigate(new NewPreviewPage(_layout, _listLayouts));
-                TimerMode_Click(sender, e); // Gọi hàm Hẹn Giờ nếu chọn Timer
+                NavigationService?.Navigate(new NewPreviewPage(_layout, _listLayouts));
+                //TimerMode_Click(sender, e); // Gọi hàm Hẹn Giờ nếu chọn Timer
             }
             else if (selectedMode == "Manual")
             {

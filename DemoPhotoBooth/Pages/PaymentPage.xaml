@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
 
         <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Layouts/bg-payment.png"/>
+            <ImageBrush x:Name="BgCustome"/>
         </Grid.Background>
 
         <!-- Tiêu đề -->

@@ -9,6 +9,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Pages\AdsPopup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\BackgroundPages\BackgroundPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -37,6 +40,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\Popup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\PopupChecking.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\PreviewPage.xaml.cs">
@@ -68,6 +74,9 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\AdsPopup.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\BackgroundPages\BackgroundPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -96,6 +105,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Popup.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\PopupChecking.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\PreviewPage.xaml">

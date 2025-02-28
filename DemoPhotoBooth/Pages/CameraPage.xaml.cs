@@ -60,13 +60,13 @@ namespace DemoPhotoBooth.Pages
         {
             if (isPortrait)
             {
-                var path = "pack://application:,,,/Layouts/bg-vertical.png";
+                var path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backgrounds/bgframevertical.png");
                 this.MyBackgroundLiveView.Source = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
                 this.TimeBoxLive.VerticalAlignment = VerticalAlignment.Center;
             }
             else
             {
-                var path = "pack://application:,,,/Layouts/bg-horizontal.png";
+                var path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backgrounds/bgframehorizontal.png");
                 this.MyBackgroundLiveView.Source = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
                 this.TimeBoxLive.VerticalAlignment = VerticalAlignment.Top;
             }

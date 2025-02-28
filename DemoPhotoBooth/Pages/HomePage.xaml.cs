@@ -52,6 +52,8 @@ namespace DemoPhotoBooth.Pages
                 PhotoApps = new Models.DTOs.PhotoApp(item);
                 DataContext = this;
             }
+            var path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backgrounds/bgmain.png");
+            this.BgCustome.ImageSource = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
         }
 
         //public HomePage(Models.DTOs.PhotoApp photoApps)
@@ -67,8 +69,6 @@ namespace DemoPhotoBooth.Pages
         {
             try
             {
-              
-
                 var info = _db.PhotoApps.AsNoTracking()?.FirstOrDefault();
                 var layouts = await GetLayout(PhotoApps, info.Token);
 

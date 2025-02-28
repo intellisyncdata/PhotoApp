@@ -11,16 +11,14 @@
 
     <!-- Định nghĩa tài nguyên -->
     <Page.Resources>
-        <common:ResponsiveImageSizeConverter x:Key="Resp\\mac\home\downloads\code\photoapp\demophotobooth\pages\layoutpage.xaml.cs
-\\mac\home\downloads\code\photoapp\demophotobooth\pages\layoutpage.xaml
-onsiveImageSizeConverter"/>
+        <common:ResponsiveImageSizeConverter x:Key="ResponsiveImageSizeConverter"/>
         <common:ResponsiveImageHeightConverter x:Key="ResponsiveImageHeightConverter"/>
     </Page.Resources>
 
     <!-- Giao diện người dùng -->
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Layouts/bg-layout.png"/>
+            <ImageBrush x:Name="BgCustome"/>
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="150"/>

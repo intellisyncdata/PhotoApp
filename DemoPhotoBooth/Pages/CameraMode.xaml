@@ -8,7 +8,7 @@
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Layouts/bg-mode-cam.png"/>
+            <ImageBrush x:Name="BgCustome"/>
         </Grid.Background>
 
         <Grid.RowDefinitions>
