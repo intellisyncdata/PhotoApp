@@ -49,24 +49,24 @@ namespace DemoPhotoBooth.Pages
         public CameraPage(Layout layout, List<Layout> listLayouts, bool portraitMode = false)
         {
             InitializeComponent();
-            ActivateTimers();
             isPortrait = portraitMode;
             _layout = layout;
             _listLayouts = listLayouts;
             SetViewMode();
+            ActivateTimers();
         }
 
         private void SetViewMode()
         {
             if (isPortrait)
             {
-                var path = "pack://application:,,,/Layouts/bg-vertical.png";
+                var path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backgrounds/bgframevertical.png");
                 this.MyBackgroundLiveView.Source = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
                 this.TimeBoxLive.VerticalAlignment = VerticalAlignment.Center;
             }
             else
             {
-                var path = "pack://application:,,,/Layouts/bg-horizontal.png";
+                var path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backgrounds/bgframehorizontal.png");
                 this.MyBackgroundLiveView.Source = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
                 this.TimeBoxLive.VerticalAlignment = VerticalAlignment.Top;
             }
@@ -157,8 +157,8 @@ namespace DemoPhotoBooth.Pages
                     Debug.WriteLine("Photo session completed.");
                     CountdownTimer.Text = "Đã chụp xong!";
                     // Stop recording when all photos are taken
-                    NavigationService?.Navigate(new NewPreviewPage(_layout, _listLayouts, isPortrait));
                     recorder.StopRecording();
+                    NavigationService?.Navigate(new NewPreviewPage(_layout, _listLayouts, isPortrait));
                 }
             }
             catch (Exception ex)

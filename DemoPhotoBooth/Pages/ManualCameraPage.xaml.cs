@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using DemoPhotoBooth.Common;
 using DemoPhotoBooth.DataContext;
 using DemoPhotoBooth.Models;
+using DemoPhotoBooth.Pages.Preview;
 using EOSDigital.API;
 using EOSDigital.SDK;
 using Microsoft.EntityFrameworkCore;
@@ -39,19 +40,16 @@ namespace DemoPhotoBooth.Pages
         private LiveViewRecorder recorder = new LiveViewRecorder();
         // Default Landscape
         private bool isPortrait = false;
-        private bool isManual = false;
 
         public int photoNumber = 0;
         public int maxPhotosTaken = 8;
-        private int timeLeft = 10;
-        private int timeLeftCopy = 10;
+        private int timeLeft = 90;
         private int photosTaken = 0;
         public bool PhotoTaken = false;
         private Layout _layout { get; set; }
         private List<Layout> _listLayouts { get; set; }
         private (string root, string printPath) rootPath = (string.Empty, string.Empty);
-        public System.Windows.Threading.DispatcherTimer betweenPhotos;
-        public System.Windows.Threading.DispatcherTimer secondCounter;
+        public System.Windows.Threading.DispatcherTimer timeLeftCounter;
 
 
         public ManualCameraPage(Layout layout, List<Layout> listLayouts, bool portraitMode = false)
@@ -61,6 +59,7 @@ namespace DemoPhotoBooth.Pages
             _layout = layout;
             _listLayouts = listLayouts;
             SetViewMode();
+            ActivateTimers();
         }
 
         private void SetViewMode()
@@ -76,6 +75,33 @@ namespace DemoPhotoBooth.Pages
                 var path = "pack://application:,,,/Layouts/bg-horizontal.png";
                 this.MyBackgroundLiveView.Source = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
                 this.TimeBoxLive.VerticalAlignment = VerticalAlignment.Top;
+            }
+        }
+
+        private void ActivateTimers()
+        {
+            timeLeftCounter = new System.Windows.Threading.DispatcherTimer();
+            timeLeftCounter.Tick += ShowTimeLeft;
+            timeLeftCounter.Interval = TimeSpan.FromSeconds(1);
+
+        }
+
+        private void ShowTimeLeft(object sender, EventArgs e)
+        {
+            if (timeLeft > 0)
+            {
+                CountdownTimer.Text = timeLeft.ToString();
+                timeLeft--;
+            }
+            else
+            {
+                timeLeftCounter.Stop();
+                CountdownTimer.Text = "📸";
+
+                if (photosTaken < maxPhotosTaken)
+                {
+                    MakePhoto(sender, e);
+                }
             }
         }
 
@@ -137,19 +163,67 @@ namespace DemoPhotoBooth.Pages
 
         private void TakePhoto()
         {
-            if (photosTaken < maxPhotosTaken)
+
+            CountdownTimer.Visibility = Visibility.Visible;
+            PhotosLeftCounter.Text = $"{photosTaken}/{maxPhotosTaken}";
+            timeLeftCounter.Start();
+        }
+        private async void MakePhoto(object sender, EventArgs e)
+        {
+            try
             {
-                Debug.WriteLine($"Starting countdown for photo {photosTaken + 1}");
-                timeLeftCopy = timeLeft;
-                CountdownTimer.Visibility = Visibility.Visible;
-                PhotosLeftCounter.Text = $"{photosTaken + 1}/{maxPhotosTaken}";
-                secondCounter.Start();
-                betweenPhotos.Start();
+                #region Take Photo
+                Debug.WriteLine($"Taking photo {photosTaken}...");
+                // Simulating camera photo-taking commands
+
+                MainCamera.SendCommand(CameraCommand.PressShutterButton, (int)ShutterButton.Halfway);
+                // Simulate half press delay
+                await Task.Delay(500);
+
+                MainCamera.SendCommand(CameraCommand.PressShutterButton, (int)ShutterButton.Completely);
+                // Simulate capture delay
+                await Task.Delay(500);
+
+                MainCamera.SendCommand(CameraCommand.PressShutterButton, (int)ShutterButton.OFF);
+                Debug.WriteLine("Photo taken successfully.");
+                #endregion Take Photo
+
+                // Simulate photo saving delay asynchronously
+                await Task.Delay(2000);
+
+                CountdownTimer.Text = "📸";
+
+                // Wait asynchronously for photo saving confirmation
+                await WaitForPhotoToBeSaved();
+
+                if (photosTaken < maxPhotosTaken)
+                {
+                    // Start the next countdown cycle
+                    MakePhoto(sender, e);
+                }
+                else
+                {
+                    Debug.WriteLine("Photo session completed.");
+                    CountdownTimer.Text = "Đã chụp xong!";
+                    // Stop recording when all photos are taken
+                    recorder.StopRecording();
+                    NavigationService?.Navigate(new NewPreviewPage(_layout, _listLayouts, isPortrait));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Debug.WriteLine("All photos have been taken.");
+                Report.Error(ex.Message, false);
             }
+        }
+
+        private async Task WaitForPhotoToBeSaved()
+        {
+            while (!PhotoTaken)
+            {
+                // Asynchronously wait for the photo to be saved
+                await Task.Delay(1000);
+            }
+            PhotoTaken = false;
         }
 
         private void APIHandler_CameraAdded(CanonAPI sender)
@@ -212,11 +286,10 @@ namespace DemoPhotoBooth.Pages
                         MainCamera.LiveViewUpdated += MainCamera_LiveViewUpdated;
                         MainCamera.StateChanged += MainCamera_StateChanged;
                         MainCamera.DownloadReady += MainCamera_DownloadReady;
-                        MainCamera.ObjectChanged += MainCamera_ObjectChanged;
                         MainCamera.SetSetting(PropertyID.SaveTo, (int)SaveTo.Host);
-                        MainCamera?.SetSetting(PropertyID.Evf_OutputDevice, (int)EvfOutputDevice.Camera);
                         MainCamera?.SetCapacity(4096, int.MaxValue);
                         StartLiveView();
+                        MainCamera?.SetSetting(PropertyID.Evf_OutputDevice, (int)(EvfOutputDevice.PC | EvfOutputDevice.Camera));
 
                     }
                 }
@@ -236,38 +309,10 @@ namespace DemoPhotoBooth.Pages
                         CloseSession();
                     });
                 }
-                else if (eventID == StateEventID.WillSoonShutDown)
-                {
-                    Dispatcher.Invoke((Action)delegate
-                    {
-                        CapturePhotoFromRemote();
-                    });
-                }
             }
             catch (Exception ex)
             {
                 //Report.Error(ex.Message, false); 
-            }
-        }
-
-        private void CapturePhotoFromRemote()
-        {
-            try
-            {
-                if (photosTaken < maxPhotosTaken)
-                {
-                    Debug.WriteLine($"Capturing photo {photosTaken + 1} from remote trigger");
-                    MainCamera.TakePhoto();
-                    photosTaken++;
-                }
-                else
-                {
-                    Debug.WriteLine("Maximum number of photos taken.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Report.Error(ex.Message, false);
             }
         }
 
@@ -351,16 +396,37 @@ namespace DemoPhotoBooth.Pages
 
             try
             {
-                photoNumber++;
-                var savedata = new SavePhoto(photoNumber);
-                string dir = savedata.FolderDirectory;
 
-                Info.FileName = savedata.PhotoName;
-                sender.DownloadFile(Info, dir);
-                if (isPortrait)
+                if (photosTaken <= maxPhotosTaken)
                 {
-                    ReSize.CropAndSaveImage(savedata.PhotoDirectory, photoNumber);
+                    photoNumber++;
+                    var savedata = new SavePhoto(photoNumber);
+                    string dir = savedata.FolderDirectory;
+
+                    Info.FileName = savedata.PhotoName;
+
+                    sender.DownloadFile(Info, dir);
+
+                    if (isPortrait)
+                    {
+                        ReSize.CropAndSaveImage(savedata.PhotoDirectory, photoNumber);
+                    }
+
+                    Debug.WriteLine($"Capturing photo {photosTaken + 1} from remote trigger");
+                    Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+                    {
+                        PhotosLeftCounter.Text = $"{photosTaken}/{maxPhotosTaken}";
+                    }));
+
+                    photosTaken++;
                 }
+                else
+                {
+                    Debug.WriteLine("Maximum number of photos taken.");
+                    recorder.StopRecording();
+                    NavigationService?.Navigate(new NewPreviewPage(_layout, _listLayouts, isPortrait));
+                }
+
             }
             catch (Exception ex)
             {
@@ -370,25 +436,5 @@ namespace DemoPhotoBooth.Pages
             PhotoTaken = true;
 
         }
-
-        private void MainCamera_ObjectChanged(Camera sender, ObjectEventID eventID, IntPtr reference)
-        {
-            if (eventID == ObjectEventID.DirItemRequestTransfer)
-            {
-                if (photosTaken < maxPhotosTaken)
-                {
-                    Debug.WriteLine($"Capturing photo {photosTaken + 1} from remote trigger");
-                    PhotosLeftCounter.Text = $"{photosTaken + 1}/{maxPhotosTaken}";
-                    photosTaken++;
-                }
-                else
-                {
-                    Debug.WriteLine("Maximum number of photos taken.");
-                    //NavigationService?.Navigate(new NewPreviewPage(_layout, _listLayouts, isPortrait));
-                }
-            }
-        }
-
-
     }
 }
