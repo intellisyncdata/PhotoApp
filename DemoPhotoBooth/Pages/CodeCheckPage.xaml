@@ -4,7 +4,7 @@
       Title="Code Check">
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Layouts/main-background.png"/>
+            <ImageBrush x:Name="MyBg"/>
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="3*"/>

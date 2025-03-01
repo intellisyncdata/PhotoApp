@@ -9,7 +9,7 @@
     <Grid>
         <!-- Background Image -->
         <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Layouts/bg-print.png"/>
+            <ImageBrush x:Name="BgCustome"/>
         </Grid.Background>
 
         <Grid.RowDefinitions>

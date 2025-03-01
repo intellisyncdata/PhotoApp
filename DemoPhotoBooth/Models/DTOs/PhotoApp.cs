@@ -1,6 +1,7 @@
 ﻿using DemoPhotoBooth.Models.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -9,6 +10,29 @@ using System.Threading.Tasks;
 
 namespace DemoPhotoBooth.Models.DTOs
 {
+    public class ConfigPhotoApp
+    {
+        [JsonPropertyName("bg_main")]
+        public string BgMain { get; set; }
+        [JsonPropertyName("bg_layout")]
+        public string BgLayout { get; set; }
+        [JsonPropertyName("bg_theme")]
+        public string BgTheme { get; set; }
+        [JsonPropertyName("bg_payment")]
+        public string BgPayment { get; set; }
+        [JsonPropertyName("bg_camera_mode")]
+        public string BgCameraMode { get; set; }
+        [JsonPropertyName("bg_frame_horizontal")]
+        public string BgFrameHorizontal { get; set; }
+        [JsonPropertyName("bg_frame_vertical")]
+        public string BgFrameVertical { get; set; }
+        [JsonPropertyName("bg_preview_horizontal")]
+        public string BgPreviewHorizontal { get; set; }
+        [JsonPropertyName("bg_preview_vertical")]
+        public string BgPreviewVertical { get; set; }
+        [JsonPropertyName("bg_print")]
+        public string BgPrint { get; set; }
+    }
     public class PhotoApp
     {
         public PhotoApp()
@@ -35,8 +59,8 @@ namespace DemoPhotoBooth.Models.DTOs
         public string Code { get; set; }
         [JsonPropertyName("name")]
         public string Name { get; set; }
-        //[JsonPropertyName("background")]
-        //public string Background { get; set; }
+        [JsonPropertyName("config_photo_app")]
+        public ConfigPhotoApp configPhotoApp { get; set; } = new ConfigPhotoApp();
         [JsonPropertyName("font_color")]
         public string FontColor { get; set; }
         [JsonPropertyName("payment_method")]

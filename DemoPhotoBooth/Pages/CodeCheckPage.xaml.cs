@@ -1,3 +1,4 @@
+﻿using System;
 ﻿using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
@@ -8,8 +9,11 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Resources;
+using System.Windows.Shapes;
+using System.Xml.Linq;
 using DemoPhotoBooth.Common;
 using DemoPhotoBooth.DataContext;
 using DemoPhotoBooth.Models;
@@ -26,6 +30,8 @@ namespace DemoPhotoBooth.Pages
         public CodeCheckPage()
         {
             InitializeComponent();
+            var path = Environment.CurrentDirectory + "/Backgrounds/bgcheck.png";
+            this.MyBg.ImageSource = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
 #if DEBUG
             CodeInput.Text = "ZR3yT2POsAE";
 #endif
@@ -42,7 +48,7 @@ namespace DemoPhotoBooth.Pages
         {
             var photoApp = _db.PhotoApps.AsNoTracking().FirstOrDefault();
 
-            CodeInput.Text = photoApp?.Code ?? "PHOTOAPP001";
+            CodeInput.Text = photoApp?.Code ?? "Mã Code";
         }
 
         private async Task<bool> CheckDevice()
@@ -200,23 +206,49 @@ namespace DemoPhotoBooth.Pages
         {
             if (string.IsNullOrWhiteSpace(CodeInput.Text))
             {
-                MessageBox.Show("Please enter some code to check!", CommonMessages.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Hãy nhập code!", CommonMessages.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             else
             {
-#if !DEBUG
+        #if !DEBUG
                 if (!await CheckDevice())
                 {
                     MessageBox.Show("Không tìm thấy thiết bị!", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-#endif
+        #endif
+                PopupChecking popup = new PopupChecking
+                {
+                    Owner = System.Windows.Window.GetWindow(this), // Gắn popup với cửa sổ hiện tại
+                };
+
+                popup.Show(); // Hiển thị popup và chờ kết quả
+
                 var photoApp = _db.PhotoApps.AsNoTracking().FirstOrDefault();
 
                 if (photoApp != null && photoApp.Code == CodeInput.Text)
                 {
-                    NavigationService.Navigate(new HomePage());
+                    PhotoApp result = await GetInfoPhotoApp(photoApp);
+                    if (result != null)
+                    {
+                        await SaveBgPhotoApp(result);
+                        NavigationService.Navigate(new HomePage());
+                        if (popup != null)
+                        {
+                            await Task.Delay(100);
+                            popup.Close();
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Lỗi", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                        if (popup != null)
+                        {
+                            await Task.Delay(100);
+                            popup.Close();
+                        }
+                    }
                 }
                 else
                 {
@@ -227,12 +259,23 @@ namespace DemoPhotoBooth.Pages
                     {
                         SavePhotoApp(result);
                         InitPrintInformation(result.Id);
+                        await SaveBgPhotoApp(result);
 
                         NavigationService.Navigate(new HomePage());
+                        if (popup != null)
+                        {
+                            await Task.Delay(100);
+                            popup.Close();
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("Invalid code. Please try again.", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Mã Code Photo App sai. Xin vui lòng nhập lại!", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                        if (popup != null)
+                        {
+                            await Task.Delay(100);
+                            popup.Close();
+                        }
                     }
                     btnCheckCode.IsEnabled = btnResetPrinter.IsEnabled = CodeInput.IsEnabled = true;
                 }
@@ -335,6 +378,23 @@ namespace DemoPhotoBooth.Pages
             }
         }
 
+        private async Task DownloadBgImageAsync(string imageUrl, string bgName)
+        {
+            try
+            {
+                using HttpClient client = new HttpClient();
+
+                byte[] imageBytes = await client.GetByteArrayAsync(imageUrl);
+                string savePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backgrounds", bgName);
+                Directory.CreateDirectory(System.IO.Path.GetDirectoryName(savePath));
+                await File.WriteAllBytesAsync(savePath, imageBytes);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi tải ảnh {imageUrl}: {ex.Message}");
+            }
+        }
+
         private void StartFile(string filePath)
         {
             // Khởi động file exe sau khi đã tải xong
@@ -374,6 +434,57 @@ namespace DemoPhotoBooth.Pages
                 _db.PhotoApps.Add(ePhotoApp);
 
                 _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private async Task SaveBgPhotoApp(PhotoApp result)
+        {
+            try
+            {
+                if (result.configPhotoApp.BgMain != null)
+                {
+                    await DownloadBgImageAsync(result.configPhotoApp.BgMain, "bgmain.png");
+                }
+                if (result.configPhotoApp.BgLayout != null)
+                {
+                    await DownloadBgImageAsync(result.configPhotoApp.BgLayout, "bglayout.png");
+                }
+                if (result.configPhotoApp.BgTheme != null)
+                {
+                    await DownloadBgImageAsync(result.configPhotoApp.BgTheme, "bgtheme.png");
+                }
+                if (result.configPhotoApp.BgPayment != null)
+                {
+                    await DownloadBgImageAsync(result.configPhotoApp.BgPayment, "bgpayment.png");
+                }
+                if (result.configPhotoApp.BgCameraMode != null)
+                {
+                    await DownloadBgImageAsync(result.configPhotoApp.BgCameraMode, "bgcameramode.png");
+                }
+                if (result.configPhotoApp.BgFrameVertical != null)
+                {
+                    await DownloadBgImageAsync(result.configPhotoApp.BgFrameVertical, "bgframevertical.png");
+                }
+                if (result.configPhotoApp.BgFrameHorizontal != null)
+                {
+                    await DownloadBgImageAsync(result.configPhotoApp.BgFrameHorizontal, "bgframehorizontal.png");
+                }
+                if (result.configPhotoApp.BgPreviewHorizontal != null)
+                {
+                    await DownloadBgImageAsync(result.configPhotoApp.BgPreviewHorizontal, "bgpreviewhorizontal.png");
+                }
+                if (result.configPhotoApp.BgPreviewVertical != null)
+                {
+                    await DownloadBgImageAsync(result.configPhotoApp.BgPreviewVertical, "bgpreviewvertical.png");
+                }
+                if (result.configPhotoApp.BgPrint != null)
+                {
+                    await DownloadBgImageAsync(result.configPhotoApp.BgPrint, "bgprint.png");
+                }
             }
             catch (Exception ex)
             {
@@ -434,6 +545,33 @@ namespace DemoPhotoBooth.Pages
                 }
                 btnCheckCode.IsEnabled = btnResetPrinter.IsEnabled = CodeInput.IsEnabled = true;
             }
+        }
+
+        private async Task<PhotoApp> GetInfoPhotoApp(Models.Entities.PhotoApp photoApp)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    string apiUrlTemplate = ApiUrl.ApiGetInfo;
+                    string apiUrl = string.Format(apiUrlTemplate, photoApp.Id);
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(photoApp.Token);
+                    HttpResponseMessage response = await client.GetAsync(apiUrl);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string responseContent = await response.Content.ReadAsStringAsync();
+                        PhotoApp result = JsonSerializer.Deserialize<PhotoApp>(responseContent);
+                        return result ?? new PhotoApp();
+                    }
+                    return new PhotoApp();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error occurred: {ex.Message}", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            return new PhotoApp();
         }
 
         private async Task<PhotoApp> CheckCodeAsync(string code)
@@ -504,7 +642,7 @@ namespace DemoPhotoBooth.Pages
             string currentPath = Directory.GetCurrentDirectory();
 
             // Tìm thư mục gốc "PhotoBoothProject"
-            while (!string.IsNullOrEmpty(currentPath) && !Directory.Exists(Path.Combine(currentPath, "PhotoBoothProject")))
+            while (!string.IsNullOrEmpty(currentPath) && !Directory.Exists(System.IO.Path.Combine(currentPath, "PhotoBoothProject")))
             {
                 currentPath = Directory.GetParent(currentPath)?.FullName ?? "";
             }
@@ -516,7 +654,7 @@ namespace DemoPhotoBooth.Pages
             }
 
             // Trả về đường dẫn đầy đủ đến thư mục cần kiểm tra
-            return Path.Combine(currentPath, "PhotoBoothProject", "DemoPhotoBooth", "DemoPhotoBooth", "Text");
+            return System.IO.Path.Combine(currentPath, "PhotoBoothProject", "DemoPhotoBooth", "DemoPhotoBooth", "Text");
         }
 
     }

@@ -84,7 +84,7 @@ namespace DemoPhotoBooth.Pages.Preview
             isPortrait = portraitMode;
             _layout = layout;
             _listLayouts = listLayouts;
-            btnReset.Visibility = Visibility.Hidden;
+            //btnReset.Visibility = Visibility.Hidden;
             //if (isPortrait)
             //{
             //    Grid.SetRow(gridImages, 1);
@@ -379,6 +379,11 @@ namespace DemoPhotoBooth.Pages.Preview
 
         private async void btnPrint_Click(object sender, RoutedEventArgs e)
         {
+            AdsPopup popup = new AdsPopup
+            {
+                Owner = System.Windows.Window.GetWindow(this), // Gắn popup với cửa sổ hiện tại
+            };
+            popup.Show();
             var photoApp = await _db.PhotoApps.AsNoTracking().SingleOrDefaultAsync();
             if (photoApp != null)
             {

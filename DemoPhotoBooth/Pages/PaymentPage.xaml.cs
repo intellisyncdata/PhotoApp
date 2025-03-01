@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace DemoPhotoBooth.Pages
@@ -48,6 +49,8 @@ namespace DemoPhotoBooth.Pages
         {
             _db = new CommonDbDataContext();
             InitializeComponent();
+            var path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backgrounds/bgpayment.png");
+            this.BgCustome.ImageSource = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute));
             TotalPrice = totalPrice;
             Quantity = quantity;
             Layout = layout;
