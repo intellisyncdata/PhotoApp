@@ -201,6 +201,33 @@ namespace DemoPhotoBooth.Migrations
                     b.ToTable("SvgRectTags");
                 });
 
+            modelBuilder.Entity("DemoPhotoBooth.Models.Entities.Version", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PackageUrl")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("VersionNo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Versions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            PackageUrl = "",
+                            VersionNo = "0.0.0"
+                        });
+                });
+
             modelBuilder.Entity("DemoPhotoBooth.Models.Entities.SvgRectTag", b =>
                 {
                     b.HasOne("DemoPhotoBooth.Models.Entities.SvgInfor", "SvgInfor")

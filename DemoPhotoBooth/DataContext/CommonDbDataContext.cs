@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Version = DemoPhotoBooth.Models.Entities.Version;
 
 namespace DemoPhotoBooth.DataContext
 {
@@ -21,10 +22,17 @@ namespace DemoPhotoBooth.DataContext
         public DbSet<LayoutApp> LayoutApp { get; set; }
         public DbSet<SvgInfor> SvgInfors { get; set; }
         public DbSet<SvgRectTag> SvgRectTags { get; set; }
+        public DbSet<Version> Versions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Version>().HasData(new Version
+            {
+                Id = 1,
+                VersionNo = "0.0.0",
+                PackageUrl = string.Empty
+            });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

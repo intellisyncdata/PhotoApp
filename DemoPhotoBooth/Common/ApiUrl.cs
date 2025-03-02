@@ -16,6 +16,7 @@ namespace DemoPhotoBooth.Common
         public const string ApiCreateTransactionPayment = "https://photo-app-api.intellisyncdata.com/api/v1/apps/{0}/payments/create";
         public const string ApiCompleteTransactionPayment = "https://photo-app-api.intellisyncdata.com/api/v1/apps/{0}/payments/confirm";
         public const string ApiGetBackground = "https://your-api-url.com/check-code";
+        public const string ApiCheckVersion = "https://photo-app-api.intellisyncdata.com/api/v1/apps/check_version?version={0}";
         /// <summary>
         /// Method: POST
         /// {0}: <int>photo_app_id</int>

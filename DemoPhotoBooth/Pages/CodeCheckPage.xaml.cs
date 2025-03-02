@@ -23,19 +23,18 @@ namespace DemoPhotoBooth.Pages
         private readonly HttpClient _httpClient;
         public PhotoApp PhotoApps { get; set; } = new PhotoApp();
         private readonly CommonDbDataContext _db;
+        private readonly Uri srcVersionFileUri = new Uri("pack://application:,,,/Text/Version.txt");
+
         public CodeCheckPage()
         {
             InitializeComponent();
 #if DEBUG
             CodeInput.Text = "ZR3yT2POsAE";
 #endif
-            CheckVersion();
             _httpClient = new HttpClient();
             _db = new CommonDbDataContext();
-            if (_db != null)
-            {
-                CheckCodeDb();
-            }
+            CheckVersion();
+            CheckCodeDb();
         }
 
         private void CheckCodeDb()
@@ -241,61 +240,58 @@ namespace DemoPhotoBooth.Pages
 
         private async void CheckVersion()
         {
-            Uri resourceUri = new Uri("pack://application:,,,/Text/Version.txt");
-            string VersionCheckUrl = "https://photo-app-api.intellisyncdata.com/api/v1/apps/check_version?version=";
-            StreamResourceInfo resourceInfo = Application.GetResourceStream(resourceUri);
+            VersionDTO? result = null;
+            var version = await _db.Versions.OrderByDescending(x => x.Id).AsNoTracking().FirstOrDefaultAsync();
 
-            if (resourceInfo != null)
+            using HttpClient client = new HttpClient();
+            string url = string.Format(ApiUrl.ApiCheckVersion, version?.VersionNo ?? "0.0.0");
+            HttpResponseMessage response = await client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
             {
-                using (StreamReader reader = new StreamReader(resourceInfo.Stream))
+                btnUpdate.IsEnabled = true;
+                btnUpdate.Opacity = 1;
+                var content = await response.Content.ReadAsStringAsync();
+                result = JsonSerializer.Deserialize<VersionDTO>(content);
+                if (result != null && !string.IsNullOrEmpty(result.Version)
+                    && !string.IsNullOrEmpty(result.PackageUrl))
                 {
-                    string version = await reader.ReadToEndAsync();
-                    using (HttpClient client = new HttpClient())
+                    _db.Versions.Add(new Models.Entities.Version
                     {
-                        HttpResponseMessage response = await client.GetAsync(VersionCheckUrl + version);
-                        if (response.IsSuccessStatusCode)
-                        {
-                            btnUpdate.IsEnabled = true;
-                            btnUpdate.Opacity = 1;
-                        }
-                    }
+                        VersionNo = result.Version,
+                        PackageUrl = result.PackageUrl
+                    });
+                    await _db.SaveChangesAsync();
                 }
-            }
-            else
-            {
-                MessageBox.Show("Không tìm thấy tệp Version.txt", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private async void DownloadVersion()
+        private async Task<VersionDTO?> GetVersionInformation()
         {
-            Uri resourceUri = new Uri("pack://application:,,,/Text/Version.txt");
-            string VersionCheckUrl = "https://photo-app-api.intellisyncdata.com/api/v1/apps/check_version?version=";
-            StreamResourceInfo resourceInfo = Application.GetResourceStream(resourceUri);
+            VersionDTO? result = null;
+            var version = await _db.Versions.OrderByDescending(x => x.Id).AsNoTracking().FirstOrDefaultAsync();
 
-            if (resourceInfo != null)
+            using HttpClient client = new HttpClient();
+            string url = string.Format(ApiUrl.ApiCheckVersion, version?.VersionNo ?? "0.0.0");
+            HttpResponseMessage response = await client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
             {
-                using (StreamReader reader = new StreamReader(resourceInfo.Stream))
+                btnUpdate.IsEnabled = true;
+                btnUpdate.Opacity = 1;
+                var content = await response.Content.ReadAsStringAsync();
+                result = JsonSerializer.Deserialize<VersionDTO>(content);
+
+                if (result != null && !string.IsNullOrEmpty(result.Version)
+                    && !string.IsNullOrEmpty(result.PackageUrl))
                 {
-                    string version = await reader.ReadToEndAsync();
-                    using (HttpClient client = new HttpClient())
+                    _db.Versions.Add(new Models.Entities.Version
                     {
-                        HttpResponseMessage response = await client.GetAsync(VersionCheckUrl + version);
-                        if (response.IsSuccessStatusCode)
-                        {
-                            btnUpdate.IsEnabled = true;
-                            btnUpdate.Opacity = 1;
-                            //lấy url
-                            //tải file
-                            //update version.txt
-                        }
-                    }
+                        VersionNo = result.Version,
+                        PackageUrl = result.PackageUrl
+                    });
+                    await _db.SaveChangesAsync();
                 }
             }
-            else
-            {
-                MessageBox.Show("Không tìm thấy tệp Version.txt", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            return result;
         }
 
 
@@ -303,10 +299,15 @@ namespace DemoPhotoBooth.Pages
         {
             try
             {
-                DownloadVersion();
+                var versionInfo = await GetVersionInformation();
+                if (versionInfo == null)
+                {
+                    return;
+                }
+                return;
 
                 // URL API để tải file
-                string apiUrl = "https://example.com/api/download";
+                string apiUrl = versionInfo.PackageUrl;
                 string filePath = @"C:\Path\To\Your\Exe\File.exe"; // Đường dẫn file exe hiện tại
 
                 // Tải file mới về
