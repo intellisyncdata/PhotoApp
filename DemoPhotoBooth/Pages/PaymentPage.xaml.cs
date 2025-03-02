@@ -58,24 +58,22 @@ namespace DemoPhotoBooth.Pages
             ListLayout = listLayouts;
             colors = color;
             remainingTime = remainingSeconds;
-            CloseSerialPort();
             btnContinue.IsEnabled = false;
             btnContinue.Opacity = 0.5;
             totalAmount = 0;
-            InitializeSerialPort();
-            SendCommand("5E");
+            //InitializeSerialPort();
+            //SendCommand("5e");
+
         }
 
         private async void InitializeSerialPort()
         {
             try
             {
-                if (serialPort != null && serialPort.IsOpen)
+                if(serialPort != null && serialPort.IsOpen)
                 {
-                    LogMessage("Cổng COM đã mở.");
                     return;
                 }
-
                 serialPort = new SerialPort("COM2", 9600, Parity.None, 8, StopBits.One);
                 serialPort.Encoding = System.Text.Encoding.ASCII;
                 serialPort.DataReceived += SerialPort_DataReceived;
@@ -257,14 +255,16 @@ namespace DemoPhotoBooth.Pages
         private void NavigateToHomePage(object sender, RoutedEventArgs e)
         {
             totalAmount = 0;
-            SendCommand("5C");
+            SendCommand("5e");
+            CloseSerialPort();
             NavigationService?.Navigate(new HomePage());
         }
 
         private void NavigateToPreviousPage(object sender, RoutedEventArgs e)
         {
             totalAmount = 0;
-            SendCommand("5C");
+            SendCommand("5e");
+            CloseSerialPort();
             NavigationService?.Navigate(new BackgroundPage(Layout, colors, ListLayout,false, 90));
         }
 
@@ -273,7 +273,8 @@ namespace DemoPhotoBooth.Pages
             // Điều hướng tới trang CameraMode
             CompleteTransactionPayment(paymentId, totalAmount);
             totalAmount = 0;
-            SendCommand("5C");
+            SendCommand("5e");
+            CloseSerialPort();
             NavigationService?.Navigate(new CameraMode(Layout, ListLayout));
         }
 
@@ -394,7 +395,8 @@ namespace DemoPhotoBooth.Pages
             txtCountdown.Visibility = Visibility.Collapsed;
             bgCountDown.Visibility = Visibility.Collapsed;
             txtAmountToPay.Text = $"{amountToPay:N0} VNĐ";
-            SendCommand("5c");
+            InitializeSerialPort();
+            SendCommand("5e");
         }
 
         private void IncreaseQuantity(object sender, RoutedEventArgs e)

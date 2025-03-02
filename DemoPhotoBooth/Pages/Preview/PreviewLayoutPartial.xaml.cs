@@ -148,7 +148,11 @@ namespace DemoPhotoBooth.Pages.Preview
         private void NextDownloadPage()
         {
             dispatcherTimer.Stop();
-            App.EventAggregator.GetEvent<PreviewPageNextPage>().Publish(string.Empty);
+            var window = System.Windows.Application.Current.MainWindow as MainWindow;
+            if (window != null)
+            {
+                window.MainFrame.Navigate(new PrintAndDownloadPage());
+            }
         }
 
         private void ShowPreviewPopup()

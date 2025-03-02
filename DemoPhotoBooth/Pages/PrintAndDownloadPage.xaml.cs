@@ -374,7 +374,11 @@ namespace DemoPhotoBooth.Pages
                 serialPort.Close();
                 serialPort.Dispose();
             }
-            NavigationService.Navigate(new HomePage());
+            var window = System.Windows.Application.Current.MainWindow as MainWindow;
+            if (window != null)
+            {
+                window.MainFrame.Navigate(new HomePage());
+            }
         }
 
         private void SaveVisualAsHighDpiImage(Visual visual, string filePath, int dpi = 600)

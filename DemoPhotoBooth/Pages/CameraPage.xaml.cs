@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using DemoPhotoBooth.Pages.Preview;
 using System.Net.Sockets;
 using DemoPhotoBooth.Models;
+using static QRCoder.PayloadGenerator;
 
 namespace DemoPhotoBooth.Pages
 {
@@ -49,11 +50,11 @@ namespace DemoPhotoBooth.Pages
         public CameraPage(Layout layout, List<Layout> listLayouts, bool portraitMode = false)
         {
             InitializeComponent();
+            ActivateTimers();
             isPortrait = portraitMode;
             _layout = layout;
             _listLayouts = listLayouts;
             SetViewMode();
-            ActivateTimers();
         }
 
         private void SetViewMode()
@@ -83,11 +84,17 @@ namespace DemoPhotoBooth.Pages
             betweenPhotos.Interval = TimeSpan.FromSeconds(timeLeft);
         }
 
-        private void StartPhotoProcess()
+        private async void StartPhotoProcess()
         {
             photosTaken = 0;
 
             recorder.StartRecording();  // Start recording before taking photos
+
+            // Wait until MainCamera.IsLiveViewOn becomes true
+            while (!MainCamera.IsLiveViewOn)
+            {
+                await Task.Delay(1000); // Wait for 1 second
+            }
 
             TakePhoto();  // Start the first countdown/photo cycle
         }
@@ -120,16 +127,16 @@ namespace DemoPhotoBooth.Pages
                 #region Take Photo
                 Debug.WriteLine($"Taking photo {photosTaken}...");
                 // Simulating camera photo-taking commands
+                MainCamera.TakePhotoAsync();
+                //MainCamera.SendCommand(CameraCommand.PressShutterButton, (int)ShutterButton.Halfway);
+                //// Simulate half press delay
+                //await Task.Delay(500);
 
-                MainCamera.SendCommand(CameraCommand.PressShutterButton, (int)ShutterButton.Halfway);
-                // Simulate half press delay
-                await Task.Delay(500);
+                //MainCamera.SendCommand(CameraCommand.PressShutterButton, (int)ShutterButton.Completely);
+                //// Simulate capture delay
+                //await Task.Delay(500);
 
-                MainCamera.SendCommand(CameraCommand.PressShutterButton, (int)ShutterButton.Completely);
-                // Simulate capture delay
-                await Task.Delay(500);
-
-                MainCamera.SendCommand(CameraCommand.PressShutterButton, (int)ShutterButton.OFF);
+                //MainCamera.SendCommand(CameraCommand.PressShutterButton, (int)ShutterButton.OFF);
                 Debug.WriteLine("Photo taken successfully.");
                 #endregion Take Photo
 
@@ -158,7 +165,37 @@ namespace DemoPhotoBooth.Pages
                     CountdownTimer.Text = "Đã chụp xong!";
                     // Stop recording when all photos are taken
                     recorder.StopRecording();
+                    photoNumber = 0;
+                    string dir = new SavePhoto(1).FolderDirectory; // Lấy thư mục lưu ảnh
+
+                    // Kiểm tra và xóa file 0KB trong thư mục
+                    if (Directory.Exists(dir))
+                    {
+                        foreach (string filePath in Directory.GetFiles(dir))
+                        {
+                            FileInfo fileInfo = new FileInfo(filePath);
+                            if (fileInfo.Length == 0) // Nếu file có kích thước 0KB
+                            {
+                                try
+                                {
+                                    File.Delete(filePath);
+                                    Debug.WriteLine($"File {filePath} có dung lượng 0KB, đã bị xóa.");
+                                }
+                                catch (Exception ex)
+                                {
+                                    Debug.WriteLine($"Lỗi khi xóa file {filePath}: {ex.Message}");
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.WriteLine($"Thư mục {dir} không tồn tại.");
+                    }
+
+                    CloseSession();
                     NavigationService?.Navigate(new NewPreviewPage(_layout, _listLayouts, isPortrait));
+                    NavigationService?.RemoveBackEntry();
                 }
             }
             catch (Exception ex)
@@ -274,7 +311,7 @@ namespace DemoPhotoBooth.Pages
         }
         private void MainCamera_DownloadReady(Camera sender, DownloadInfo Info)
         {
-
+            string tempPath = string.Empty;
             try
             {
                 photoNumber++;
@@ -282,14 +319,20 @@ namespace DemoPhotoBooth.Pages
                 string dir = savedata.FolderDirectory;
 
                 Info.FileName = savedata.PhotoName;
+                tempPath = Path.Combine(dir, Info.FileName);
                 sender.DownloadFile(Info, dir);
-                if (isPortrait)
+                var layoutApp = _db.LayoutApp.FirstOrDefault();
+                if (layoutApp.FrameType == "vertical")
                 {
-                    ReSize.CropAndSaveImage(savedata.PhotoDirectory, photoNumber);
+                    ReSize.CropAndSaveImage(savedata.PhotoDirectory, Info.FileName);
                 }
             }
             catch (Exception ex)
             {
+                if (File.Exists(tempPath))
+                {
+                    File.Delete(tempPath);
+                }
                 //Report.Error(ex.Message, false);
             }
 
@@ -354,6 +397,10 @@ namespace DemoPhotoBooth.Pages
                         MainCamera.OpenSession();
                         MainCamera.LiveViewUpdated += MainCamera_LiveViewUpdated;
                         MainCamera.StateChanged += MainCamera_StateChanged;
+                        if (MainCamera != null)
+                        {
+                            MainCamera.DownloadReady -= MainCamera_DownloadReady;
+                        }
                         MainCamera.DownloadReady += MainCamera_DownloadReady;
                         MainCamera.SetSetting(PropertyID.SaveTo, (int)SaveTo.Host);
                         MainCamera?.SetCapacity(4096, int.MaxValue);

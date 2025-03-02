@@ -77,6 +77,19 @@ namespace DemoPhotoBooth
             }
         }
 
+        static public void CropAndSaveImage(string imagepath, string newName)
+        {
+            int cropX = 1600;
+            int cropWidth = 2850;
+
+            using (Image image = Image.Load(imagepath))
+            {
+                int cropHeight = image.Height; // Giữ nguyên chiều cao
+                image.Mutate(x => x.Crop(new Rectangle(cropX, 0, cropWidth, cropHeight)));
+                image.Save(Naming(newName));
+            }
+        }
+
         public static string Naming(int numb)
         {
             string currentPath = Environment.CurrentDirectory;
@@ -84,6 +97,16 @@ namespace DemoPhotoBooth
 
             var path = Path.Combine(currentPath, dateTimePath);
             string p2 = ("IMG_" + numb.ToString() + ".jpg");
+            return System.IO.Path.Combine(path, p2);
+        }
+
+        public static string Naming(string name)
+        {
+            string currentPath = Environment.CurrentDirectory;
+            string dateTimePath = Actual.DateNow();
+
+            var path = Path.Combine(currentPath, dateTimePath);
+            string p2 = name;
             return System.IO.Path.Combine(path, p2);
         }
     }

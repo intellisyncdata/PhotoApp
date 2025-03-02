@@ -152,30 +152,11 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
             }
             return null;
         }
-        private async void OnPageLoaded(object sender, RoutedEventArgs e)
+        private void OnPageLoaded(object sender, RoutedEventArgs e)
         {
             // Đặt màu nền ban đầu
             var initialColor = (Color)ColorConverter.ConvertFromString("#CEE5EB");
             Background = new SolidColorBrush(initialColor);
-
-            // Tạo Storyboard để thực hiện Fade-in
-            var storyboard = new Storyboard();
-
-            // Hiệu ứng Fade-in (Opacity)
-            var fadeIn = new DoubleAnimation
-            {
-                From = 0, // Bắt đầu mờ
-                To = 1,   // Hiện rõ hoàn toàn
-                Duration = TimeSpan.FromMilliseconds(100)
-            };
-            Storyboard.SetTargetProperty(fadeIn, new PropertyPath("Opacity"));
-
-            // Thêm vào Storyboard và bắt đầu
-            storyboard.Children.Add(fadeIn);
-            storyboard.Begin(this);
-
-            // Chờ hiệu ứng hoàn tất
-            await Task.Delay(150);
 
             // Cập nhật dữ liệu
             UpdateCurrentImage();
@@ -626,21 +607,7 @@ namespace DemoPhotoBooth.Pages.BackgroundPages
                 {
                     System.GC.Collect();
                     System.GC.WaitForPendingFinalizers();
-                    var files = Directory.GetFiles(path);
-                    foreach (var file in files)
-                    {
-                        File.Delete(file);
-                    }
-
-                    var folders = Directory.GetDirectories(path);
-                    foreach (var item in folders)
-                    {
-                        files = Directory.GetFiles(item);
-                        foreach (var file in files)
-                        {
-                            File.Delete(file);
-                        }
-                    }
+                    Directory.Delete(path, true);
                 }
                 catch (Exception e)
                 {

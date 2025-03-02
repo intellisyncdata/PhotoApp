@@ -211,13 +211,13 @@ namespace DemoPhotoBooth.Pages
             }
             else
             {
-        #if !DEBUG
-                if (!await CheckDevice())
-                {
-                    MessageBox.Show("Không tìm thấy thiết bị!", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-        #endif
+                #if !DEBUG
+                        if (!await CheckDevice())
+                        {
+                            MessageBox.Show("Không tìm thấy thiết bị!", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+                #endif
                 PopupChecking popup = new PopupChecking
                 {
                     Owner = System.Windows.Window.GetWindow(this), // Gắn popup với cửa sổ hiện tại

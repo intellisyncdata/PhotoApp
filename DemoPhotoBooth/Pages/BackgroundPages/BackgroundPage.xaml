@@ -4,7 +4,7 @@
       xmlns:svg="http://sharpvectors.codeplex.com/svgc/"
       xmlns:common="clr-namespace:DemoPhotoBooth.Common"
       Title="BackgroundPage"
-      Opacity="0">
+      >
 
     <Grid x:Name="MainGrid">
         <Grid.Background>

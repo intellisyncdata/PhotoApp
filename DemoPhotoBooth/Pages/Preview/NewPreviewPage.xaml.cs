@@ -40,11 +40,6 @@ namespace DemoPhotoBooth.Pages.Preview
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            App.EventAggregator.GetEvent<PreviewPageNextPage>().Subscribe(context =>
-            {
-                NavigationService.Navigate(new PrintAndDownloadPage());
-            });
-
             imagesSelected.Navigate(new ListImagesPage(isPotrait));
             layoutPreview.Navigate(new PreviewLayoutPartial(_layout, _listLayouts, isPotrait));
         }
