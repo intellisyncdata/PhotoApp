@@ -52,6 +52,8 @@ namespace DemoPhotoBooth.Pages
         private (string root, string printPath) rootPath = (string.Empty, string.Empty);
         public System.Windows.Threading.DispatcherTimer timeLeftCounter;
 
+        private bool _disposed = false;
+        private CancellationTokenSource _cancellationTokenSource;
 
         public ManualCameraPage(Layout layout, List<Layout> listLayouts, bool portraitMode = false)
         {
@@ -61,6 +63,18 @@ namespace DemoPhotoBooth.Pages
             _layout = layout;
             _listLayouts = listLayouts;
             SetViewMode();
+            _cancellationTokenSource = new CancellationTokenSource();
+        }
+
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+               
+                CloseSession();
+                _cancellationTokenSource?.Cancel();
+                _disposed = true;
+            }
         }
 
         private void SetViewMode()
@@ -82,6 +96,7 @@ namespace DemoPhotoBooth.Pages
         private void ActivateTimers()
         {
             timeLeftCounter = new System.Windows.Threading.DispatcherTimer();
+
             timeLeftCounter.Tick += ShowTimeLeft;
             timeLeftCounter.Interval = TimeSpan.FromSeconds(1);
 
@@ -214,8 +229,7 @@ namespace DemoPhotoBooth.Pages
                     Debug.WriteLine("Photo session completed.");
                     CountdownTimer.Text = "Đã chụp xong!";
                     // Stop recording when all photos are taken
-                    recorder.StopRecording();
-                    NavigationService?.Navigate(new NewPreviewPage(_layout, _listLayouts, isPortrait));
+                    NavigatePreviewPage();
                 }
             }
             catch (Exception ex)
@@ -328,6 +342,8 @@ namespace DemoPhotoBooth.Pages
         {
             try
             {
+                timeLeftCounter.Tick -= ShowTimeLeft;
+                MainCamera.DownloadReady -= MainCamera_DownloadReady;
                 MainCamera.CloseSession();
             }
             catch (ObjectDisposedException) { Report.Error("Camera has been turned off! \nPlease turned it on and restart the application", true); }
@@ -404,95 +420,30 @@ namespace DemoPhotoBooth.Pages
             string tempPath = string.Empty;
             try
             {
-                if (photosTaken < maxPhotosTaken)
+                photoNumber++;
+                photosTaken++;
+                var savedata = new SavePhoto(photoNumber);
+                string dir = savedata.FolderDirectory;
+
+                Info.FileName = savedata.PhotoName;
+                tempPath = System.IO.Path.Combine(dir, Info.FileName);
+                sender.DownloadFile(Info, dir);
+
+                var layoutApp = _db.LayoutApp.FirstOrDefault();
+                if (layoutApp.FrameType == "vertical")
                 {
-                   
-                    photoNumber++;
-                    var savedata = new SavePhoto(photoNumber);
-                    string dir = savedata.FolderDirectory;
-
-                    Info.FileName = savedata.PhotoName;
-                    tempPath = System.IO.Path.Combine(dir, Info.FileName);
-                    sender.DownloadFile(Info, dir);
-
-                    var layoutApp = _db.LayoutApp.FirstOrDefault();
-                    if (layoutApp.FrameType == "vertical")
-                    {
-                        ReSize.CropAndSaveImage(savedata.PhotoDirectory, Info.FileName);
-                    }
-
-                    Debug.WriteLine($"Capturing photo {photosTaken + 1} from remote trigger");
-                    Application.Current.Dispatcher.BeginInvoke((Action)(() =>
-                    {
-                        PhotosLeftCounter.Text = $"{photosTaken}/{maxPhotosTaken}";
-                    }));
-
-                    if (photosTaken == 7)
-                    {
-                        photosTaken = 0;
-                        photoNumber = 0;
-                        recorder.StopRecording();
-                        Application.Current.Dispatcher.BeginInvoke((Action)(() =>
-                        {
-                            var mainWindow = Application.Current.MainWindow as MainWindow;
-                            if (mainWindow != null)
-                            {
-                                // Nếu MainWindow có Frame để điều hướng, sử dụng Frame thay vì mở cửa sổ mới
-                                var frame = mainWindow.FindName("MainFrame") as Frame;
-                                if (frame != null)
-                                {
-                                    frame.Navigate(new NewPreviewPage(_layout, _listLayouts, isPortrait));
-                                }
-                                else
-                                {
-                                    // Nếu không có Frame, mở cửa sổ mới nhưng đặt kích thước giống MainWindow
-                                    var previewPage = new NewPreviewPage(_layout, _listLayouts, isPortrait);
-                                    var window = new Window
-                                    {
-                                        Content = previewPage,
-                                        Width = mainWindow.Width,  // Giữ kích thước MainWindow
-                                        Height = mainWindow.Height,
-                                        WindowStartupLocation = WindowStartupLocation.CenterScreen
-                                    };
-                                    window.Show();
-                                }
-                            }
-                        }));
-                    }
-                    photosTaken++;
+                    ReSize.CropAndSaveImage(savedata.PhotoDirectory, Info.FileName);
                 }
-                else
+
+                Debug.WriteLine($"Capturing photo {photosTaken + 1} from remote trigger");
+                Application.Current.Dispatcher.BeginInvoke((Action)(() =>
                 {
-                    Debug.WriteLine("Maximum number of photos taken. Navigating to preview page...");
+                    PhotosLeftCounter.Text = $"{photosTaken}/{maxPhotosTaken}";
+                }));
 
-                    recorder.StopRecording();
-
-                    Application.Current.Dispatcher.BeginInvoke((Action)(() =>
-                    {
-                        var mainWindow = Application.Current.MainWindow as MainWindow;
-                        if (mainWindow != null)
-                        {
-                            // Nếu MainWindow có Frame để điều hướng, sử dụng Frame thay vì mở cửa sổ mới
-                            var frame = mainWindow.FindName("MainFrame") as Frame;
-                            if (frame != null)
-                            {
-                                frame.Navigate(new NewPreviewPage(_layout, _listLayouts, isPortrait));
-                            }
-                            else
-                            {
-                                // Nếu không có Frame, mở cửa sổ mới nhưng đặt kích thước giống MainWindow
-                                var previewPage = new NewPreviewPage(_layout, _listLayouts, isPortrait);
-                                var window = new Window
-                                {
-                                    Content = previewPage,
-                                    Width = mainWindow.Width,  // Giữ kích thước MainWindow
-                                    Height = mainWindow.Height,
-                                    WindowStartupLocation = WindowStartupLocation.CenterScreen
-                                };
-                                window.Show();
-                            }
-                        }
-                    }));
+                if (photosTaken == 8)
+                {
+                    NavigatePreviewPage();
                 }
             }
             catch (Exception ex)
@@ -501,21 +452,67 @@ namespace DemoPhotoBooth.Pages
                 {
                     File.Delete(tempPath);
                 }
-                //Report.Error(ex.Message, false);
             }
 
             PhotoTaken = true;
-
         }
-
 
         private void NavigatePreviewPage()
         {
-            var window = System.Windows.Application.Current.MainWindow as MainWindow;
-            if (window != null)
+            Dispose();
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
             {
-                window.MainFrame.Navigate(new NewPreviewPage(_layout, _listLayouts, isPortrait));
-            }
+                var mainWindow = Application.Current.MainWindow as MainWindow;
+                if (mainWindow != null)
+                {
+                    // Nếu MainWindow có Frame để điều hướng, sử dụng Frame thay vì mở cửa sổ mới
+                    var frame = mainWindow.FindName("MainFrame") as Frame;
+                    if (frame != null)
+                    {
+                        var layoutApp = _db.LayoutApp.FirstOrDefault();
+                        if (layoutApp.FrameType == "vertical")
+                        {
+                            isPortrait = true;
+                        }
+                        else
+                        {
+                            isPortrait = false;
+                        }
+                        recorder.StopRecording();
+                        photoNumber = 0;
+                        photosTaken = 0;
+                        
+      
+                        frame.Navigate(new NewPreviewPage(_layout, _listLayouts, isPortrait));
+                    }
+                    else
+                    {
+                        var layoutApp = _db.LayoutApp.FirstOrDefault();
+                        if (layoutApp.FrameType == "vertical")
+                        {
+                            isPortrait = true;
+                        }
+                        else
+                        {
+                            isPortrait = false;
+                        }
+                        recorder.StopRecording();
+                        photoNumber = 0;
+                        photosTaken = 0;
+                        timeLeftCounter.Tick -= ShowTimeLeft;
+                        // Nếu không có Frame, mở cửa sổ mới nhưng đặt kích thước giống MainWindow
+                        var previewPage = new NewPreviewPage(_layout, _listLayouts, isPortrait);
+                        var window = new Window
+                        {
+                            Content = previewPage,
+                            Width = mainWindow.Width,  // Giữ kích thước MainWindow
+                            Height = mainWindow.Height,
+                            WindowStartupLocation = WindowStartupLocation.CenterScreen
+                        };
+                        window.Show();
+                    }
+                }
+            }));
         }
     }
 }

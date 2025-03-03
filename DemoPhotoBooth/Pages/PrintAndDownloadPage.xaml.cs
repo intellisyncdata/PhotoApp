@@ -377,6 +377,7 @@ namespace DemoPhotoBooth.Pages
             var window = System.Windows.Application.Current.MainWindow as MainWindow;
             if (window != null)
             {
+                
                 window.MainFrame.Navigate(new HomePage());
             }
         }

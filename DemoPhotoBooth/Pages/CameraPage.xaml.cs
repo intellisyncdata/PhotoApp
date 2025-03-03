@@ -35,18 +35,21 @@ namespace DemoPhotoBooth.Pages
         private LiveViewRecorder recorder = new LiveViewRecorder();
         // Default Landscape
         private bool isPortrait = false;
-        private bool isManual = false;
 
         public int photoNumber = 0;
         public int maxPhotosTaken = 8;
-        private int timeLeft = 10;
-        private int timeLeftCopy = 10;
+        private int timeLeft = 5;
+        private int timeLeftCopy = 5;
         private int photosTaken = 0;
         public bool PhotoTaken = false;
         private (string root, string printPath) rootPath = (string.Empty, string.Empty);
         private CommonDbDataContext _db;
         private Layout _layout { get; set; }
         private List<Layout> _listLayouts { get; set; }
+
+        private bool _disposed = false;
+        private CancellationTokenSource _cancellationTokenSource;
+
         public CameraPage(Layout layout, List<Layout> listLayouts, bool portraitMode = false)
         {
             InitializeComponent();
@@ -55,6 +58,16 @@ namespace DemoPhotoBooth.Pages
             _layout = layout;
             _listLayouts = listLayouts;
             SetViewMode();
+        }
+
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                CloseSession();
+                _cancellationTokenSource?.Cancel();
+                _disposed = true;
+            }
         }
 
         private void SetViewMode()
@@ -93,7 +106,7 @@ namespace DemoPhotoBooth.Pages
             // Wait until MainCamera.IsLiveViewOn becomes true
             while (!MainCamera.IsLiveViewOn)
             {
-                await Task.Delay(1000); // Wait for 1 second
+                await Task.Delay(500); // Wait for 1 second
             }
 
             TakePhoto();  // Start the first countdown/photo cycle
@@ -168,34 +181,8 @@ namespace DemoPhotoBooth.Pages
                     photoNumber = 0;
                     string dir = new SavePhoto(1).FolderDirectory; // Lấy thư mục lưu ảnh
 
-                    // Kiểm tra và xóa file 0KB trong thư mục
-                    if (Directory.Exists(dir))
-                    {
-                        foreach (string filePath in Directory.GetFiles(dir))
-                        {
-                            FileInfo fileInfo = new FileInfo(filePath);
-                            if (fileInfo.Length == 0) // Nếu file có kích thước 0KB
-                            {
-                                try
-                                {
-                                    File.Delete(filePath);
-                                    Debug.WriteLine($"File {filePath} có dung lượng 0KB, đã bị xóa.");
-                                }
-                                catch (Exception ex)
-                                {
-                                    Debug.WriteLine($"Lỗi khi xóa file {filePath}: {ex.Message}");
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Debug.WriteLine($"Thư mục {dir} không tồn tại.");
-                    }
-
-                    CloseSession();
+                    Dispose();
                     NavigationService?.Navigate(new NewPreviewPage(_layout, _listLayouts, isPortrait));
-                    NavigationService?.RemoveBackEntry();
                 }
             }
             catch (Exception ex)
@@ -370,6 +357,9 @@ namespace DemoPhotoBooth.Pages
         {
             try
             {
+                MainCamera.DownloadReady -= MainCamera_DownloadReady;
+                betweenPhotos.Tick -= MakePhoto;
+                secondCounter.Tick -= ShowTimeLeft;
                 MainCamera.CloseSession();
             }
             catch (ObjectDisposedException) { Report.Error("Camera has been turned off! \nPlease turned it on and restart the application", true); }
@@ -397,10 +387,6 @@ namespace DemoPhotoBooth.Pages
                         MainCamera.OpenSession();
                         MainCamera.LiveViewUpdated += MainCamera_LiveViewUpdated;
                         MainCamera.StateChanged += MainCamera_StateChanged;
-                        if (MainCamera != null)
-                        {
-                            MainCamera.DownloadReady -= MainCamera_DownloadReady;
-                        }
                         MainCamera.DownloadReady += MainCamera_DownloadReady;
                         MainCamera.SetSetting(PropertyID.SaveTo, (int)SaveTo.Host);
                         MainCamera?.SetCapacity(4096, int.MaxValue);
