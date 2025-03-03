@@ -148,12 +148,18 @@ namespace DemoPhotoBooth.Pages.Preview
         private void NextDownloadPage()
         {
             dispatcherTimer.Stop();
+            dispatcherTimer.Tick -= DispatcherTimer_Tick;
+
             var window = System.Windows.Application.Current.MainWindow as MainWindow;
             if (window != null)
             {
+                _db?.Dispose(); _db?.Dispose();
                 window.MainFrame.Navigate(new PrintAndDownloadPage());
             }
+
+            CleanupMemory();
         }
+
 
         private void ShowPreviewPopup()
         {
@@ -188,11 +194,36 @@ namespace DemoPhotoBooth.Pages.Preview
                 }
             }
         }
-
+       
         private void NavigateToHomePage(object sender, RoutedEventArgs e)
         {
-            dispatcherTimer.Stop();
+            dispatcherTimer.Stop();  // Dừng Timer để tránh tiếp tục chạy ngầm
+            dispatcherTimer.Tick -= DispatcherTimer_Tick; // Hủy đăng ký sự kiện
+            _db?.Dispose();
+
             NavigationService?.Navigate(new HomePage());
+            CleanupMemory(); // Giải phóng bộ nhớ
+        }
+
+        private void CleanupMemory()
+        {
+            foreach (var image in dicImages.Values)
+            {
+                image.MouseDown -= Image_MouseDown;
+                image.TouchDown -= Image_TouchDown;
+                image.Source = null;
+            }
+            dicImages.Clear(); // Giải phóng Dictionary
+            gridImages.Children.Clear(); // Xóa UI Elements
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
+
+        public void Dispose()
+        {
+            _db?.Dispose();
         }
 
         private void DrawQR()

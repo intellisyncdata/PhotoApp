@@ -377,8 +377,42 @@ namespace DemoPhotoBooth.Pages
             var window = System.Windows.Application.Current.MainWindow as MainWindow;
             if (window != null)
             {
-                
-                window.MainFrame.Navigate(new HomePage());
+                CleanupMemory();
+                var photoApp =_db.PhotoApps.FirstOrDefault();
+                if (photoApp != null)
+                {
+                    photoApp.IsActive = true;
+                    _db.SaveChanges();
+                }
+
+                RestartApplication();
+            }
+        }
+
+        private void RestartApplication()
+        {
+            // Lấy cửa sổ hiện tại
+            if (Application.Current.MainWindow is MainWindow oldWindow)
+            {
+                // Gọi Dispose() nếu MainWindow có IDisposable
+                oldWindow.DisposeResources();
+
+                // Tạo cửa sổ mới
+                MainWindow newMainWindow = new MainWindow();
+
+                // Đặt cửa sổ mới làm MainWindow
+                Application.Current.MainWindow = newMainWindow;
+
+                // Hiển thị cửa sổ mới trước khi đóng cửa sổ cũ
+                newMainWindow.Show();
+
+                // Đóng cửa sổ cũ
+                oldWindow.Close();
+
+                // Gọi Garbage Collector để thu hồi bộ nhớ
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
             }
         }
 
@@ -417,6 +451,14 @@ namespace DemoPhotoBooth.Pages
             dispatcherTimer.Stop();
             //finalImage.Source = null;
             NextHomePage();
+        }
+
+        private void CleanupMemory()
+        {
+            // Giải phóng tài nguyên không sử dụng
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
         }
     }
 }

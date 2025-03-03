@@ -27,6 +27,7 @@ namespace DemoPhotoBooth.Models.Entities
             DownloadMediaTypes = JsonSerializer.Serialize(itm.DownloadMediaTypes);
             MaxPrints = itm.MaxPrints;
             Token = itm.Token;
+            IsActive = itm.IsActive;
         }
 
         [Key]
@@ -39,5 +40,6 @@ namespace DemoPhotoBooth.Models.Entities
         public string DownloadMediaTypes { get; set; }
         public int MaxPrints { get; set; }
         public string Token { get; set; }
+        public bool IsActive { get; set; }
     }
 }

@@ -51,6 +51,7 @@ namespace DemoPhotoBooth.Models.DTOs
             DownloadMediaTypes = JsonSerializer.Deserialize<List<string>>(itm.DownloadMediaTypes);
             MaxPrints = itm.MaxPrints;
             Token = itm.Token;
+            IsActive = itm.IsActive;
         }
 
         [JsonPropertyName("id")]
@@ -71,5 +72,6 @@ namespace DemoPhotoBooth.Models.DTOs
         public int MaxPrints { get; set; }
         [JsonPropertyName("access_token")]
         public string Token { get; set; }
+        public bool IsActive { get; set; }
     }
 }

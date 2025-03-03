@@ -8,6 +8,7 @@ using System.Management;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,11 +36,13 @@ namespace DemoPhotoBooth.Pages
         public List<Layout> Layouts { get; set; }
         private SerialPort? serialPort;
         private readonly CommonDbDataContext _db;
+        private readonly HttpClient _httpClient;
         public HomePage()
         {
             InitializeComponent();
             _db = new CommonDbDataContext();
-            if(serialPort != null && serialPort.IsOpen)
+            _httpClient = new HttpClient();
+            if (serialPort != null && serialPort.IsOpen)
             {
                 serialPort.Close();
                 serialPort.Dispose();
@@ -70,25 +73,33 @@ namespace DemoPhotoBooth.Pages
             try
             {
                 var info = _db.PhotoApps.AsNoTracking()?.FirstOrDefault();
-                var layouts = await GetLayout(PhotoApps, info.Token);
-
-                if (layouts != null || layouts?.Count > 0)
+                var checkcode = await CheckCode(info?.Code);
+                if(!checkcode)
                 {
-                    List<Task> downloadTasks = new List<Task>();
+                    NavigationService.Navigate(new CodeCheckPage());
+                }
+                else
+                {
+                    var layouts = await GetLayout(PhotoApps, info.Token);
 
-                    foreach (var layout in layouts)
+                    if (layouts != null || layouts?.Count > 0)
                     {
-                        string imageUrl = layout.ImageUrl;
+                        List<Task> downloadTasks = new List<Task>();
 
-                        if (!string.IsNullOrEmpty(imageUrl))
+                        foreach (var layout in layouts)
                         {
-                            downloadTasks.Add(DownloadImageAsync(imageUrl));
+                            string imageUrl = layout.ImageUrl;
+
+                            if (!string.IsNullOrEmpty(imageUrl))
+                            {
+                                downloadTasks.Add(DownloadImageAsync(imageUrl));
+                            }
                         }
+
+                        await Task.WhenAll(downloadTasks);
+
+                        NavigationService.Navigate(new LayoutPage(layouts));
                     }
-
-                    await Task.WhenAll(downloadTasks);
-
-                    NavigationService.Navigate(new LayoutPage(layouts));
                 }
             }
             catch (Exception ex)
@@ -128,6 +139,62 @@ namespace DemoPhotoBooth.Pages
         /// <summary>
         /// Kiểm tra Camera có kết nối không
         /// </summary>
+        private async Task<bool> CheckCode(string code)
+        {
+            try
+            {
+                if (_httpClient == null)
+                {
+                    MessageBox.Show("HTTP Client chưa được khởi tạo!", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+
+                if (string.IsNullOrEmpty(ApiUrl.ApiCheckCode))
+                {
+                    MessageBox.Show("API URL không hợp lệ!", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+
+                var requestData = new { code };
+                var content = new StringContent(JsonSerializer.Serialize(requestData), Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await _httpClient.PostAsync(ApiUrl.ApiCheckCode, content);
+                string responseContent = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    if (JsonSerializer.Deserialize<Models.DTOs.PhotoApp>(responseContent) is { IsActive: true })
+                        return true;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    var errorResponse = JsonSerializer.Deserialize<ApiErrorResponse>(responseContent);
+                    if (errorResponse?.Message == "Photo app is already installed")
+                        return true;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}", CommonMessages.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+        }
+
+        // Class để Deserialize phản hồi lỗi
+        public class ApiErrorResponse
+        {
+            [JsonPropertyName("message")]
+            public string Message { get; set; }
+
+            [JsonPropertyName("error_code")]
+            public string ErrorCode { get; set; }
+
+            [JsonPropertyName("detail")]
+            public string Detail { get; set; }
+        }
+
 
         private async Task<List<Layout>> GetLayout(Models.DTOs.PhotoApp photoApp, string token)
         {

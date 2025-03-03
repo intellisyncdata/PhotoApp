@@ -9,6 +9,7 @@ using DemoPhotoBooth.Pages.Preview;
 using DemoPhotoBooth.Pages;
 using System.IO.Ports;
 using System.ComponentModel;
+using System.Windows.Threading;
 
 namespace DemoPhotoBooth
 {
@@ -25,8 +26,15 @@ namespace DemoPhotoBooth
             InitializeComponent();
             _db = new CommonDbDataContext();
             _httpClient = new HttpClient();
-
-            MainFrame.Navigate(new CodeCheckPage());
+            var photoApp = _db.PhotoApps.FirstOrDefault();
+            if (photoApp != null && photoApp.IsActive)
+            {
+                MainFrame.Navigate(new HomePage());
+            }
+            else
+            {
+                MainFrame.Navigate(new CodeCheckPage());
+            }
         }
 
         private async Task DeactivePhotoApp()
@@ -68,6 +76,17 @@ namespace DemoPhotoBooth
             }
         }
 
+        private void ReCheckIsActive()
+        {
+            var isExisted = _db.PhotoApps.FirstOrDefault();
+
+            if (isExisted != null)
+            {
+                isExisted.IsActive = false;
+                _db.SaveChanges();
+            }
+        }
+
         private void ClosePort()
         {
             if (serialPort != null && serialPort.IsOpen)
@@ -84,14 +103,39 @@ namespace DemoPhotoBooth
             {
                 //Task task1 = Task.Factory.StartNew(() => DeactivePhotoApp());
                 ClearLayoutApp();
+                ReCheckIsActive();
                 ClosePort();
-                Environment.Exit(0);
                 //Task task2 = Task.Factory.StartNew(() => ClearCommonData());
                 //Task.WaitAll(task1, task2);
             }
             catch (Exception ex)
             {
 
+            }
+        }
+
+        // ✅ Thêm phương thức này để giải phóng tài nguyên
+        public void DisposeResources()
+        {
+            try
+            {
+                // Giải phóng DbContext nếu có
+                _db?.Dispose();
+
+                // Giải phóng Serial Port
+                if (serialPort != null && serialPort.IsOpen)
+                {
+                    serialPort.Close();
+                    serialPort.Dispose();
+                    serialPort = null;
+                }
+
+                // Giải phóng UI Controls
+                this.Content = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error disposing resources: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

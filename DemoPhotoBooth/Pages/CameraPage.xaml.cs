@@ -38,8 +38,8 @@ namespace DemoPhotoBooth.Pages
 
         public int photoNumber = 0;
         public int maxPhotosTaken = 8;
-        private int timeLeft = 5;
-        private int timeLeftCopy = 5;
+        private int timeLeft = 10;
+        private int timeLeftCopy = 10;
         private int photosTaken = 0;
         public bool PhotoTaken = false;
         private (string root, string printPath) rootPath = (string.Empty, string.Empty);

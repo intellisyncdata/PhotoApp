@@ -10,7 +10,8 @@
     ResizeMode="NoResize"
     Background="#00000000"
     Height="979" Width="1746"
-    WindowStyle="None">
+    WindowStyle="None" 
+    Closed="Window_Closed">
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="pack://application:,,,/Layouts/bg-popup.png"/>
